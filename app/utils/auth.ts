@@ -1,4 +1,3 @@
-import { access } from 'fs';
 import jwt from 'jsonwebtoken';
 
 export const decodeToken = function (token: any) {
@@ -25,6 +24,3 @@ export function isAuthenticated(token?: string) {
   }
   return false;
 }
-
-
-export const sessionKeys = {accessToken:"access_token", slugKey:"slug", refreshToken:"refresh_token"}

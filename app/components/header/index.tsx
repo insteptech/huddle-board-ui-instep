@@ -12,7 +12,10 @@ import { useTheme } from '@mui/material';
 const Header = ( ) => { 
    
   const theme: any = useTheme();
+  console.log(theme,"jhgf")
   return (
+ 
+
     <Box sx={{ display: 'flex'    }}>
       <CssBaseline />
       <AppBar component="nav" sx={{  p: 5,position: 'relative', backgroundColor: theme.customArgs.hearderBgColor  }}>
