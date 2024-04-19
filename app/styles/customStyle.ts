@@ -173,3 +173,14 @@ export const SpanTextD= styled(Typography)(({ div }: any) => ({
   background:'#EFF8FF',
   marginLeft:'5px',
 }));
+
+
+export const HeadingTag= styled(Typography)(({ div }: any) => ({
+  fontSize: '24px',
+  fontWeight: '700',
+  lineHeight: '32px',
+  textAlign: 'left',
+  color: 'rgba(0, 0, 0, 1)',
+  margin: '30px 0',
+  
+}));

@@ -10,7 +10,7 @@ export type AppointmentsState = {
     };
 };
 
-type AppointmentState = {
+export type AppointmentState = {
     uuid: String,
     patient_name: String,
     appointment_timestamp: String,

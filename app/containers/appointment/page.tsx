@@ -15,262 +15,65 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-import {BorderLinearProgress, IconProgress, ProviderCell, SpanText, SpanTextC, SpanTextCopd, SpanTextD, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
+import {BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, SpanTextC, SpanTextCopd, SpanTextD, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
 import { getAppointmentsList } from "@/app/redux/actions/appointment";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
 import { Stack } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { AppointmentState } from '../../redux/slices/appointment';
+import { AppState } from '../../redux/store';
 
-let data = [
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
+function GetScreening ({ screening } :string [] | any) {
+  return (
+    <>
+      {screening.includes("PVD") &&
+        <SpanText>PVD</SpanText>
+      }
+      {screening.includes("COPD") &&
+        <SpanTextCopd>"COPD"</SpanTextCopd>
+      }
 
+      {screening.includes("Diabetes") &&
+        <SpanTextD>Diabetes</SpanTextD>
+      }
 
-    {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    Screening2: "COPD",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
+      {screening.includes("CHF") &&
+      <SpanTextC>CHF</SpanTextC>
+      }
+    </>
+  );
+}
 
+function getTime (timestamp:string) {
+  var d = new Date();
+  var hr = d.getHours();
+  var min = d.getMinutes();
 
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    ScreeningD: "Diabetes",
-    ScreeningC: "CHF",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
-
-
-
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
-
-
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    ScreeningD: "Diabetes",
-    ScreeningC: "CHF",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
-
-
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
-
-
-
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    ScreeningD: "Diabetes",
-    ScreeningC: "CHF",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
-
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    Screening2: "COPD",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
-
-
-
-
-  {
-    time: "09:30 AM",
-    name: "Alex Gates",
-	copydata: "MRN: 127206374",
-    TypeofVisit: "New Patient",
-    Screening: "PVD",
-    ScreeningD: "Diabetes",
-    ScreeningC: "CHF",
-    Providers: "Dr. Sam Jones",
-    action: "0/1",
-    
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  },
-
-  
-
-];
+  var ampm = "am";
+  if( hr > 12 ) {
+      hr -= 12;
+      ampm = "pm";
+  }
+  return hr + ":" + min + " " +ampm ;
+}
 
 function Row(props: any) {
-  const { row } = props;
+  const { appointment } = props;
   const [open, setOpen] = React.useState(false);
 
   return (
     <React.Fragment>
       <StyledTableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TdTableCell>
-          <StyledText> {row.time}</StyledText>
+          <StyledText> {getTime(appointment.appointment_timestamp)}</StyledText>
         </TdTableCell>
         <TdTableCell>
-          <StyledName> {row.name}</StyledName>
+          <StyledName> {appointment.patient_name}</StyledName>
           <StyledCopy>
-      
-          {row.copydata}
+          {appointment.mrn}
             <ContentCopyIcon
+              onClick={() => {navigator.clipboard.writeText(appointment.mrn)}}
               sx={{
                 verticalAlign: "middle",
                 color: "#17236D",
@@ -282,39 +85,26 @@ function Row(props: any) {
         </TdTableCell>
 
         <TdTableCell>
-          <StyledText> {row.TypeofVisit}</StyledText>
+          <StyledText> {appointment.visit_type}</StyledText>
         </TdTableCell>
 
         <TdTableCell>
-          <SpanText>{row.Screening}</SpanText>
-          {row.Screening2&&
-           <SpanTextCopd>{row.Screening2}</SpanTextCopd>
-          }
-
-          {row.ScreeningD&&
-           <SpanTextD>{row.ScreeningD}</SpanTextD>
-          }
-
-         {row.ScreeningC&&
-           <SpanTextC>{row.ScreeningC}</SpanTextC>
-          }
-         
+          <GetScreening screening={appointment.screening} />
         </TdTableCell>
 
         <TdTableCell>
-      
-          <StyledText>{row.Providers} </StyledText>
+          <StyledText>{appointment.provider}</StyledText>
         </TdTableCell>
 
         <TdTableCell>
           <IconProgress>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <BorderLinearProgress variant="determinate" value={50} />
+              <BorderLinearProgress variant="determinate" value={50} /> 
             </Stack>
 
-            <ProviderCell>{row.action}</ProviderCell>
+            <ProviderCell>{appointment.selected_gap_count}/{appointment.gap_count}</ProviderCell>
             <IconButton
-              aria-label="expand row"
+              aria-label="expand appointment"
               size="small"
               onClick={() => setOpen(!open)}
             >
@@ -343,18 +133,18 @@ function Row(props: any) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow: any) => (
+                  {/* {appointment.history.map((historyRow: any) => (
                     <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
+                      <TableCell component="th" scope="appointment">
                         {historyRow.date}
                       </TableCell>
                       <TableCell>{historyRow.customerId}</TableCell>
                       <TableCell>{historyRow.amount}</TableCell>
                       <TableCell>
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
+                        {Math.round(historyRow.amount * appointment.price * 100) / 100}
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ))} */}
                 </TableBody>
               </Table>
             </Box>
@@ -368,7 +158,7 @@ function Row(props: any) {
 export default function CollapsibleTable() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch<AppDispatch>();
-  const appointmentsList = useSelector((state:any) => state.appointment?.appointmentsData?.results)
+  const appointmentsList = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.results) || [];
 
   useEffect(() => {
     dispatch(getAppointmentsList({
@@ -378,12 +168,17 @@ export default function CollapsibleTable() {
   }, []);
 
   return (
-    <TableMainContainer component={Paper} sx={{ m: "30px 0" }}>
+    <>
+      <HeadingTag variant="h1">
+        My Schedule
+      </HeadingTag>
+
+      <TableMainContainer sx={{ m: "30px 0" }}>
       <Table aria-label="collapsible table">
         <TableHead sx={{ backgroundColor: "#17236D", color: "#fff" }}>
           <TableRow>
             <StyledTableCell>
-              Appt Time{" "}
+              Appt Time
               <ArrowDownwardIcon
                 style={{ verticalAlign: "middle", fontSize: "18px" }}
               />
@@ -401,12 +196,13 @@ export default function CollapsibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
+        {appointmentsList.map((appointment: AppointmentState) => (
+              <Row key={appointment.uuid} appointment={appointment} />
+            ))}
         </TableBody>
       </Table>
-    </TableMainContainer>
+      </TableMainContainer>
+    </>
   );
 }
 
