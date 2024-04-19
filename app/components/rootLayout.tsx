@@ -17,7 +17,7 @@ const RootLayout = (props: RootLayoutProps) => {
     <>
       <Header />
       <main>{children}</main>
-      <Footer />
+      
     </>
   );
 };
