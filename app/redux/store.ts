@@ -1,9 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import auth from './slices/auth';
+import auth, { AuthState } from './slices/auth';
+import appointment from './slices/appointment';
+import { AppointmentsState } from './slices/appointment';
+
+export interface AppState {
+  auth: AuthState,
+	appointment: AppointmentsState
+
+}
 
 export const store = configureStore({
   reducer: {
     auth,
+    appointment
   },
 });
 

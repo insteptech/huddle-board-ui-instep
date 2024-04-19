@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { signInCall } from '../actions/auth';
 
-type AuthState = {
+export type AuthState = {
   loggedInUser: { token: ''; user: null; permissions: null };
 };
 

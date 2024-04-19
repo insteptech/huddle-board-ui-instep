@@ -16,6 +16,8 @@ const nextConfig = {
       transform: '@mui/lab/{{member}}',
     },
   },
+ 
 };
 
 export default nextConfig;
+
