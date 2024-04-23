@@ -1,24 +1,58 @@
-'use client'
 import React, { useEffect, useState } from "react";
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {DisableBtn,Table_Head,FontBold,EnableBtn,ActionBtn,TablemidData,TableMid,Text,OtBtn,BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, SpanTextC, SpanTextCopd, SpanTextD, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
-import { getAppointmentsList } from "@/app/redux/actions/appointment";
 import { useDispatch, useSelector } from "react-redux";
+import { useInView } from "react-intersection-observer";
+import {
+  Box,
+  Collapse,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Stack
+} from '@mui/material';
+import {
+  KeyboardArrowDown as KeyboardArrowDownIcon,
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  ArrowDownward as ArrowDownwardIcon,
+  ContentCopy as ContentCopyIcon
+} from '@mui/icons-material';
+import {
+  DisableBtn,
+  Table_Head,
+  FontBold,
+  EnableBtn,
+  ActionBtn,
+  TablemidData,
+  TableMid,
+  Text,
+  OtBtn,
+  BorderLinearProgress,
+  HeadingTag,
+  IconProgress,
+  ProviderCell,
+  SpanText,
+  SpanTextC,
+  SpanTextCopd,
+  SpanTextD,
+  StyledCopy,
+  StyledName,
+  StyledTableCell,
+  StyledTableRow,
+  StyledText,
+  TableMainContainer,
+  TdTableCell
+} from '../../styles/customStyle';
+import { getAppointmentDetail, getAppointmentsList } from "@/app/redux/actions/appointment";
 import { AppDispatch } from "@/app/redux/store";
-import { Stack } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { AppointmentState } from '../../redux/slices/appointment';
 import { AppState } from '../../redux/store';
+import { getTime } from '../../utils/helper';
+
+type AppointmentListProps = {
+  initialAppointments: AppointmentState[]
+}
 
 function GetScreening ({ screening } :string [] | any) {
   return (
@@ -41,22 +75,15 @@ function GetScreening ({ screening } :string [] | any) {
   );
 }
 
-function getTime (timestamp:string) {
-  var d = new Date();
-  var hr = d.getHours();
-  var min = d.getMinutes();
-
-  var ampm = "am";
-  if( hr > 12 ) {
-      hr -= 12;
-      ampm = "pm";
-  }
-  return hr + ":" + min + " " +ampm ;
-}
-
 function Row(props: any) {
-  const { appointment } = props;
+  const { appointment, selectedAppointment, setSelectedAppointment, appointmentDetails, appointmentDetail } = props;
   const [open, setOpen] = React.useState(false);
+
+  const setRow = (id:string) => {
+    setSelectedAppointment(id);
+    appointmentDetails(id);
+    setOpen(!open)
+  }
 
   return (
     <React.Fragment>
@@ -102,7 +129,7 @@ function Row(props: any) {
             <IconButton
               aria-label="expand appointment"
               size="small"
-              onClick={() => setOpen(!open)}
+              onClick={() => setRow(appointment.uuid)}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
@@ -182,18 +209,42 @@ function Row(props: any) {
   );
 }
 
-export default function CollapsibleTable() {
+export default function CollapsibleTable({ initialAppointments } : AppointmentListProps) {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch<AppDispatch>();
   const appointmentsList = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.results) || [];
+  const totalAppointmentCount = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.count) || 0;
+  const appointmentDetail = useSelector(( state: AppState ) => state.appointment?.appointmentDetail) || [];
+
+  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentState[]>(initialAppointments);
+  const { ref, inView } = useInView();
+
+  const loadMoreAppointment = () => {
+    dispatch(getAppointmentsList({ page: page, page_size: 10}));
+    setPage(page + 1);
+  }
 
   useEffect(() => {
     dispatch(getAppointmentsList({
       page_size: 10,
       page: page
     }));
+    loadMoreAppointment()
+
   }, []);
 
+  useEffect(() => {
+    if (inView && totalAppointmentCount < appointmentsList.length) {
+      loadMoreAppointment()
+    }
+  }, [inView])
+
+
+  const appointmentDetails = (id:string) => {
+    dispatch(getAppointmentDetail({
+      appointment_id: id
+    }));
+  }
   return (
     <>
       <HeadingTag variant="h1">
@@ -224,7 +275,7 @@ export default function CollapsibleTable() {
         </Table_Head>
         <TableBody>
         {appointmentsList.map((appointment: AppointmentState) => (
-              <Row key={appointment.uuid} appointment={appointment} />
+              <Row key={appointment.uuid} appointment={appointment} selectedAppointment={selectedAppointment} setSelectedAppointment={setSelectedAppointment} appointmentDetail={appointmentDetail} appointmentDetails={appointmentDetails}/>
             ))}
         </TableBody>
       </Table>
