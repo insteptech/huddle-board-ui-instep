@@ -14,10 +14,7 @@ import {Typography_Grid,StaticTypo,LinkText} from  '../../styles/customStyle';
 const Header = ( ) => { 
    
   const theme: any = useTheme();
-  console.log(theme,"jhgf")
   return (
- 
-
     <Box sx={{ display: 'flex'    }}>
       <CssBaseline />
       <AppBar component="nav" sx={{  p: 2,position: 'relative',flexDirection: 'row',    justifyContent:' space-between', backgroundColor: theme.customArgs.hearderBgColor  }}>
