@@ -29,32 +29,20 @@ type AppointmentListProps = {
 function GetScreening ({ screening } :string [] | any) {
   return (
     <>
-      {screening.includes("PVD") &&
-        <SpanText>PVD</SpanText>
-      }
-      {screening.includes("COPD") &&
-        <SpanText>"COPD"</SpanText>
-      }
-
-      {screening.includes("Diabetes") &&
-        <SpanText>Diabetes</SpanText>
-      }
-
-      {screening.includes("CHF") &&
-      <SpanText>CHF</SpanText>
-      }
-
-      
+    {screening.length && screening.map((screen: string, index: number)=> (
+      <>{index< 3 && <SpanText>{screen}</SpanText>}</>
+    ))}
+    {screening.length > 2 &&<SpanText>+ {screening.length - 3}</SpanText>}
     </>
   );
 }
 
 function Row(props: any) {
-  const { appointment, selectedAppointment, setSelectedAppointment, appointmentDetails, appointmentDetail } = props;
-  const [open, setOpen] = React.useState(false);
+  const { appointment, selectedAppointmentUuid, setSelectedAppointmentUuid, appointmentDetails, appointmentDetail } = props;
+  const [open, setOpen] = React.useState(false);  
 
   const setRow = (id:string) => {
-    setSelectedAppointment(id);
+    setSelectedAppointmentUuid(id);
     appointmentDetails(id);
     setOpen(!open)
   }
@@ -105,7 +93,7 @@ function Row(props: any) {
               size="small"
               onClick={() => setRow(appointment.uuid)}
             >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {open && selectedAppointmentUuid === appointment.uuid ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </IconProgress>
         </TdTableCell>
@@ -115,9 +103,8 @@ function Row(props: any) {
 
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0,padding:'0', }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={open && selectedAppointmentUuid === appointment.uuid}  timeout="auto" unmountOnExit>
             <Box>
-             
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -128,51 +115,31 @@ function Row(props: any) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                 
-                    <TableRow>
-                      <TablemidData>
-                      <SpanText>PVD</SpanText>
-                      </TablemidData>
+                    {appointmentDetail.length > 0 && appointmentDetail.map((detail: any) => {
+                        return (
+                            <TableRow id={detail.uuid}>
+                            <TablemidData>
+                            <SpanText>{detail.screening}</SpanText>
+                            </TablemidData>
 
-                      <TablemidData>
-                      <ActionBtn>Query Clinician</ActionBtn> 
-                      </TablemidData>
+                            <TablemidData>
+                            <ActionBtn>{detail.action}</ActionBtn> 
+                            </TablemidData>
 
-                      <TablemidData>
-                      <Text>Patient's age &gt; 50 and having following risk factors: Diabetes, smoker</Text>
-                      </TablemidData>
+                            <TablemidData>
+                            <Text>{detail.description}</Text>
+                            </TablemidData>
 
-                      <TablemidData>
-                      <OtBtn>Clinician Agrees</OtBtn>
-                      <OtBtn>Clinician Disagrees</OtBtn>
-                      <OtBtn>Test Ordered</OtBtn>
-                      </TablemidData>
-                      
-                    </TableRow>
-
-                    <TableRow>
-                      <TablemidData>
-                      <SpanText>COPD</SpanText>
-                      </TablemidData>
-
-                      <TablemidData>
-                      <ActionBtn>Order Sprirometery</ActionBtn> 
-                      </TablemidData>
-
-                      <TablemidData>
-                      <Text>History of smoking: &gt; 20 pack years</Text>
-                      </TablemidData>
-
-                      <TablemidData>
-                      <DisableBtn>Clinician Agrees</DisableBtn>
-                      <DisableBtn>Clinician Disagrees</DisableBtn>
-                      <EnableBtn>Test Ordered</EnableBtn>
-                      </TablemidData>
-                      
-                    </TableRow>
-
-                  
-                 
+                            <TablemidData>
+                            <OtBtn>Clinician Agrees</OtBtn>
+                            <OtBtn>Clinician Disagrees</OtBtn>
+                            <OtBtn>Test Ordered</OtBtn>
+                            </TablemidData>
+                            
+                          </TableRow>
+                      )
+                    })
+                    }
                 </TableBody>
               </Table>
             </Box>
@@ -190,7 +157,7 @@ export default function CollapsibleTable({ initialAppointments } : AppointmentLi
   const totalAppointmentCount = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.count) || 0;
   const appointmentDetail = useSelector(( state: AppState ) => state.appointment?.appointmentDetail) || [];
 
-  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentState[]>(initialAppointments);
+  const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
 
   const loadMoreAppointment = () => {
@@ -249,7 +216,7 @@ export default function CollapsibleTable({ initialAppointments } : AppointmentLi
         </Table_Head>
         <TableBody>
         {appointmentsList.map((appointment: AppointmentState) => (
-              <Row key={appointment.uuid} appointment={appointment} selectedAppointment={selectedAppointment} setSelectedAppointment={setSelectedAppointment} appointmentDetail={appointmentDetail} appointmentDetails={appointmentDetails}/>
+              <Row key={appointment.uuid} appointment={appointment} selectedAppointmentUuid={selectedAppointmentUuid} setSelectedAppointmentUuid={setSelectedAppointmentUuid} appointmentDetail={appointmentDetail} appointmentDetails={appointmentDetails}/>
             ))}
         </TableBody>
       </Table>
