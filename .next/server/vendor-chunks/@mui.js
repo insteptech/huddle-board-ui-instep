@@ -527,17 +527,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "(ssr)/./node_modules/@mui/material/Typography/index.js":
-/*!********************************************************!*\
-  !*** ./node_modules/@mui/material/Typography/index.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* reexport safe */ _Typography__WEBPACK_IMPORTED_MODULE_0__[\"default\"]),\n/* harmony export */   getTypographyUtilityClass: () => (/* reexport safe */ _typographyClasses__WEBPACK_IMPORTED_MODULE_1__.getTypographyUtilityClass),\n/* harmony export */   typographyClasses: () => (/* reexport safe */ _typographyClasses__WEBPACK_IMPORTED_MODULE_1__[\"default\"])\n/* harmony export */ });\n/* harmony import */ var _Typography__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Typography */ \"(ssr)/./node_modules/@mui/material/Typography/Typography.js\");\n/* harmony import */ var _typographyClasses__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typographyClasses */ \"(ssr)/./node_modules/@mui/material/Typography/typographyClasses.js\");\n/* __next_internal_client_entry_do_not_use__ default,typographyClasses,* auto */ \n\n\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHNzcikvLi9ub2RlX21vZHVsZXMvQG11aS9tYXRlcmlhbC9UeXBvZ3JhcGh5L2luZGV4LmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7O2lGQUV1QztBQUM0QjtBQUMvQiIsInNvdXJjZXMiOlsid2VicGFjazovL2RvY3R1c3RlY2gvLi9ub2RlX21vZHVsZXMvQG11aS9tYXRlcmlhbC9UeXBvZ3JhcGh5L2luZGV4LmpzPzkwNjYiXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBjbGllbnQnO1xuXG5leHBvcnQgeyBkZWZhdWx0IH0gZnJvbSAnLi9UeXBvZ3JhcGh5JztcbmV4cG9ydCB7IGRlZmF1bHQgYXMgdHlwb2dyYXBoeUNsYXNzZXMgfSBmcm9tICcuL3R5cG9ncmFwaHlDbGFzc2VzJztcbmV4cG9ydCAqIGZyb20gJy4vdHlwb2dyYXBoeUNsYXNzZXMnOyJdLCJuYW1lcyI6WyJkZWZhdWx0IiwidHlwb2dyYXBoeUNsYXNzZXMiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(ssr)/./node_modules/@mui/material/Typography/index.js\n");
-
-/***/ }),
-
 /***/ "(ssr)/./node_modules/@mui/material/Typography/typographyClasses.js":
 /*!********************************************************************!*\
   !*** ./node_modules/@mui/material/Typography/typographyClasses.js ***!
@@ -2226,18 +2215,6 @@ const __default__ = proxy.default;
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__default__);
-
-/***/ }),
-
-/***/ "(rsc)/./node_modules/@mui/material/Typography/index.js":
-/*!********************************************************!*\
-  !*** ./node_modules/@mui/material/Typography/index.js ***!
-  \********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/* __next_internal_client_entry_do_not_use__ default,typographyClasses,* auto */ const { createProxy } = __webpack_require__(/*! next/dist/build/webpack/loaders/next-flight-loader/module-proxy */ "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-loader/module-proxy.js");
-module.exports = createProxy("/Users/Gagandeep/Documents/workArea/huddle-board-ui-instep/node_modules/@mui/material/Typography/index.js");
-
 
 /***/ }),
 

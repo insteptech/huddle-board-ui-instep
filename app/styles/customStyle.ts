@@ -3,7 +3,7 @@ import TableRow from "@mui/material/TableRow";
 import { cursorTo } from "readline";
 
 export const StyledTableCell = styled(TableCell)
-(({ theme }: any) => (
+(({}: any) => (
   {
     
   color:'#fff',
@@ -18,7 +18,7 @@ export const StyledTableCell = styled(TableCell)
 
 
 export const TdTableCell = styled(TableCell)
-(({ theme }: any) => (
+(({}: any) => (
   {
     
     borderBottom: 'none',
@@ -30,7 +30,7 @@ export const TdTableCell = styled(TableCell)
 
 
 export const TableMainContainer = styled(TableContainer)
-(({ theme }: any) => (
+(({}: any) => (
   {
     
     boxShadow:'none',
@@ -43,7 +43,7 @@ export const TableMainContainer = styled(TableContainer)
 
 
 
-export const StyledText = styled(Typography)(({ div }: any) => ({
+export const StyledText = styled(Typography)(({}: any) => ({
   fontSize: '14px',
   fontWeight: '700',
   lineHeight: '20px',
@@ -52,7 +52,7 @@ export const StyledText = styled(Typography)(({ div }: any) => ({
  
 
 
-export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
+export const StyledTableRow = styled(TableRow)(({}: any) => ({
   
   margin:'20px',
   boxShadow: '0px 2px 5px 0px #0000000D',
@@ -69,7 +69,7 @@ export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
 
 
 
-export const StyledName = styled(Typography)(({ div }: any) => ({
+export const StyledName = styled(Typography)(({}: any) => ({
   fontSize: '14px',
   fontWeight: '700',
   lineHeight: '20px',
@@ -78,21 +78,21 @@ export const StyledName = styled(Typography)(({ div }: any) => ({
 }));
 
 
-export const StyledCopy = styled(Typography)(({ div }: any) => ({
+export const StyledCopy = styled(Typography)(({}: any) => ({
   fontSize: '14px',
   fontWeight: '400',
   lineHeight: '20px',
   color:'#475467',
 }));
 
-export const IconProgress = styled(Typography)(({ div }: any) => ({
+export const IconProgress = styled("div")(({}: any) => ({
 
   display: 'flex',
   alignItems:'center',
 }));
 
 
-export const ProviderCell = styled(Typography)(({ div }: any) => ({
+export const ProviderCell = styled("span")(({}: any) => ({
 marginLeft:'10px',
 fontSize: '14px',
 fontWeight: '500',
@@ -117,7 +117,7 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 
-export const SpanText = styled(Typography)(({ div }: any) => ({
+export const SpanText = styled(Typography)(({}: any) => ({
   border: '1px solid #E9D7FE',
   fontSize: '12px',
   fontWeight: '500',
@@ -131,7 +131,7 @@ export const SpanText = styled(Typography)(({ div }: any) => ({
 }));
 
 
-export const SpanTextCopd = styled(Typography)(({ div }: any) => ({
+export const SpanTextCopd = styled(Typography)(({}: any) => ({
   border: '1px solid #FCCEEE',
   fontSize: '12px',
   fontWeight: '500',
@@ -145,7 +145,7 @@ export const SpanTextCopd = styled(Typography)(({ div }: any) => ({
   marginLeft:'5px',
 }));
 
-export const SpanTextC = styled(Typography)(({ div }: any) => ({
+export const SpanTextC = styled(Typography)(({}: any) => ({
   border: '1px solid #C7D7FE',
   fontSize: '12px',
   fontWeight: '500',
@@ -160,7 +160,7 @@ export const SpanTextC = styled(Typography)(({ div }: any) => ({
 }));
 
 
-export const SpanTextD= styled(Typography)(({ div }: any) => ({
+export const SpanTextD= styled(Typography)(({}: any) => ({
   border: '1px solid #C7D7FE',
   fontSize: '12px',
   fontWeight: '500',
@@ -175,7 +175,7 @@ export const SpanTextD= styled(Typography)(({ div }: any) => ({
 }));
 
 
-export const HeadingTag= styled(Typography)(({ div }: any) => ({
+export const HeadingTag= styled(Typography)(({}: any) => ({
   fontSize: '24px',
   fontWeight: '700',
   lineHeight: '32px',

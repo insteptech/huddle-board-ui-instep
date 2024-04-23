@@ -28,3 +28,16 @@ export const getCookie = (cname: any) => {
 export const deleteCookie = (name: string) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
+
+export const getTime = (timestamp:string) => {
+  var date = new Date(timestamp);
+  var hour = date.getHours();
+  var minute = date.getMinutes();
+
+  var amPm = "am";
+  if( hour > 12 ) {
+      hour -= 12;
+      amPm = "pm";
+  }
+  return hour + ":" + minute + " " + amPm ;
+}

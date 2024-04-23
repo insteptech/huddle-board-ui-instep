@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getAppointmentsList } from '../actions/appointment';
+import { createSlice, current } from '@reduxjs/toolkit';
+import { getAppointmentsList, getAppointmentDetail } from '../actions/appointment';
 
 export type AppointmentsState = {
     appointmentsData: {
@@ -8,6 +8,7 @@ export type AppointmentsState = {
         next?: string | null,
         previous?: string | null
     };
+    appointmentDetail: AppointmentDetail[];
 };
 
 export type AppointmentState = {
@@ -22,8 +23,21 @@ export type AppointmentState = {
     mrn: String
 }
 
+export type AppointmentDetail = {
+  uuid: String,
+  appointment_id: String,
+  clinician_agrees: boolean,
+  clinician_disagrees: boolean,
+  test_ordered: boolean,
+  screening: String,
+  action: String,
+  description: String,
+  screening_uuid: String
+}
+
 const initialState: AppointmentsState = {
     appointmentsData: {},
+    appointmentDetail: []
 };
 
 export const appointment = createSlice({
@@ -34,17 +48,46 @@ export const appointment = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAppointmentsList.pending, (state, action) => {
-      console.log(state, action, 'pending');
     });
     builder.addCase(getAppointmentsList.rejected, (state, action) => {
       console.log(state, action, 'rejected');
     });
     builder.addCase(getAppointmentsList.fulfilled, (state, { payload }) => {
-      console.log(state, payload, 'fulfilled');
-      state.appointmentsData = payload;
+      state.appointmentsData = appointmentsList(current(state)?.appointmentsData?.results, payload);
+    });
+
+    builder.addCase(getAppointmentDetail.pending, (state, action) => {
+    });
+    builder.addCase(getAppointmentDetail.rejected, (state, action) => {
+      console.log(state, action, 'rejected');
+    });
+    builder.addCase(getAppointmentDetail.fulfilled, (state, { payload }) => {
+      state.appointmentDetail = payload;
     });
   },
 });
+
+const appointmentsList = (state: any, payload: any) => {    
+  var array1 = new Array(state)[0];
+  if (array1) {
+    var array2 = payload?.results;
+    array1 = array1.concat(array2);
+    const initialData = {
+      results: array1,
+      count: payload.count,
+      next: payload.next,
+      previous: payload.previous
+    };
+  return initialData;
+  }
+  return {
+    results:[],
+    count: 0,
+    next:'',
+    previous:''
+  }
+  
+};
 
 export const { } = appointment.actions;
 export default appointment.reducer;
