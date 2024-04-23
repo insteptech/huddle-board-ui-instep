@@ -53,7 +53,9 @@ export const appointment = createSlice({
       console.log(state, action, 'rejected');
     });
     builder.addCase(getAppointmentsList.fulfilled, (state, { payload }) => {
-      state.appointmentsData = appointmentsList(current(state)?.appointmentsData?.results, payload);
+      // state.appointmentsData = appointmentsList(current(state)?.appointmentsData?.results, payload);
+      state.appointmentsData = payload;
+
     });
 
     builder.addCase(getAppointmentDetail.pending, (state, action) => {

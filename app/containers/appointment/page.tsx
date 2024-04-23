@@ -12,13 +12,19 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {DisableBtn,Table_Head,FontBold,EnableBtn,ActionBtn,TablemidData,TableMid,Text,OtBtn,BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
-import { getAppointmentsList } from "@/app/redux/actions/appointment";
+import { getAppointmentDetail, getAppointmentsList } from "@/app/redux/actions/appointment";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
 import { Stack } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { AppointmentState } from '../../redux/slices/appointment';
 import { AppState } from '../../redux/store';
+import { useInView } from "react-intersection-observer";
+import { getTime } from '../../utils/helper';
+
+type AppointmentListProps = {
+  initialAppointments: AppointmentState[]
+}
 
 function GetScreening ({ screening } :string [] | any) {
   return (
@@ -43,22 +49,15 @@ function GetScreening ({ screening } :string [] | any) {
   );
 }
 
-function getTime (timestamp:string) {
-  var d = new Date();
-  var hr = d.getHours();
-  var min = d.getMinutes();
-
-  var ampm = "am";
-  if( hr > 12 ) {
-      hr -= 12;
-      ampm = "pm";
-  }
-  return hr + ":" + min + " " +ampm ;
-}
-
 function Row(props: any) {
-  const { appointment } = props;
+  const { appointment, selectedAppointment, setSelectedAppointment, appointmentDetails, appointmentDetail } = props;
   const [open, setOpen] = React.useState(false);
+
+  const setRow = (id:string) => {
+    setSelectedAppointment(id);
+    appointmentDetails(id);
+    setOpen(!open)
+  }
 
   return (
     <React.Fragment>
@@ -104,7 +103,7 @@ function Row(props: any) {
             <IconButton
               aria-label="expand appointment"
               size="small"
-              onClick={() => setOpen(!open)}
+              onClick={() => setRow(appointment.uuid)}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
@@ -184,18 +183,42 @@ function Row(props: any) {
   );
 }
 
-export default function CollapsibleTable() {
+export default function CollapsibleTable({ initialAppointments } : AppointmentListProps) {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch<AppDispatch>();
   const appointmentsList = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.results) || [];
+  const totalAppointmentCount = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.count) || 0;
+  const appointmentDetail = useSelector(( state: AppState ) => state.appointment?.appointmentDetail) || [];
+
+  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentState[]>(initialAppointments);
+  const { ref, inView } = useInView();
+
+  const loadMoreAppointment = () => {
+    dispatch(getAppointmentsList({ page: page, page_size: 10}));
+    setPage(page + 1);
+  }
 
   useEffect(() => {
     dispatch(getAppointmentsList({
       page_size: 10,
       page: page
     }));
+    loadMoreAppointment()
+
   }, []);
 
+  useEffect(() => {
+    if (inView && totalAppointmentCount < appointmentsList.length) {
+      loadMoreAppointment()
+    }
+  }, [inView])
+
+
+  const appointmentDetails = (id:string) => {
+    dispatch(getAppointmentDetail({
+      appointment_id: id
+    }));
+  }
   return (
     <>
       <HeadingTag variant="h1">
@@ -226,7 +249,7 @@ export default function CollapsibleTable() {
         </Table_Head>
         <TableBody>
         {appointmentsList.map((appointment: AppointmentState) => (
-              <Row key={appointment.uuid} appointment={appointment} />
+              <Row key={appointment.uuid} appointment={appointment} selectedAppointment={selectedAppointment} setSelectedAppointment={setSelectedAppointment} appointmentDetail={appointmentDetail} appointmentDetails={appointmentDetails}/>
             ))}
         </TableBody>
       </Table>
