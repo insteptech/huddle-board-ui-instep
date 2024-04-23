@@ -62,7 +62,7 @@ export const TableMainContainer = styled(TableContainer)
     boxShadow:'none',
     backgroundColor: 'transparent',
     overflow: 'auto',
-    height: '747px',
+    height: '670px',
 
   }
 )

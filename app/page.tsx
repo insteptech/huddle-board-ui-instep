@@ -14,7 +14,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Container maxWidth="xl">
-          <ListingTable/>
+          <ListingTable initialAppointments={[]}/>
       </Container>
     </div>
   );
