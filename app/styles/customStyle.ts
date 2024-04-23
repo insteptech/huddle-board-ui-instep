@@ -7,7 +7,7 @@ export const FontBold = styled(Typography)
 (({ theme }: any) => (
   {
     
- 
+ color:'red',
   fontWeight: '700',
 
    
@@ -265,17 +265,17 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
 
 
 
-export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 7,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: theme.palette.mode === 'light' ? '#FFAE64' : '#EAECF0',
-  },
-}));
+    export const BorderLinearProgress = styled(LinearProgress)(({ theme, value }:any) => ({
+      height: 7,
+      borderRadius: 5,
+      [`&.${linearProgressClasses.colorPrimary}`]: {
+        backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+      },
+      [`& .${linearProgressClasses.bar}`]: {
+        borderRadius: 5,
+        backgroundColor: value && value < 100 ? '#FFAE64' : '#41B145',
+      },
+    }));
 
 
 export const SpanText = styled(Typography)(({ div }: any) => ({

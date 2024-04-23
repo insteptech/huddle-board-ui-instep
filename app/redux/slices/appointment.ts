@@ -53,9 +53,7 @@ export const appointment = createSlice({
       console.log(state, action, 'rejected');
     });
     builder.addCase(getAppointmentsList.fulfilled, (state, { payload }) => {
-      // state.appointmentsData = appointmentsList(current(state)?.appointmentsData?.results, payload);
-      state.appointmentsData = payload;
-
+      state.appointmentsData = appointmentsList(current(state)?.appointmentsData?.results, payload);
     });
 
     builder.addCase(getAppointmentDetail.pending, (state, action) => {
@@ -70,17 +68,24 @@ export const appointment = createSlice({
 });
 
 const appointmentsList = (state: any, payload: any) => {    
-  var array1 = new Array(state)[0];
-  if (array1) {
-    var array2 = payload?.results;
+  var array1 = new Array(state)[0] || [];
+  if (array1 && payload?.results) {
+    var array2 = payload.results;
     array1 = array1.concat(array2);
+
+    const uniqueArr = array1.filter((obj: { uuid: any; }, index: any, self: any[]) => 
+      index === self.findIndex((t: { uuid: any; }) => (
+        t.uuid === obj.uuid
+      ))
+    );
+
     const initialData = {
-      results: array1,
+      results: uniqueArr,
       count: payload.count,
       next: payload.next,
       previous: payload.previous
     };
-  return initialData;
+    return initialData;
   }
   return {
     results:[],
@@ -88,7 +93,6 @@ const appointmentsList = (state: any, payload: any) => {
     next:'',
     previous:''
   }
-  
 };
 
 export const { } = appointment.actions;

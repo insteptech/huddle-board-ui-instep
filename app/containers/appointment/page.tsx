@@ -30,7 +30,7 @@ function GetScreening ({ screening } :string [] | any) {
   return (
     <>
     {screening.length && screening.map((screen: string, index: number)=> (
-      <>{index< 3 && <SpanText>{screen}</SpanText>}</>
+      <>{index< 3 && <SpanText key={index}>{screen}</SpanText>}</>
     ))}
     {screening.length > 2 &&<SpanText>+ {screening.length - 3}</SpanText>}
     </>
@@ -51,10 +51,12 @@ function Row(props: any) {
     <React.Fragment>
       <StyledTableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TdTableCell>
-          <StyledText> {getTime(appointment.appointment_timestamp)}</StyledText>
+        {appointment.selected_gap_count=== 0 && <StyledText> {getTime(appointment.appointment_timestamp)}</StyledText> }
+        {appointment.selected_gap_count > 0 &&  <StyledText><FontBold> {getTime(appointment.appointment_timestamp)}</FontBold></StyledText>}
         </TdTableCell>
         <TdTableCell>
-          <StyledName><FontBold> {appointment.patient_name}</FontBold></StyledName>
+          {appointment.selected_gap_count > 0 && <StyledName>{appointment.patient_name}</StyledName> }
+          {appointment.selected_gap_count === 0 && <StyledName><FontBold> {appointment.patient_name}</FontBold></StyledName> }
           <StyledCopy>
           {appointment.mrn}
             <ContentCopyIcon
@@ -70,7 +72,8 @@ function Row(props: any) {
         </TdTableCell>
 
         <TdTableCell>
-          <StyledText> {appointment.visit_type}</StyledText>
+          {appointment.selected_gap_count > 0 && <StyledText> {appointment.visit_type}</StyledText>}
+         {appointment.selected_gap_count === 0 &&  <StyledText><FontBold> {appointment.visit_type}</FontBold></StyledText>}
         </TdTableCell>
 
         <TdTableCell>
@@ -78,13 +81,14 @@ function Row(props: any) {
         </TdTableCell>
 
         <TdTableCell>
-          <StyledText>{appointment.provider}</StyledText>
+        {appointment.selected_gap_count > 0 && <StyledText>{appointment.provider}</StyledText>}
+         {appointment.selected_gap_count === 0 &&  <StyledText><FontBold> {appointment.provider}</FontBold></StyledText>}
         </TdTableCell>
 
         <TdTableCell>
           <IconProgress>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <BorderLinearProgress variant="determinate" value={50} /> 
+              <BorderLinearProgress variant="determinate" value={(appointment.selected_gap_count/appointment.gap_count) * 100} /> 
             </Stack>
 
             <ProviderCell>{appointment.selected_gap_count}/{appointment.gap_count}</ProviderCell>
@@ -154,8 +158,8 @@ export default function CollapsibleTable({ initialAppointments } : AppointmentLi
   const [page, setPage] = useState(1);
   const dispatch = useDispatch<AppDispatch>();
   const appointmentsList = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.results) || [];
-  const totalAppointmentCount = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.count) || 0;
   const appointmentDetail = useSelector(( state: AppState ) => state.appointment?.appointmentDetail) || [];
+  const isNextAppointmentsList = useSelector(( state: AppState ) => state.appointment?.appointmentsData?.next);
 
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
@@ -170,12 +174,10 @@ export default function CollapsibleTable({ initialAppointments } : AppointmentLi
       page_size: 10,
       page: page
     }));
-    loadMoreAppointment()
-
   }, []);
 
   useEffect(() => {
-    if (inView && totalAppointmentCount < appointmentsList.length) {
+    if (inView && isNextAppointmentsList) {
       loadMoreAppointment()
     }
   }, [inView])
@@ -220,11 +222,8 @@ export default function CollapsibleTable({ initialAppointments } : AppointmentLi
             ))}
         </TableBody>
       </Table>
+      <div ref={ref}></div>
       </TableMainContainer>
     </>
   );
-}
-
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
 }
