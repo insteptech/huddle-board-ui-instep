@@ -6,16 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-
-import {BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, SpanTextC, SpanTextCopd, SpanTextD, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
+import {DisableBtn,Table_Head,FontBold,EnableBtn,ActionBtn,TablemidData,TableMid,Text,OtBtn,BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, SpanTextC, SpanTextCopd, SpanTextD, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
 import { getAppointmentsList } from "@/app/redux/actions/appointment";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
@@ -69,7 +65,7 @@ function Row(props: any) {
           <StyledText> {getTime(appointment.appointment_timestamp)}</StyledText>
         </TdTableCell>
         <TdTableCell>
-          <StyledName> {appointment.patient_name}</StyledName>
+          <StyledName><FontBold> {appointment.patient_name}</FontBold></StyledName>
           <StyledCopy>
           {appointment.mrn}
             <ContentCopyIcon
@@ -117,34 +113,65 @@ function Row(props: any) {
       
 
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0,padding:'0', }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
+            <Box>
+             
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell>Amount</TableCell>
-                    <TableCell>Total price ($)</TableCell>
+                    <TableMid>Screening</TableMid>
+                    <TableMid>Action</TableMid>
+                    <TableMid>Reason</TableMid>
+                    <TableMid>Outcome</TableMid>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {/* {appointment.history.map((historyRow: any) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="appointment">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell>{historyRow.amount}</TableCell>
-                      <TableCell>
-                        {Math.round(historyRow.amount * appointment.price * 100) / 100}
-                      </TableCell>
+                 
+                    <TableRow>
+                      <TablemidData>
+                      <SpanText>PVD</SpanText>
+                      </TablemidData>
+
+                      <TablemidData>
+                      <ActionBtn>Query Clinician</ActionBtn> 
+                      </TablemidData>
+
+                      <TablemidData>
+                      <Text>Patient's age &gt; 50 and having following risk factors: Diabetes, smoker</Text>
+                      </TablemidData>
+
+                      <TablemidData>
+                      <OtBtn>Clinician Agrees</OtBtn>
+                      <OtBtn>Clinician Disagrees</OtBtn>
+                      <OtBtn>Test Ordered</OtBtn>
+                      </TablemidData>
+                      
                     </TableRow>
-                  ))} */}
+
+                    <TableRow>
+                      <TablemidData>
+                      <SpanTextCopd>COPD</SpanTextCopd>
+                      </TablemidData>
+
+                      <TablemidData>
+                      <ActionBtn>Order Sprirometery</ActionBtn> 
+                      </TablemidData>
+
+                      <TablemidData>
+                      <Text>History of smoking: &gt; 20 pack years</Text>
+                      </TablemidData>
+
+                      <TablemidData>
+                      <DisableBtn>Clinician Agrees</DisableBtn>
+                      <DisableBtn>Clinician Disagrees</DisableBtn>
+                      <EnableBtn>Test Ordered</EnableBtn>
+                      </TablemidData>
+                      
+                    </TableRow>
+
+                  
+                 
                 </TableBody>
               </Table>
             </Box>
@@ -175,7 +202,7 @@ export default function CollapsibleTable() {
 
       <TableMainContainer sx={{ m: "30px 0" }}>
       <Table aria-label="collapsible table">
-        <TableHead sx={{ backgroundColor: "#17236D", color: "#fff" }}>
+        <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
           <TableRow>
             <StyledTableCell>
               Appt Time
@@ -194,7 +221,7 @@ export default function CollapsibleTable() {
             <StyledTableCell>Providers</StyledTableCell>
             <StyledTableCell>Action</StyledTableCell>
           </TableRow>
-        </TableHead>
+        </Table_Head>
         <TableBody>
         {appointmentsList.map((appointment: AppointmentState) => (
               <Row key={appointment.uuid} appointment={appointment} />
