@@ -7,7 +7,7 @@ export const FontBold = styled(Typography)
 (({ theme }: any) => (
   {
     
- color:'red',
+ 
   fontWeight: '700',
 
    
@@ -86,7 +86,7 @@ export const Table_Head = styled(TableHead)
 
 export const StyledText = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
-  fontWeight: '700',
+  fontWeight: '400',
   lineHeight: '20px',
   color:'#475467',
 
@@ -134,7 +134,6 @@ export const LinkText = styled(Link)(({ div }: any) => ({
 
 export const StyledName = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
-  fontWeight: '700',
   lineHeight: '20px',
   color:'#17236D',
 
