@@ -36,7 +36,9 @@ import {
   StyledCustomButton,
   TdTableCell,
   SpanText,
-  FontBold
+  FontBold,
+  EnableBtn,
+  DisableBtn
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
 import { getTime } from '@/app/utils/helper';
@@ -124,9 +126,9 @@ function Row(props: any) {
                       <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                       <TableMidData><Text>{detail.description}</Text></TableMidData>
                       <TableMidData>
-                        <StyledCustomButton isDisabled={true}>Clinician Agrees</StyledCustomButton>
-                        <StyledCustomButton>Clinician Disagrees</StyledCustomButton>
-                        <StyledCustomButton>Test Ordered</StyledCustomButton>
+                        <StyledCustomButton>Clinician Agrees</StyledCustomButton>
+                        <DisableBtn>Clinician Disagrees</DisableBtn>
+                        <EnableBtn>Test Ordered</EnableBtn>
                       </TableMidData>
                     </TableRow>
                   ))}

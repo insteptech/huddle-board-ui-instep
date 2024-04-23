@@ -228,7 +228,7 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
       
     // }));
 
-    export const StyledCustomButton = styled(Button)<{ isDisabled?: boolean }>`
+    export const StyledCustomButton = styled(Button)(({ div }: any) => ({
     border: '1px solid #5C6469',
     fontSize: '10px',
     fontWeight: '600',
@@ -240,12 +240,10 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
     textAlign: 'center',
     marginRight: '10px',
     marginBottom: '10px',
-    // margin-left: ${arg => (arg?.isDisabled ? 10 : 12)};
-`;
+  }));
 
 
-
-    export const DisableBtn = styled(Typography)(({ div }: any) => ({
+    export const DisableBtn = styled(Button)(({ div }: any) => ({
       border: '1px solid #C8CED2',
       fontSize: '10px',
       fontWeight: '600',
@@ -260,9 +258,10 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
       
     }));
 
-    export const EnableBtn = styled(Typography)(({ div }: any) => ({
+    export const EnableBtn = styled(Button)(({ div }: any) => ({
       border: '1px solid #0D426A',
       fontSize: '10px',
+      background:'#0D426A',
       fontWeight: '600',
       lineHeight: '16px',
       padding:'2px 12px',
@@ -271,7 +270,12 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
       color:'#fff',
       textAlign: 'center',
       marginRight: '10px',
-      background:'#0D426A',
+      marginBottom: '10px',
+      "&:hover": {
+        border: '1px solid #0D426A',
+        background:'#0D426A',
+        color:'#fff',
+      },
       
       
     }));
