@@ -1,53 +1,25 @@
+'use client'
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useInView } from "react-intersection-observer";
-import {
-  Box,
-  Collapse,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Stack
-} from '@mui/material';
-import {
-  KeyboardArrowDown as KeyboardArrowDownIcon,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
-  ArrowDownward as ArrowDownwardIcon,
-  ContentCopy as ContentCopyIcon
-} from '@mui/icons-material';
-import {
-  DisableBtn,
-  Table_Head,
-  FontBold,
-  EnableBtn,
-  ActionBtn,
-  TablemidData,
-  TableMid,
-  Text,
-  OtBtn,
-  BorderLinearProgress,
-  HeadingTag,
-  IconProgress,
-  ProviderCell,
-  SpanText,
-  SpanTextC,
-  SpanTextCopd,
-  SpanTextD,
-  StyledCopy,
-  StyledName,
-  StyledTableCell,
-  StyledTableRow,
-  StyledText,
-  TableMainContainer,
-  TdTableCell
-} from '../../styles/customStyle';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import {DisableBtn,Table_Head,FontBold,EnableBtn,ActionBtn,TablemidData,TableMid,Text,OtBtn,BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, SpanTextC, SpanTextCopd, SpanTextD, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
 import { getAppointmentDetail, getAppointmentsList } from "@/app/redux/actions/appointment";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
+import { Stack } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { AppointmentState } from '../../redux/slices/appointment';
 import { AppState } from '../../redux/store';
+import { useInView } from "react-intersection-observer";
 import { getTime } from '../../utils/helper';
 
 type AppointmentListProps = {
