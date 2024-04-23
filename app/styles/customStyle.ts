@@ -240,6 +240,7 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
     textAlign: 'center',
     marginRight: '10px',
     marginBottom: '10px',
+    // margin-left: ${arg => (arg?.isDisabled ? 10 : 12)};
 `;
 
 
