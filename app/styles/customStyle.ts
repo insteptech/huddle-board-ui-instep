@@ -1,5 +1,5 @@
 import { Diversity1 } from "@mui/icons-material";
-import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer,Link,TableHead } from "@mui/material";
+import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer,Link,TableHead, Button } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import { cursorTo } from "readline";
 
@@ -173,7 +173,7 @@ export const TableMid = styled(TableCell)(({ div }: any) => ({
   padding: '12px',
   }));
 
-  export const TablemidData = styled(TableCell)(({ div }: any) => ({
+  export const TableMidData = styled(TableCell)(({ div }: any) => ({
 
 
     border: '1px solid #B1C6E2',
@@ -213,20 +213,35 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
     }));
   
 
-    export const OtBtn = styled(Typography)(({ div }: any) => ({
-      border: '1px solid #5C6469',
-      fontSize: '10px',
-      fontWeight: '600',
-      lineHeight: '16px',
-      padding:'2px 12px',
-      display: 'inline-block',
-      borderRadius: '3px',
-      color:'#5C6469',
-      textAlign: 'center',
-      marginRight: '10px',
-      marginBottom: '10px',
+    // export const StyledCustomButton = styled(Typography)(({ div }: any) => ({
+    //   border: '1px solid #5C6469',
+    //   fontSize: '10px',
+    //   fontWeight: '600',
+    //   lineHeight: '16px',
+    //   padding:'2px 12px',
+    //   display: 'inline-block',
+    //   borderRadius: '3px',
+    //   color:'#5C6469',
+    //   textAlign: 'center',
+    //   marginRight: '10px',
+    //   marginBottom: '10px',
       
-    }));
+    // }));
+
+    export const StyledCustomButton = styled(Button)<{ isDisabled?: boolean }>`
+    border: '1px solid #5C6469',
+    fontSize: '10px',
+    fontWeight: '600',
+    lineHeight: '16px',
+    padding:'2px 12px',
+    display: 'inline-block',
+    borderRadius: '3px',
+    color:'#5C6469',
+    textAlign: 'center',
+    marginRight: '10px',
+    marginBottom: '10px',
+`;
+
 
 
     export const DisableBtn = styled(Typography)(({ div }: any) => ({
