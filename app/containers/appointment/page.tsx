@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {DisableBtn,Table_Head,FontBold,EnableBtn,ActionBtn,TablemidData,TableMid,Text,OtBtn,BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, SpanTextC, SpanTextCopd, SpanTextD, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
+import {DisableBtn,Table_Head,FontBold,EnableBtn,ActionBtn,TablemidData,TableMid,Text,OtBtn,BorderLinearProgress, HeadingTag, IconProgress, ProviderCell, SpanText, StyledCopy, StyledName, StyledTableCell, StyledTableRow, StyledText, TableMainContainer, TdTableCell} from  '../../styles/customStyle'; 
 import { getAppointmentsList } from "@/app/redux/actions/appointment";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
@@ -27,16 +27,18 @@ function GetScreening ({ screening } :string [] | any) {
         <SpanText>PVD</SpanText>
       }
       {screening.includes("COPD") &&
-        <SpanTextCopd>"COPD"</SpanTextCopd>
+        <SpanText>"COPD"</SpanText>
       }
 
       {screening.includes("Diabetes") &&
-        <SpanTextD>Diabetes</SpanTextD>
+        <SpanText>Diabetes</SpanText>
       }
 
       {screening.includes("CHF") &&
-      <SpanTextC>CHF</SpanTextC>
+      <SpanText>CHF</SpanText>
       }
+
+      
     </>
   );
 }
@@ -151,7 +153,7 @@ function Row(props: any) {
 
                     <TableRow>
                       <TablemidData>
-                      <SpanTextCopd>COPD</SpanTextCopd>
+                      <SpanText>COPD</SpanText>
                       </TablemidData>
 
                       <TablemidData>

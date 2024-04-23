@@ -279,7 +279,7 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 
 export const SpanText = styled(Typography)(({ div }: any) => ({
-  border: '1px solid #E9D7FE',
+  border: '1px solid #E1E1E1',
   fontSize: '12px',
   fontWeight: '500',
   lineHeight: '18px',
@@ -287,53 +287,14 @@ export const SpanText = styled(Typography)(({ div }: any) => ({
   padding:'2px 12px',
   display: 'inline-block',
   borderRadius: '16px',
-  color:'#6941C6',
-  background:'#F9F5FF',
+  color:'#5C6469',
+  background:'#F5F7F6',
+  marginRight:'5px',
 }));
 
 
-export const SpanTextCopd = styled(Typography)(({ div }: any) => ({
-  border: '1px solid #FCCEEE',
-  fontSize: '12px',
-  fontWeight: '500',
-  lineHeight: '18px',
-  textAlign: 'center',
-  padding:'2px 12px',
-  display: 'inline-block',
-  borderRadius: '16px',
-  color:'#C11574',
-  background:'#FDF2FA',
-  marginLeft:'5px',
-}));
-
-export const SpanTextC = styled(Typography)(({ div }: any) => ({
-  border: '1px solid #C7D7FE',
-  fontSize: '12px',
-  fontWeight: '500',
-  lineHeight: '18px',
-  textAlign: 'center',
-  padding:'2px 12px',
-  display: 'inline-block',
-  borderRadius: '16px',
-  color:'#3538CD',
-  background:'#EEF4FF',
-  marginLeft:'5px',
-}));
 
 
-export const SpanTextD= styled(Typography)(({ div }: any) => ({
-  border: '1px solid #C7D7FE',
-  fontSize: '12px',
-  fontWeight: '500',
-  lineHeight: '18px',
-  textAlign: 'center',
-  padding:'2px 12px',
-  display: 'inline-block',
-  borderRadius: '16px',
-  color:'#175CD3',
-  background:'#EFF8FF',
-  marginLeft:'5px',
-}));
 
 
 export const HeadingTag= styled(Typography)(({ div }: any) => ({
