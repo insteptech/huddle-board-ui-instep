@@ -212,21 +212,20 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
   
     }));
   
-
-    // export const StyledCustomButton = styled(Typography)(({ div }: any) => ({
-    //   border: '1px solid #5C6469',
-    //   fontSize: '10px',
-    //   fontWeight: '600',
-    //   lineHeight: '16px',
-    //   padding:'2px 12px',
-    //   display: 'inline-block',
-    //   borderRadius: '3px',
-    //   color:'#5C6469',
-    //   textAlign: 'center',
-    //   marginRight: '10px',
-    //   marginBottom: '10px',
-      
-    // }));
+//     export const StyledCustomButton = styled(Button)<{ isDisabled?: boolean }>`
+//     border: '1px solid #5C6469',
+//     fontSize: '10px',
+//     fontWeight: '600',
+//     lineHeight: '16px',
+//     padding:'2px 12px',
+//     display: 'inline-block',
+//     borderRadius: '3px',
+//     color:'#5C6469',
+//     textAlign: 'center',
+//     marginRight: '10px',
+//     marginBottom: '10px',
+//     // margin-left: ${arg => (arg?.isDisabled ? 10 : 12)};
+// `;
 
     export const StyledCustomButton = styled(Button)(({ div }: any) => ({
     border: '1px solid #5C6469',
@@ -280,7 +279,36 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
       
     }));
 
+    export const SCButton = styled(Button)<{prop? : any}>`
+    background-color: ${props => props.prop ? 'blue' : 'grey'};
+    color: ${props => props.prop ? 'white' : 'black'};
+    border: 1px solid ${props => props.prop ? 'blue' : 'grey'};
+    padding: 10px 20px;
 
+    fontSize: '10px',
+    fontWeight: '600',
+    lineHeight: '16px',
+    padding:'2px 12px',
+    display: 'inline-block',
+    borderRadius: '3px',
+    textAlign: 'center',
+    marginRight: '10px',
+    border: '1px solid #5C6469',
+    color:'#5C6469',
+    marginBottom: '10px',
+
+    "&:hover": {
+      border: '1px solid #0D426A',
+      background:'#0D426A',
+      color:'#fff',
+    },
+
+  
+    ${props => props.disabled && `
+      opacity: 0.5;
+      cursor: not-allowed;
+    `}
+  `;
 
 
 

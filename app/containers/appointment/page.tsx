@@ -38,7 +38,8 @@ import {
   SpanText,
   FontBold,
   EnableBtn,
-  DisableBtn
+  DisableBtn,
+  SCButton
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
 import { getTime } from '@/app/utils/helper';
@@ -129,6 +130,10 @@ function Row(props: any) {
                         <StyledCustomButton>Clinician Agrees</StyledCustomButton>
                         <DisableBtn>Clinician Disagrees</DisableBtn>
                         <EnableBtn>Test Ordered</EnableBtn>
+
+                      {/* <SCButton>Default Button</SCButton>
+                      <SCButton prop='primary'>Primary Button</SCButton>
+                      <SCButton prop='disabled'>Disabled Button</SCButton> */}
                       </TableMidData>
                     </TableRow>
                   ))}
@@ -159,6 +164,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   useEffect(() => {
     dispatch(getAppointmentsList({ page_size: 10, page: page }));
+    setPage(page + 1);
   }, []);
 
   useEffect(() => {
