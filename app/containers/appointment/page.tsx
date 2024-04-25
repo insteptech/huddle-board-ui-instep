@@ -54,69 +54,6 @@ interface MyButtonProps {
   children: React.ReactNode;
 }
 const outComes = [{name:"Clinician Agrees", key:"agree"},{name:"Clinician Disagrees",key:"disagree"},{name:"Test Ordered",key:"testorder"}]
-const getEnabledState = (detail:any,type:string) => {
-  const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
-  //when all false then enable true for all
-  if (!clinician_agrees && !clinician_disagrees && !test_ordered) {
-    return true;
-  }
-
-  if (type = 'clinician_agrees') {
-    // if (!clinician_agrees && !test_ordered) {
-    //   return true;
-    // }
-  } else if (type = 'clinician_disagrees') {
-    
-  } else {
-  
-  }
-  return false;
-}
-
-const getDisabledState = (detail:any,type:string) => {
-  const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
-  //when all false then disable false for all
-  // if (!clinician_agrees && !clinician_disagrees && !test_ordered) {
-  //   return false;
-  // }
-  if (type = 'clinician_agrees') {
-    // if (clinician_disagrees) {
-    //   return true;
-    // }
-  } else if (type = 'clinician_disagrees') {
-    // if (clinician_agrees && !clinician_disagrees) {
-    //   return true;
-    // }
-  } else {
-    
-  }
-  return false;
-}
-
-const getActiveState = (detail:any, type:string) => {
-  const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
-  // console.log('detail:--',detail,'type:--',type);
-  
-  //when all false then active false for all
-  // if (!clinician_agrees && !clinician_disagrees && !test_ordered) {
-  //   return false;
-  // }
-  if (type = 'clinician_agrees') {
-    if (clinician_agrees) {
-      return true;
-    }
-  } else if (type = 'clinician_disagrees') {
-    if (clinician_disagrees) {
-      return true;
-    }
-  } else if (type = 'test_ordered') {
-    if (test_ordered) {
-      return true;
-    }
-  }
-  return false;
-}
-
 
 const getOutComeBtnState = (detail:any, key:any) =>{
  
@@ -160,12 +97,8 @@ const getOutComeBtnState = (detail:any, key:any) =>{
 }
 
 const MyButton: React.FC<MyButtonProps> = ({ btnState, onClick, children }:any) => {
-  
   return (
-    <StyledMuiButton
-    state={btnState} 
-      onClick={onClick}
-    >
+    <StyledMuiButton btnState={btnState} onClick={onClick}>
       {children}
     </StyledMuiButton>
   );
@@ -196,8 +129,6 @@ function Row(props: any) {
   const renderCellContent = (content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<React.AwaitedReactNode> | null | undefined, isBold: boolean) => (
     isBold ? <FontBold>{content}</FontBold> : <StyledText>{content}</StyledText>
   );
-
-
 
   return (
     <>
@@ -256,25 +187,10 @@ function Row(props: any) {
                       {outComes.map((item,index)=>(
                         <MyButton
                           btnState={getOutComeBtnState(detail,item.key)}
-                          onClick={() => updateOutCome(item.key)} children={undefined}>
-                          {item.name} {getOutComeBtnState(detail,item.key)}
+                          onClick={() => updateOutCome(item.key)}>
+                          {item.name}
                         </MyButton>
                       ))}
-                        
-                        {/* <MyButton 
-                          isEnabled={!detail.clinician_disagrees}
-                          isActive={getActiveState(detail, 'clinician_disagrees')}
-                          isDisabled={getDisabledState(detail, 'clinician_disagrees')}
-                          onClick={() => console.log('Button clicked')} children={undefined}>
-                          Clinician Disagrees
-                        </MyButton>
-                        <MyButton 
-                          isEnabled={!detail.test_ordered || detail.clinician_agrees}
-                          isActive={getActiveState(detail, 'test_ordered')}
-                          isDisabled={getDisabledState(detail, 'test_ordered')}
-                          onClick={() => console.log('Button clicked')} children={undefined}>
-                          Test Ordered
-                        </MyButton> */}
                       </TableMidData>
                     </TableRow>
                   ))}
@@ -322,7 +238,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const updateOutCome=(value:any)=>{
     console.log(value,'value')
-
   }
 
   return (
