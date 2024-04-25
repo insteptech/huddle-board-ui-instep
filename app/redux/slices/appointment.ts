@@ -1,5 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { getAppointmentsList, getAppointmentDetail } from '../actions/appointment';
+import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail } from '../actions/appointment';
 
 export type AppointmentsState = {
     appointmentsData: {
@@ -9,6 +9,7 @@ export type AppointmentsState = {
         previous?: string | null
     };
     appointmentDetail: AppointmentDetail[];
+    selectedPatientDetail: string | null;
 };
 
 export type AppointmentState = {
@@ -37,14 +38,17 @@ export type AppointmentDetail = {
 
 const initialState: AppointmentsState = {
     appointmentsData: {},
-    appointmentDetail: []
+    appointmentDetail: [],
+    selectedPatientDetail: null,
 };
 
 export const appointment = createSlice({
   name: 'appointment',
   initialState,
   reducers: {
-    
+    locationData(state, action) {
+      console.log('state:--',state, 'action:---',action);
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getAppointmentsList.pending, (state, action) => {
@@ -63,6 +67,15 @@ export const appointment = createSlice({
     });
     builder.addCase(getAppointmentDetail.fulfilled, (state, { payload }) => {
       state.appointmentDetail = payload;
+    });
+
+    builder.addCase(updateAppointmentDetail.pending, (state, action) => {
+    });
+    builder.addCase(updateAppointmentDetail.rejected, (state, action) => {
+      console.log(state, action, 'rejected');
+    });
+    builder.addCase(updateAppointmentDetail.fulfilled, (state, { payload }) => {
+      console.log(state, payload, 'fulfilled');
     });
   },
 });
@@ -95,5 +108,5 @@ const appointmentsList = (previousAppointments: any, payload: any) => {
   }
 };
 
-export const { } = appointment.actions;
+export const { locationData } = appointment.actions;
 export default appointment.reducer;

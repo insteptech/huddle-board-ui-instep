@@ -39,7 +39,7 @@ import {
   FontBold,
   EnableBtn,
   DisableBtn,
-  SCButton
+  StyledMuiButton,
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
 import { getTime } from '@/app/utils/helper';
@@ -47,6 +47,93 @@ import { getTime } from '@/app/utils/helper';
 type AppointmentListProps = {
   initialAppointments: AppointmentState[];
 };
+
+interface MyButtonProps {
+  isActive: boolean;
+  isEnabled: boolean;
+  isDisabled: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+const getEnabledState = (detail:any,type:string) => {
+  const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
+  //when all false then enable true for all
+  if (!clinician_agrees && !clinician_disagrees && !test_ordered) {
+    return true;
+  }
+
+  if (type = 'clinician_agrees') {
+    // if (!clinician_agrees && !test_ordered) {
+    //   return true;
+    // }
+  } else if (type = 'clinician_disagrees') {
+    
+  } else {
+  
+  }
+  return false;
+}
+
+const getDisabledState = (detail:any,type:string) => {
+  const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
+  //when all false then disable false for all
+  // if (!clinician_agrees && !clinician_disagrees && !test_ordered) {
+  //   return false;
+  // }
+  if (type = 'clinician_agrees') {
+    // if (clinician_disagrees) {
+    //   return true;
+    // }
+  } else if (type = 'clinician_disagrees') {
+    // if (clinician_agrees && !clinician_disagrees) {
+    //   return true;
+    // }
+  } else {
+    
+  }
+  return false;
+}
+
+const getActiveState = (detail:any, type:string) => {
+  const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
+  // console.log('detail:--',detail,'type:--',type);
+  
+  //when all false then active false for all
+  // if (!clinician_agrees && !clinician_disagrees && !test_ordered) {
+  //   return false;
+  // }
+  if (type = 'clinician_agrees') {
+    if (clinician_agrees) {
+      return true;
+    }
+  } else if (type = 'clinician_disagrees') {
+    if (clinician_disagrees) {
+      return true;
+    }
+  } else if (type = 'test_ordered') {
+    if (test_ordered) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const MyButton: React.FC<MyButtonProps> = ({ isActive, isEnabled, isDisabled, onClick, children }) => {
+  console.log(isActive, isEnabled, isDisabled);
+  
+  return (
+    <StyledMuiButton
+      isActive={isActive}
+      isEnabled={isEnabled}
+      isDisabled={isDisabled}
+      onClick={onClick}
+    >
+      {children}
+    </StyledMuiButton>
+  );
+};
+
 
 function GetScreening({ screening }: { screening: string[] }) {
   return (
@@ -127,13 +214,27 @@ function Row(props: any) {
                       <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                       <TableMidData><Text>{detail.description}</Text></TableMidData>
                       <TableMidData>
-                        <StyledCustomButton>Clinician Agrees</StyledCustomButton>
-                        <DisableBtn>Clinician Disagrees</DisableBtn>
-                        <EnableBtn>Test Ordered</EnableBtn>
-
-                      {/* <SCButton>Default Button</SCButton>
-                      <SCButton prop='primary'>Primary Button</SCButton>
-                      <SCButton prop='disabled'>Disabled Button</SCButton> */}
+                        <MyButton 
+                          isEnabled={!detail.clinician_agrees || detail.clinician_disagrees} 
+                          isActive={getActiveState(detail,'clinician_agrees')} 
+                          isDisabled={getDisabledState(detail,'clinician_agrees')} 
+                          onClick={() => console.log('Button clicked')}>
+                          Clinician Agrees
+                        </MyButton>
+                        <MyButton 
+                          isEnabled={!detail.clinician_disagrees} 
+                          isActive={getActiveState(detail,'clinician_disagrees')} 
+                          isDisabled={getDisabledState(detail,'clinician_disagrees')} 
+                          onClick={() => console.log('Button clicked')}>
+                          Clinician Disagrees
+                        </MyButton>
+                        <MyButton 
+                          isEnabled={!detail.test_ordered || detail.clinician_agrees} 
+                          isActive={getActiveState(detail,'test_ordered')} 
+                          isDisabled={getDisabledState(detail,'test_ordered')} 
+                          onClick={() => console.log('Button clicked')}>
+                          Test Ordered
+                        </MyButton>
                       </TableMidData>
                     </TableRow>
                   ))}

@@ -3,6 +3,12 @@ import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, T
 import TableRow from "@mui/material/TableRow";
 import { cursorTo } from "readline";
 
+interface StyledButtonProps {
+  isActive: boolean;
+  isEnabled: boolean;
+  isDisabled: boolean;
+}
+
 export const FontBold = styled(Typography)
 (({ theme }: any) => (
   {
@@ -212,21 +218,6 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
   
     }));
   
-//     export const StyledCustomButton = styled(Button)<{ isDisabled?: boolean }>`
-//     border: '1px solid #5C6469',
-//     fontSize: '10px',
-//     fontWeight: '600',
-//     lineHeight: '16px',
-//     padding:'2px 12px',
-//     display: 'inline-block',
-//     borderRadius: '3px',
-//     color:'#5C6469',
-//     textAlign: 'center',
-//     marginRight: '10px',
-//     marginBottom: '10px',
-//     // margin-left: ${arg => (arg?.isDisabled ? 10 : 12)};
-// `;
-
     export const StyledCustomButton = styled(Button)(({ div }: any) => ({
     border: '1px solid #5C6469',
     fontSize: '10px',
@@ -279,38 +270,42 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
       
     }));
 
-    export const SCButton = styled(Button)<{prop? : any}>`
-    background-color: ${props => props.prop ? 'blue' : 'grey'};
-    color: ${props => props.prop ? 'white' : 'black'};
-    border: 1px solid ${props => props.prop ? 'blue' : 'grey'};
-    padding: 10px 20px;
-
-    fontSize: '10px',
-    fontWeight: '600',
-    lineHeight: '16px',
-    padding:'2px 12px',
-    display: 'inline-block',
-    borderRadius: '3px',
-    textAlign: 'center',
-    marginRight: '10px',
-    border: '1px solid #5C6469',
-    color:'#5C6469',
-    marginBottom: '10px',
-
-    "&:hover": {
-      border: '1px solid #0D426A',
-      background:'#0D426A',
-      color:'#fff',
-    },
-
-  
-    ${props => props.disabled && `
-      opacity: 0.5;
-      cursor: not-allowed;
-    `}
-  `;
-
-
+export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
+    background-color: ${(props) => 
+      props.isActive ? '#0D426A' : 
+      props.isEnabled ? 'transparent' : 
+      props.isDisabled ? 'transparent' : 'transparent'};
+    color: ${(props) => 
+      props.isActive ? '#fff' : 
+      props.isEnabled ? '#5C6469' : 
+      props.isDisabled ? '#C8CED2' : '#5C6469'};
+      border: ${props => 
+        props.isActive ? '1px solid #5C6469' : 
+        props.isEnabled ? '1px solid #5C6469' : 
+        props.isDisabled ? '1px solid #C8CED2' : '1px solid #5C6469'};
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 16px;
+    padding: 2px 12px;
+    display: inline-block;
+    border-radius: 3px;
+    text-align: center;
+    margin-right: 10px;
+    &:hover{
+      background-color: ${(props) => 
+        props.isActive ? '#0D426A' : 
+        props.isEnabled ? 'transparent' : 
+        props.isDisabled ? 'transparent' : 'transparent'};
+      color: ${(props) => 
+        props.isActive ? '#fff' : 
+        props.isEnabled ? '#5C6469' : 
+        props.isDisabled ? '#C8CED2' : '#5C6469'};
+        border: ${props => 
+          props.isActive ? '1px solid #5C6469' : 
+          props.isEnabled ? '1px solid #5C6469' : 
+          props.isDisabled ? '1px solid #C8CED2' : '1px solid #5C6469'};
+    }
+`;
 
     export const BorderLinearProgress = styled(LinearProgress)(({ theme, value }:any) => ({
       height: 7,
