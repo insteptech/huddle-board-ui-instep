@@ -49,13 +49,11 @@ type AppointmentListProps = {
 };
 
 interface MyButtonProps {
-  isActive: boolean;
-  isEnabled: boolean;
-  isDisabled: boolean;
+  btnState: string;
   onClick: () => void;
   children: React.ReactNode;
 }
-
+const outComes = [{name:"Clinician Agrees", key:"agree"},{name:"Clinician Disagrees",key:"disagree"},{name:"Test Ordered",key:"testorder"}]
 const getEnabledState = (detail:any,type:string) => {
   const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
   //when all false then enable true for all
@@ -119,14 +117,53 @@ const getActiveState = (detail:any, type:string) => {
   return false;
 }
 
-const MyButton: React.FC<MyButtonProps> = ({ isActive, isEnabled, isDisabled, onClick, children }) => {
-  console.log(isActive, isEnabled, isDisabled);
+
+const getOutComeBtnState = (detail:any, key:any) =>{
+ 
+  let btnState = "enable";
+  const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
+  if (key =='agree') {
+    if (clinician_agrees) {
+      btnState = "active";
+    }
+    if (clinician_disagrees) {
+      btnState = "disable";
+    }
+  }
+
+  if (key == 'disagree') {
+    if (clinician_disagrees) {
+      btnState = "active";
+    }
+    if (clinician_agrees || test_ordered) {
+      btnState = "disable";
+    }
+  }
+
+  if (key == 'testorder') {
+    if (test_ordered) {
+      btnState = "active";
+    }
+    if (clinician_agrees) {
+      btnState = "enable";
+    }
+    if (clinician_disagrees) {
+      btnState = "disable";
+    }
+    if (test_ordered && clinician_agrees) {
+      btnState = "active";
+    }
+  }
+
+  return btnState;
+
+}
+
+const MyButton: React.FC<MyButtonProps> = ({ btnState, onClick, children }:any) => {
   
   return (
     <StyledMuiButton
-      isActive={isActive}
-      isEnabled={isEnabled}
-      isDisabled={isDisabled}
+    state={btnState} 
       onClick={onClick}
     >
       {children}
@@ -147,7 +184,7 @@ function GetScreening({ screening }: { screening: string[] }) {
 }
 
 function Row(props: any) {
-  const { appointment, selectedAppointmentUuid, setSelectedAppointmentUuid, appointmentDetails, appointmentDetail } = props;
+  const { appointment, selectedAppointmentUuid, setSelectedAppointmentUuid, appointmentDetails, appointmentDetail, updateOutCome } = props;
   const [open, setOpen] = useState(false);
 
   const setRow = (id: any) => {
@@ -159,6 +196,8 @@ function Row(props: any) {
   const renderCellContent = (content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<React.AwaitedReactNode> | null | undefined, isBold: boolean) => (
     isBold ? <FontBold>{content}</FontBold> : <StyledText>{content}</StyledText>
   );
+
+
 
   return (
     <>
@@ -214,27 +253,28 @@ function Row(props: any) {
                       <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                       <TableMidData><Text>{detail.description}</Text></TableMidData>
                       <TableMidData>
-                        <MyButton 
-                          isEnabled={!detail.clinician_agrees || detail.clinician_disagrees} 
-                          isActive={getActiveState(detail,'clinician_agrees')} 
-                          isDisabled={getDisabledState(detail,'clinician_agrees')} 
-                          onClick={() => console.log('Button clicked')}>
-                          Clinician Agrees
+                      {outComes.map((item,index)=>(
+                        <MyButton
+                          btnState={getOutComeBtnState(detail,item.key)}
+                          onClick={() => updateOutCome(item.key)} children={undefined}>
+                          {item.name} {getOutComeBtnState(detail,item.key)}
                         </MyButton>
-                        <MyButton 
-                          isEnabled={!detail.clinician_disagrees} 
-                          isActive={getActiveState(detail,'clinician_disagrees')} 
-                          isDisabled={getDisabledState(detail,'clinician_disagrees')} 
-                          onClick={() => console.log('Button clicked')}>
+                      ))}
+                        
+                        {/* <MyButton 
+                          isEnabled={!detail.clinician_disagrees}
+                          isActive={getActiveState(detail, 'clinician_disagrees')}
+                          isDisabled={getDisabledState(detail, 'clinician_disagrees')}
+                          onClick={() => console.log('Button clicked')} children={undefined}>
                           Clinician Disagrees
                         </MyButton>
                         <MyButton 
-                          isEnabled={!detail.test_ordered || detail.clinician_agrees} 
-                          isActive={getActiveState(detail,'test_ordered')} 
-                          isDisabled={getDisabledState(detail,'test_ordered')} 
-                          onClick={() => console.log('Button clicked')}>
+                          isEnabled={!detail.test_ordered || detail.clinician_agrees}
+                          isActive={getActiveState(detail, 'test_ordered')}
+                          isDisabled={getDisabledState(detail, 'test_ordered')}
+                          onClick={() => console.log('Button clicked')} children={undefined}>
                           Test Ordered
-                        </MyButton>
+                        </MyButton> */}
                       </TableMidData>
                     </TableRow>
                   ))}
@@ -254,6 +294,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const appointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.results) || [];
   const appointmentDetail = useSelector((state: AppState) => state.appointment?.appointmentDetail) || [];
   const isNextAppointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.next);
+
+
 
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
@@ -278,6 +320,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentDetail({ appointment_id: id }));
   };
 
+  const updateOutCome=(value:any)=>{
+    console.log(value,'value')
+
+  }
+
   return (
     <>
       <HeadingTag variant="h1">My Schedule</HeadingTag>
@@ -294,14 +341,15 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             </TableRow>
           </Table_Head>
           <TableBody>
-            {appointmentsList.map((appointment: AppointmentState) => (
+            {appointmentsList.map((appointment: AppointmentState,index: number) => (
               <Row
-                key={appointment.uuid}
+                key={index}
                 appointment={appointment}
                 selectedAppointmentUuid={selectedAppointmentUuid}
                 setSelectedAppointmentUuid={setSelectedAppointmentUuid}
                 appointmentDetail={appointmentDetail}
                 appointmentDetails={appointmentDetails}
+                updateOutCome={updateOutCome}
               />
             ))}
           </TableBody>

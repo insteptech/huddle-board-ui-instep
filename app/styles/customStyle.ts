@@ -272,17 +272,17 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
 
 export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     background-color: ${(props) => 
-      props.isActive ? '#0D426A' : 
-      props.isEnabled ? 'transparent' : 
-      props.isDisabled ? 'transparent' : 'transparent'};
+      props.state=='active' ? '#0D426A' : 
+      props.state=='enable' ? 'transparent' : 
+      props.state=='disabled' ? 'transparent' : 'transparent'};
     color: ${(props) => 
-      props.isActive ? '#fff' : 
-      props.isEnabled ? '#5C6469' : 
-      props.isDisabled ? '#C8CED2' : '#5C6469'};
+      props.state=='active' ? '#fff' : 
+      props.state=='enable' ? '#5C6469' : 
+      props.state=='disabled'? '#C8CED2' : '#5C6469'};
       border: ${props => 
-        props.isActive ? '1px solid #5C6469' : 
-        props.isEnabled ? '1px solid #5C6469' : 
-        props.isDisabled ? '1px solid #C8CED2' : '1px solid #5C6469'};
+        props.state=='active' ? '1px solid #5C6469' : 
+        props.state=='enable'? '1px solid #5C6469' : 
+        props.state=='disabled'  ? '1px solid #C8CED2' : '1px solid #5C6469'};
     font-size: 10px;
     font-weight: 600;
     line-height: 16px;
@@ -293,17 +293,17 @@ export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     margin-right: 10px;
     &:hover{
       background-color: ${(props) => 
-        props.isActive ? '#0D426A' : 
-        props.isEnabled ? 'transparent' : 
-        props.isDisabled ? 'transparent' : 'transparent'};
+        props.state=='active' ? '#0D426A' : 
+        props.state=='enable' ? 'transparent' : 
+        props.state=='disabled' ? 'transparent' : 'transparent'};
       color: ${(props) => 
-        props.isActive ? '#fff' : 
-        props.isEnabled ? '#5C6469' : 
-        props.isDisabled ? '#C8CED2' : '#5C6469'};
+        props.state=='active' ? '#fff' : 
+        props.state=='enable' ? '#5C6469' : 
+        props.state=='disabled' ? '#C8CED2' : '#5C6469'};
         border: ${props => 
-          props.isActive ? '1px solid #5C6469' : 
-          props.isEnabled ? '1px solid #5C6469' : 
-          props.isDisabled ? '1px solid #C8CED2' : '1px solid #5C6469'};
+          props.state=='active' ? '1px solid #5C6469' : 
+          props.state=='enable' ? '1px solid #5C6469' : 
+          props.state=='disabled' ? '1px solid #C8CED2' : '1px solid #5C6469'};
     }
 `;
 
