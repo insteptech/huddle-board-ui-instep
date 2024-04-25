@@ -11,52 +11,37 @@ interface StyledButtonProps {
 
 export const FontBold = styled(Typography)
 (({ theme }: any) => (
-  {
-    
- 
-  fontWeight: '700',
-
-   
+  { 
+    fontWeight: '700',
   }
 )
 );
-
 
 export const StyledTableCell = styled(TableCell)
 (({ theme }: any) => (
   {
-    
   color:'#fff',
   fontSize: '12px',
   fontWeight: '600',
   lineHeight: '14.62px',
-   
   }
 )
 );
-
-
 
 export const TdTableCell = styled(TableCell)
 (({ theme }: any) => (
-  {
-    
-    borderBottom: 'none',
-    
+  {  
+    borderBottom: 'none', 
   }
 )
 );
 
-
-
 export const Typography_Grid = styled('div')
 (({ div }: any) => (
-  {
-    
+  { 
     flexDirection: 'row',  
     display: 'flex',
     alignItems:'center',
-    
   }
 )
 );
@@ -64,41 +49,30 @@ export const Typography_Grid = styled('div')
 export const TableMainContainer = styled(TableContainer)
 (({ theme }: any) => (
   {
-    
     boxShadow:'none',
     backgroundColor: 'transparent',
     overflow: 'auto',
     height: '670px',
-
   }
 )
 );
 
 export const Table_Head = styled(TableHead)
 (({ theme }: any) => (
-  {
-    
+  {  
     position: 'sticky',
     top: '0px',
     zIndex:'99',
-
   }
 )
 );
-
-
-
-
 
 export const StyledText = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '400',
   lineHeight: '20px',
   color:'#475467',
-
 }));
- 
-
 
 export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
   
@@ -112,8 +86,6 @@ export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
   },
 }));
 
-
-
 export const StaticTypo = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '400',
@@ -121,10 +93,7 @@ export const StaticTypo = styled(Typography)(({ div }: any) => ({
   color:'#5C6469',
   marginRight:'10px',
   marginBottom:'0px',
-
 }));
-
-
 
 export const LinkText = styled(Link)(({ div }: any) => ({
   fontSize: '14px',
@@ -133,18 +102,13 @@ export const LinkText = styled(Link)(({ div }: any) => ({
   color:'#D43131',
   border: 'none',
   background: '#fff',
-
-
 }));
-
 
 export const StyledName = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   lineHeight: '20px',
   color:'#17236D',
-
 }));
-
 
 export const StyledCopy = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
@@ -154,11 +118,9 @@ export const StyledCopy = styled(Typography)(({ div }: any) => ({
 }));
 
 export const IconProgress = styled(Typography)(({ div }: any) => ({
-
   display: 'flex',
   alignItems:'center',
 }));
-
 
 export const ProviderCell = styled(Typography)(({ div }: any) => ({
 marginLeft:'10px',
@@ -169,7 +131,6 @@ color:'#344054',
 }));
 
 export const TableMid = styled(TableCell)(({ div }: any) => ({
-
   fontSize: '13px',
   fontWeight: '700',
   lineHeight: '15.83px',
@@ -177,15 +138,13 @@ export const TableMid = styled(TableCell)(({ div }: any) => ({
   border: '1px solid #B1C6E2',
   background:'#EBF4FF',
   padding: '12px',
-  }));
+}));
 
-  export const TableMidData = styled(TableCell)(({ div }: any) => ({
-
-
-    border: '1px solid #B1C6E2',
-    background:'#EBF4FF',
-    padding: '12px',
-    }));
+export const TableMidData = styled(TableCell)(({ div }: any) => ({
+  border: '1px solid #B1C6E2',
+  background:'#EBF4FF',
+  padding: '12px',
+}));
   
   
 
@@ -218,58 +177,6 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
   
     }));
   
-    export const StyledCustomButton = styled(Button)(({ div }: any) => ({
-    border: '1px solid #5C6469',
-    fontSize: '10px',
-    fontWeight: '600',
-    lineHeight: '16px',
-    padding:'2px 12px',
-    display: 'inline-block',
-    borderRadius: '3px',
-    color:'#5C6469',
-    textAlign: 'center',
-    marginRight: '10px',
-    marginBottom: '10px',
-  }));
-
-
-    export const DisableBtn = styled(Button)(({ div }: any) => ({
-      border: '1px solid #C8CED2',
-      fontSize: '10px',
-      fontWeight: '600',
-      lineHeight: '16px',
-      padding:'2px 12px',
-      display: 'inline-block',
-      borderRadius: '3px',
-      color:'#C8CED2',
-      textAlign: 'center',
-      marginRight: '10px',
-      marginBottom: '10px',
-      
-    }));
-
-    export const EnableBtn = styled(Button)(({ div }: any) => ({
-      border: '1px solid #0D426A',
-      fontSize: '10px',
-      background:'#0D426A',
-      fontWeight: '600',
-      lineHeight: '16px',
-      padding:'2px 12px',
-      display: 'inline-block',
-      borderRadius: '3px',
-      color:'#fff',
-      textAlign: 'center',
-      marginRight: '10px',
-      marginBottom: '10px',
-      "&:hover": {
-        border: '1px solid #0D426A',
-        background:'#0D426A',
-        color:'#fff',
-      },
-      
-      
-    }));
-
 export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     background-color: ${(props) => 
       props.btnState=='active' ? '#0D426A' : 
@@ -309,18 +216,17 @@ export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     }
 `;
 
-    export const BorderLinearProgress = styled(LinearProgress)(({ theme, value }:any) => ({
-      height: 7,
-      borderRadius: 5,
-      [`&.${linearProgressClasses.colorPrimary}`]: {
-        backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-      },
-      [`& .${linearProgressClasses.bar}`]: {
-        borderRadius: 5,
-        backgroundColor: value && value < 100 ? '#FFAE64' : '#41B145',
-      },
-    }));
-
+export const BorderLinearProgress = styled(LinearProgress)(({ theme, value }:any) => ({
+  height: 7,
+  borderRadius: 5,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 5,
+    backgroundColor: value && value < 100 ? '#FFAE64' : '#41B145',
+  },
+}));
 
 export const SpanText = styled(Typography)(({ div }: any) => ({
   border: '1px solid #E1E1E1',
@@ -336,11 +242,6 @@ export const SpanText = styled(Typography)(({ div }: any) => ({
   marginRight:'5px',
 }));
 
-
-
-
-
-
 export const HeadingTag= styled(Typography)(({ div }: any) => ({
   fontSize: '24px',
   fontWeight: '700',
@@ -348,5 +249,4 @@ export const HeadingTag= styled(Typography)(({ div }: any) => ({
   textAlign: 'left',
   color: 'rgba(0, 0, 0, 1)',
   margin: '30px 0',
-  
 }));

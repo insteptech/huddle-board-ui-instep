@@ -33,12 +33,9 @@ import {
   TableMidData,
   ActionBtn,
   Text,
-  StyledCustomButton,
   TdTableCell,
   SpanText,
   FontBold,
-  EnableBtn,
-  DisableBtn,
   StyledMuiButton,
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
