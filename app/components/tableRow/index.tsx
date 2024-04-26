@@ -42,7 +42,7 @@ interface MyButtonProps {
     children: React.ReactNode;
 }
 
-const outComes = [{name:"Clinician Agrees", key:"agree"},{name:"Clinician Disagrees",key:"disagree"},{name:"Test Ordered",key:"testorder"}]
+const outComes = [{name:"Clinician Agrees", key:"clinician_agrees"},{name:"Clinician Disagrees",key:"clinician_disagrees"},{name:"Test Ordered",key:"test_ordered"}]
   
 const MyButton: React.FC<MyButtonProps> = ({ btnState, onClick, children }:any) => {
     return (
@@ -134,7 +134,7 @@ return (
                     {outComes.map((item,index)=>(
                         <MyButton
                         btnState={getOutComeBtnState(detail,item.key)}
-                        onClick={() => updateOutCome(item.key)}>
+                        onClick={() => updateOutCome(item.key, getOutComeBtnState(detail,item.key), detail)}>
                         {item.name}
                         </MyButton>
                     ))}

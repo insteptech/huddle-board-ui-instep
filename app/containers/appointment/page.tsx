@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 
 import {
@@ -56,8 +56,30 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentDetail({ appointment_id: id }));
   };
 
-  const updateOutCome=(value:any)=>{
-    console.log(value,'value')
+  const getAction = (value:string) => {
+    switch (value) {
+      case 'clinician_agrees':
+        return { clinician_agrees: true };
+      case 'clinician_disagrees':
+        return { clinician_disagrees: true };
+      case 'test_ordered':
+        return { test_ordered: true };
+      default:
+        return {};
+    }
+  };
+
+  const updateOutCome=(value:any,data:any,detail:any)=>{
+    const {appointment_id, uuid} = detail;    
+    const payload = {
+      appointment_id: appointment_id,
+      screening_id: uuid,
+      action : getAction(value)
+    }
+    
+    dispatch(updateAppointmentDetail(payload)).then(() => {
+      appointmentDetails(appointment_id);
+    })
   }
 
   return (

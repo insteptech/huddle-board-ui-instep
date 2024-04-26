@@ -1,40 +1,41 @@
-export const getOutComeBtnState = (detail: any, key: any) =>{
- 
-    let btnState = "enable";
-    const {clinician_agrees, clinician_disagrees, test_ordered} = detail;
-    if (key =='agree') {
+export const getOutComeBtnState = (detail: any, key: any) => {
+  let btnState = "enable";
+  const {
+      clinician_agrees,
+      clinician_disagrees,
+      test_ordered
+  } = detail;
+  if (key == 'clinician_agrees') {
       if (clinician_agrees) {
-        btnState = "active";
+          btnState = "active";
       }
       if (clinician_disagrees) {
-        btnState = "disable";
+          btnState = "disable";
       }
-    }
-  
-    if (key == 'disagree') {
+  }
+
+  if (key == 'clinician_disagrees') {
       if (clinician_disagrees) {
-        btnState = "active";
+          btnState = "active";
       }
       if (clinician_agrees || test_ordered) {
-        btnState = "disable";
+          btnState = "disable";
       }
-    }
-  
-    if (key == 'testorder') {
+  }
+
+  if (key == 'test_ordered') {
       if (test_ordered) {
-        btnState = "active";
+          btnState = "active";
       }
       if (clinician_agrees) {
-        btnState = "enable";
+          btnState = "enable";
       }
       if (clinician_disagrees) {
-        btnState = "disable";
+          btnState = "disable";
       }
       if (test_ordered && clinician_agrees) {
-        btnState = "active";
+          btnState = "active";
       }
-    }
-  
-    return btnState;
-  
   }
+  return btnState;
+}
