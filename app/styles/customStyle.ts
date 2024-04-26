@@ -146,12 +146,6 @@ export const TableMidData = styled(TableCell)(({ div }: any) => ({
   padding: '12px',
 }));
   
-  
-
-
-  
-  
-
 
 export const ActionBtn = styled(Typography)(({ div }: any) => ({
   border: '1px solid #17236D',
@@ -164,18 +158,16 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
   color:'#17236D',
   textAlign: 'center',
   whiteSpace: 'nowrap',
-  }));
+}));
   
+export const Text = styled(Typography)(({ div }: any) => ({
+  fontSize: '12px',
+  fontWeight: '400',
+  lineHeight: '16px',
+  textAlign: 'left',
+  color: '#242629',
 
-
-  export const Text = styled(Typography)(({ div }: any) => ({
-    fontSize: '12px',
-    fontWeight: '400',
-    lineHeight: '16px',
-    textAlign: 'left',
-    color: '#242629',
-  
-    }));
+}));
   
 export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     background-color: ${(props) => 
