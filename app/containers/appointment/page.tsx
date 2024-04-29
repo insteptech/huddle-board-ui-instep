@@ -11,6 +11,10 @@ import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
 import FilterButton from "@/app/components/filter";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 
 import {
   HeadingTag,
@@ -19,6 +23,7 @@ import {
   StyledTableCell,
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
+import { Box } from '@mui/material';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -88,9 +93,72 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     })
   }
 
+  const handlePrint=()=>{
+    console.log("print");
+  }
+  const handlePdf=()=>{
+    console.log("PDF");
+  }
   return (
     <>
-      <HeadingTag variant="h1">My Schedule</HeadingTag>
+      {/* <HeadingTag variant="h1">My Schedule</HeadingTag> */}
+      <Box component={'div'} sx={{
+      display:'flex',
+      justifyContent:'space-between',
+      alignItems:'center',
+      marginTop:'20px'
+    }}>
+      <HeadingTag variant="h1" sx={{margin:'0'}}>
+        My Schedule       
+        </HeadingTag>
+        <div style={{display:"flex" , flexDirection:"row" ,justifyContent: "end", gap: "10px" , alignItems:'center',flexWrap:'wrap'}}>  
+       
+        <Box        
+        height={35}
+                width={35}
+                display="flex"
+                alignItems="center"
+                gap={1}
+                p={1}
+                sx={{ border: '1px solid grey' , borderRadius:"8px"}}>
+              <ArrowBackIosNewIcon style={{fontSize:"15px"}}/> 
+        </Box>
+
+       <Box height={35}
+                width={35}
+                display="flex"
+                alignItems="center"
+                gap={1}
+                p={1}
+                sx={{ border: '1px solid grey' , borderRadius:"8px"}}>
+                  <ArrowForwardIosIcon  style={{fontSize:"15px"}}/>
+        </Box>
+        <Box onClick={()=>handlePdf()}
+          height={35}
+                width={80}
+                display="flex"
+                alignItems="center"
+                gap={1}
+                p={1}
+                sx={{ border: '1px solid grey' , borderRadius:"8px"}}> 
+              <SaveAltIcon 
+              style={{fontSize:"15px"}}/>
+              <span style={{fontSize:"13px"}}>PDF</span>
+          </Box>
+          
+          <Box onClick={()=>handlePrint()}
+            height={35}
+                width={80}
+                display="flex"
+                alignItems="center"
+                gap={1}
+                p={1}
+                sx={{ border: '1px solid grey' , borderRadius:"8px"}}>
+              <PrintOutlinedIcon style={{fontSize:"15px"}}/>
+              <span style={{fontSize:"13px"}}>Print</span>
+          </Box>
+      </div>     
+      </Box>
       <FilterButton />
       <TableMainContainer sx={{ m: '30px 0' }}>
         <Table aria-label="collapsible table">
