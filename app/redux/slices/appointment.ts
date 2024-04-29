@@ -10,6 +10,7 @@ export type AppointmentsState = {
     };
     appointmentDetail: AppointmentDetail[];
     selectedPatientDetail: string | null;
+    isDetailLoading: boolean;
 };
 
 export type AppointmentState = {
@@ -40,6 +41,7 @@ const initialState: AppointmentsState = {
     appointmentsData: {},
     appointmentDetail: [],
     selectedPatientDetail: null,
+    isDetailLoading: false
 };
 
 export const appointment = createSlice({
@@ -61,12 +63,15 @@ export const appointment = createSlice({
     });
 
     builder.addCase(getAppointmentDetail.pending, (state, action) => {
+      state.isDetailLoading = true;
     });
     builder.addCase(getAppointmentDetail.rejected, (state, action) => {
       console.log(state, action, 'rejected');
+      state.isDetailLoading = false;
     });
     builder.addCase(getAppointmentDetail.fulfilled, (state, { payload }) => {
       state.appointmentDetail = payload;
+      state.isDetailLoading = false;
     });
 
     builder.addCase(updateAppointmentDetail.pending, (state, action) => {

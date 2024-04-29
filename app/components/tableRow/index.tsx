@@ -9,7 +9,9 @@ import {
     Collapse, 
     Table, 
     TableHead, 
-    TableBody 
+    TableBody, 
+    Tooltip,
+    CircularProgress
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -64,7 +66,7 @@ function GetScreening({ screening }: { screening: string[] }) {
 }
 
 const Row = ( props: any) => { 
-const { appointment, selectedAppointmentUuid, setSelectedAppointmentUuid, appointmentDetails, appointmentDetail, updateOutCome } = props;
+const { appointment, selectedAppointmentUuid, setSelectedAppointmentUuid, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading } = props;
 const [open, setOpen] = useState(false);
 
 const setRow = (id: any) => {
@@ -88,10 +90,12 @@ return (
             {renderCellContent(appointment.patient_name, appointment.selected_gap_count === 0)}
             <StyledCopy>
             {appointment.mrn}
-            <ContentCopyIcon
-                onClick={() => navigator.clipboard.writeText(appointment.mrn)}
-                sx={{ verticalAlign: 'middle', color: '#17236D', fontSize: '15px', marginLeft: '5px' }}
-            />
+                <Tooltip title="Copy" placement="top">
+                    <ContentCopyIcon
+                        onClick={() => navigator.clipboard.writeText(appointment.mrn)}
+                        sx={{ verticalAlign: 'middle', color: '#17236D', fontSize: '15px', marginLeft: '5px' }}
+                    />
+                </Tooltip>
             </StyledCopy>
         </StyledName>
         </TdTableCell>
@@ -125,7 +129,7 @@ return (
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {appointmentDetail.map((detail:any) => (
+                {!isDetailLoading && appointmentDetail.map((detail:any) => (
                     <TableRow key={detail.uuid}>
                     <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
                     <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>

@@ -8,6 +8,9 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
 import { getAppointmentDetail, getAppointmentsList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
+import dynamic from 'next/dynamic';
+import { toast } from 'react-toastify';
+import FilterButton from "@/app/components/filter";
 
 import {
   HeadingTag,
@@ -16,7 +19,6 @@ import {
   StyledTableCell,
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
-import dynamic from 'next/dynamic';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -32,6 +34,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const appointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.results) || [];
   const appointmentDetail = useSelector((state: AppState) => state.appointment?.appointmentDetail) || [];
   const isNextAppointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.next);
+  const isDetailLoading = useSelector((state: AppState) => state.appointment.isDetailLoading);
 
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
@@ -78,13 +81,17 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
     
     dispatch(updateAppointmentDetail(payload)).then(() => {
+      toast.success("Successfully Updated");
       appointmentDetails(appointment_id);
+    }).catch(() => {
+      toast.error("Update failed");
     })
   }
 
   return (
     <>
       <HeadingTag variant="h1">My Schedule</HeadingTag>
+      <FilterButton />
       <TableMainContainer sx={{ m: '30px 0' }}>
         <Table aria-label="collapsible table">
           <Table_Head sx={{ backgroundColor: '#17236D', color: '#fff' }}>
@@ -107,6 +114,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 appointmentDetail={appointmentDetail}
                 appointmentDetails={appointmentDetails}
                 updateOutCome={updateOutCome}
+                isDetailLoading={isDetailLoading}
               />
             ))}
           </TableBody>
