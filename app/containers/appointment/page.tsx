@@ -30,6 +30,7 @@ import {
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
 import { Box, Input, InputAdornment } from '@mui/material';
+import PatientNotFound from '@/app/components/patientNotFound';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -46,6 +47,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const appointmentDetail = useSelector((state: AppState) => state.appointment?.appointmentDetail) || [];
   const isNextAppointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.next);
   const isDetailLoading = useSelector((state: AppState) => state.appointment.isDetailLoading);
+  const isPatientNotFound = true;
 
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
@@ -203,7 +205,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             </TableRow>
           </Table_Head>
           <TableBody>
-            {appointmentsList.map((appointment: AppointmentState,index: number) => (
+          {isPatientNotFound? <PatientNotFound icon = {false} />:appointmentsList.map((appointment: AppointmentState,index: number) => (
               <Row
                 key={index}
                 appointment={appointment}
