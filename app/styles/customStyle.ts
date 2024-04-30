@@ -1,5 +1,5 @@
 import { Diversity1 } from "@mui/icons-material";
-import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer,Link,TableHead, Button } from "@mui/material";
+import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer,Link,TableHead, Button, Checkbox } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import { cursorTo } from "readline";
 
@@ -242,3 +242,145 @@ export const HeadingTag= styled(Typography)(({ div }: any) => ({
   color: 'rgba(0, 0, 0, 1)',
   margin: '30px 0',
 }));
+
+export const TableTopmain = styled('div')(({ div }: any) => ({
+  display: 'flex',
+  alignItems: 'center',
+  margin:'0 10px',
+}));
+
+export const TableTop= styled('div')(({ div }: any) => ({
+  
+  width: '500px',
+  border: '1px solid #D2E6FF',
+  background: '#F3F7FC',
+  borderRadius: '10px', 
+  marginLeft:'10px',
+}));
+
+export const FilterMenu= styled('div')(({ div }: any) => ({
+
+  margin: '0',
+  
+}));
+
+
+export const TableDiv = styled('div')(({ div }: any) => ({
+  
+  background: '#fff',
+  padding:'10px 0',
+  margin:'25px 0',
+
+}));
+
+
+export const BoxFilter = styled('div')(({ div }: any) => ({
+  
+  background: '#fff',
+  borderBottom: '1px solid #DFE1E6',
+  padding:'12px 16px',
+
+}));
+
+
+
+ 
+export const FilterButtons = styled('button')(({ div }: any) => ({
+  
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '20px',
+  textAlign: 'left',
+  boxShadow: '0px 1px 2px 0px #1018280D',
+  border: '1px solid #D0D5DD',
+  padding:'14px 16px',
+  borderRadius:'8px',
+  display:'flex',
+  alignItems: 'center',
+  cursor:'pointer',
+  background:'#fff',
+  width:'auto',
+
+}));
+
+
+export const BoxfilterLeft= styled(Typography)(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '20px',
+  textAlign: 'left',
+  color: '#344054',
+
+}));
+
+export const BoxfilterRightmid= styled(Typography)(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '17.05px',
+  textAlign: 'left',
+  color: '#17236D',
+  margin:'0 10px',
+
+}));
+
+export const TablecellHd= styled(TableCell)(({ div }: any) => ({
+  fontSize: '11px',
+  fontWeight: '700',
+  lineHeight: '16px',
+  textAlign: 'left',
+  padding:'8px 16px',
+  border:'none',
+  borderRight:'1px solid #DFE1E6',
+
+}));
+
+export const TablecellHdmain= styled(TableCell)(({ div }: any) => ({
+  fontSize: '11px',
+  fontWeight: '700',
+  lineHeight: '16px',
+  textAlign: 'left',
+  display:'flex',
+  alignItems:'Center',
+  justifyContent:'space-between',
+  padding:'8px 16px',
+  border:'none',
+  borderRight:'1px solid #DFE1E6',
+}));
+
+
+export const TablecellTd= styled(TableCell)(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '20px',
+  textAlign: 'left',
+  color:'#172B4D',
+  padding:'8px 16px',
+  border:'none',
+  borderRight:'1px solid #DFE1E6',
+
+}));
+
+export const BoxfilterRight= styled('div')(({ div }: any) => ({
+
+  display: 'flex',
+  alignItems: 'center',
+  
+}));
+
+export const CheckboxInner= styled(Checkbox)(({ div }: any) => ({
+
+  marginRight:'10px',
+  padding:' 0px',
+  
+  
+}));   
+
+
+
+
+
+
+
+
+
+

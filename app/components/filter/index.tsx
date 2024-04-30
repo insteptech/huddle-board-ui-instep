@@ -5,7 +5,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Box, Container, TextField, IconButton } from '@mui/material';
-// import { SearchIcon } from '@material-ui/icons';
 import Grid from '@mui/material/Grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,6 +14,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+
+import {
+    BoxFilter,
+    FilterButtons,
+    BoxfilterLeft,
+    BoxfilterRightmid,
+    BoxfilterRight,
+    TablecellHd,
+    TablecellTd,
+    CheckboxInner,
+    TablecellHdmain,
+
+} from '../../styles/customStyle';
 
 function FilterButton() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -68,28 +81,12 @@ function FilterButton() {
     return (
     <>
         <Box component={'div'} sx={{display:"flex", margin:'0', alignItems:'center' , gap:'10px' }} >
-                <Grid container sx={{gap:'10px'}} marginTop={'10px'}>
+         
+                <Grid container>
                     <Grid item xs={1} sx={{
-                        '.mui-kwx3q7-MuiContainer-root':{
-                            paddingTop:'0px !important',
-                            height:'100%',
-                        },
-                        
-                        
-                        '.mui-1n1d3b3-MuiContainer-root':{
-                           width:'100% !important'
-                        },
-
-                           'button':{
-                            width:'100%',
-                           },
-                       
-                        '.MuiIconButton-root:hover':{
-                           background:'transparent',
-                        }, 
                     }}>
-                    <Container sx={{border:'1px solid grey' , width:'100%', margin:'0' , borderRadius:'8px'}}> 
-                    <IconButton
+                   
+                    <FilterButtons
                 aria-controls="filter-menu"
                 aria-haspopup="true"
                 onClick={handleClick}
@@ -97,50 +94,47 @@ function FilterButton() {
             >
                 <TuneIcon sx={{fontSize:'16px', marginRight:"5px"  }}/>
                <span style={{fontSize:'16px'}} >Filter</span> 
-                  </IconButton>
+                  </FilterButtons>
                   <Menu
+                  
                 id="filter-menu"
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-
-                {/* <MenuItem onClick={() => handleMenuItemClick('Filter 1')}>Saved Filter</MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick('Filter 2')}>Visit Type (1)</MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick('Filter 3')}>Screening (0)</MenuItem>
-                <MenuItem onClick={() => handleMenuItemClick('Filter 3')}>Providers (1)</MenuItem> */}
-                <TableContainer component={Paper}>
-                <Box sx={{display:"flex" , flexDirection:"row", justifyContent:"space-between" , fontWeight:"600" ,margin:"0  15px"}}>
-                    <span>Filter by</span>
-                    <div>
-                        <span  style={{margin:"0 20px"}}>Apply</span>
-                        <span>Reset</span>
-                    </div>
+                <TableContainer sx={{boxShadow:"unset" , }} component={Paper}>
+                <BoxFilter sx={{display:"flex" , flexDirection:"row", justifyContent:"space-between"}}>
+                     
+                    <BoxfilterLeft>Filter by</BoxfilterLeft>
+                    <BoxfilterRight>
+                        <BoxfilterRightmid>Apply</BoxfilterRightmid>
+                        <BoxfilterRightmid sx={{color: '#5C6469',}}>Create Filter</BoxfilterRightmid>
+                        <BoxfilterRightmid sx={{color: '#5C6469',}}>Reset</BoxfilterRightmid>
+                    </BoxfilterRight>
                     
-                </Box>
+                </BoxFilter>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
            
-            <TableCell>Saved Filter</TableCell>
-            <TableCell align="right">Visit Type (1)</TableCell>
-            <TableCell align="right">Screening (0)</TableCell>
-            <TableCell align="right">Providers (1)</TableCell>
+            <TablecellHdmain>Saved Filter <SettingsOutlinedIcon style={{  fontSize: '12px' }} /></TablecellHdmain>
+            <TablecellHd >Visit Type (1)</TablecellHd>
+            <TablecellHd >Screening (0)</TablecellHd>
+            <TablecellHd >Providers (1)</TablecellHd>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row , i) => (
             <TableRow
               key={i}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
 
-              <TableCell component="th" scope="row">
+              <TablecellTd scope="row">
                 {row.savedFilter}
-              </TableCell>
-              <TableCell align="right"> <Checkbox {...label} />{row.visitType}</TableCell>
-              <TableCell align="right"> <Checkbox {...label} />{row.Screening}</TableCell>
-              <TableCell align="right"> <Checkbox {...label} />{row.Providers}</TableCell>
+              </TablecellTd>
+              <TablecellTd> <CheckboxInner   sx={{ '& .MuiSvgIcon-root': { fontSize: 16 } }} {...label } />{row.visitType}</TablecellTd>
+              <TablecellTd> <CheckboxInner  sx={{ '& .MuiSvgIcon-root': { fontSize: 16 } }} {...label} />{row.Screening}</TablecellTd>
+              <TablecellTd> <CheckboxInner  sx={{ '& .MuiSvgIcon-root': { fontSize: 16 } }} {...label} />{row.Providers}</TablecellTd>
             </TableRow>
           ))}
         </TableBody>
@@ -152,7 +146,7 @@ function FilterButton() {
                 {selectedFilter && (
                     <div>
                         <h2>Data for {selectedFilter}</h2>
-                        <ul>
+                        <ul className="zero">
                             {getDataForFilter(selectedFilter).map((data, index) => (
                                 <li key={index}>{data}</li>
                             ))}
@@ -160,39 +154,12 @@ function FilterButton() {
                     </div>
                 )}
                    </div>
-                   </Container>  
+                   
                    </Grid>
-                   <Grid >
-                <TextField style={{width:"320px"}}
-                    variant="outlined"
-                    InputProps={{
-                        startAdornment: (
-                            <IconButton>
-                            {/* <SearchIcon /> */} search
-                            </IconButton>
-                        ),
-                        }}
-                    placeholder="Search by patient name or MRN" 
-                    size='small'
-                />
-                </Grid>              
+                       
                 </Grid>
                 
         </Box>
-            {/* <Container sx={{ width:"500px", display:"flex" , justifyContent:"space-around" , margin:'0'}}>
-            <Button variant='outlined'>
-                <TuneIcon sx={{fontSize:'16px', marginRight:"5px"       }}/>
-                    Filter
-            </Button>
-            <TextField  InputProps={{
-                        startAdornment: (
-                            <IconButton>
-                            <SearchIcon />
-                            </IconButton>
-                        ),
-                        }} placeholder='Search by patient name or MRN' style={{width:"70%"}} variant='outlined' size='small'/>
-                
-            </Container> */}
       
         </>
        

@@ -15,15 +15,21 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
+import SearchIcon from '@mui/icons-material/Search';
 
 import {
   HeadingTag,
   TableMainContainer,
   Table_Head,
   StyledTableCell,
+  TableDiv,
+  TableTopmain,
+  TableTop,
+  FilterMenu,
+
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
-import { Box } from '@mui/material';
+import { Box, Input, InputAdornment } from '@mui/material';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -120,7 +126,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 alignItems="center"
                 gap={1}
                 p={1}
-                sx={{ border: '1px solid grey' , borderRadius:"8px"}}>
+                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px",background:"#fff", cursor:"pointer",}}>
               <ArrowBackIosNewIcon style={{fontSize:"15px"}}/> 
         </Box>
 
@@ -130,7 +136,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 alignItems="center"
                 gap={1}
                 p={1}
-                sx={{ border: '1px solid grey' , borderRadius:"8px"}}>
+                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px", background:"#fff",cursor:"pointer",}}>
                   <ArrowForwardIosIcon  style={{fontSize:"15px"}}/>
         </Box>
         <Box onClick={()=>handlePdf()}
@@ -140,10 +146,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 alignItems="center"
                 gap={1}
                 p={1}
-                sx={{ border: '1px solid grey' , borderRadius:"8px"}}> 
+                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px", background:"#fff",cursor:"pointer",}}> 
               <SaveAltIcon 
               style={{fontSize:"15px"}}/>
-              <span style={{fontSize:"13px"}}>PDF</span>
+              <span style={{fontSize:"14px",fontWeight:"600",lineHeight:"20px",cursor:"pointer",}}>PDF</span>
           </Box>
           
           <Box onClick={()=>handlePrint()}
@@ -153,13 +159,37 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 alignItems="center"
                 gap={1}
                 p={1}
-                sx={{ border: '1px solid grey' , borderRadius:"8px"}}>
+                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px", background:"#fff",cursor:"pointer",}}>
               <PrintOutlinedIcon style={{fontSize:"15px"}}/>
-              <span style={{fontSize:"13px"}}>Print</span>
+              <span style={{fontSize:"14px",fontWeight:"600",lineHeight:"20px",}}>Print</span>
           </Box>
       </div>     
       </Box>
-      <FilterButton />
+
+
+
+      
+      <TableDiv>
+      <TableTopmain >
+
+        <FilterMenu>
+        <FilterButton />
+        </FilterMenu>
+
+        <TableTop >
+        <Input sx={{"&::before, &::after":{display:'none'}, border: 'none', padding: '10px', width:'100%',fontSize: '14px',fontWeight: '400',lineHeight: '14px',color:'#5C6469',}}
+
+          id="input-with-icon-adornment" placeholder="With sxSearch Patient Name.." inputProps={{ disableUnderline: true }}
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon  sx={{color:'#0D426A',}}/>
+            </InputAdornment>
+          }
+        />
+
+        </TableTop>
+
+        </TableTopmain>
       <TableMainContainer sx={{ m: '30px 0' }}>
         <Table aria-label="collapsible table">
           <Table_Head sx={{ backgroundColor: '#17236D', color: '#fff' }}>
@@ -189,6 +219,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         </Table>
         <div ref={ref}></div>
       </TableMainContainer>
+   </TableDiv>
     </>
   );
 };
