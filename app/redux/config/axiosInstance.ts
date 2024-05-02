@@ -58,7 +58,7 @@ const getAndSetAccessToken = async (data?:any) => {
 
 
   if ((!refresh && !access)|| isExpired) {
-  const rs = await axios.post(`${API_URL}token/refresh/`,{"refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNDU0MjIyNSwiaWF0IjoxNzEzOTM3NDI1LCJqdGkiOiI5Y2I1Yzg5MzY4YWY0OWFjYWY2NDQ5YzE3NmEwZmFlZSIsInVzZXJfaWQiOjF9.1IK9KpBQrP6k9P_LBWBJ3NZhT1HQUK-zvPoE4bnFSDk"});
+  const rs = await axios.post(`${API_URL}token/refresh/`,{"refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNTE0OTk3MCwiaWF0IjoxNzE0NTQ1MTcwLCJqdGkiOiJlNThiN2RjODAyMjE0NDUzYTc4ZjAwNWM2NjJmZWFkMiIsInVzZXJfaWQiOjF9.sZ7AJGzCrC9GOUZ4LyvxB6FAI99V-MJLxD3yN1Fqpck"});
 
     if (rs && rs.data) {
       let finalResponse = rs.data;
