@@ -367,7 +367,7 @@ export const TableCellHd= styled('div')(({ div }: any) => ({
   textAlign: 'left',
   padding:'8px 16px',
   border:'none',
-  borderRight:'1px solid #DFE1E6',
+  
 }));
 
 export const TableCellHdMain= styled('div')(({ div }: any) => ({
@@ -391,7 +391,6 @@ export const TableCellTd= styled('div')(({ div }: any) => ({
   color:'#172B4D',
   padding:'8px 12px',
   border:'none',
-  borderRight:'1px solid #DFE1E6',
 }));
 
 export const BoxFilterRight= styled('div')(({ div }: any) => ({
@@ -444,8 +443,11 @@ export const ClearButton = styled('button')(({ div }: any) => ({
   color:'#fff',
 }));
 
-export const TabledataList= styled('div')(({ div }: any) => ({
+export const TableDataList= styled('div')(({ div }: any) => ({
   width: '160px',
+  height: '300px',
+  overflowX: 'auto',
+  borderRight:'1px solid #DFE1E6',
 }));
 
 
