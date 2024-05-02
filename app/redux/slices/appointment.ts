@@ -1,5 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail } from '../actions/appointment';
+import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData } from '../actions/appointment';
 
 export type AppointmentsState = {
     appointmentsData: {
@@ -11,7 +11,20 @@ export type AppointmentsState = {
     appointmentDetail: AppointmentDetail[];
     selectedPatientDetail: string | null;
     isDetailLoading: boolean;
+    filtersData: AppointmentFiltersDataState | null;
+    isFilterDataLoading: boolean;
 };
+
+export type AppointmentFiltersDataState = {
+  patient_screening: IFilterDataState[],
+  provider: IFilterDataState[],
+  visit_type: IFilterDataState[]
+}
+
+export type IFilterDataState = {
+  uuid: String,
+  name: String
+}
 
 export type AppointmentState = {
     uuid: String,
@@ -41,7 +54,9 @@ const initialState: AppointmentsState = {
     appointmentsData: {},
     appointmentDetail: [],
     selectedPatientDetail: null,
-    isDetailLoading: false
+    isDetailLoading: false,
+    filtersData: null,
+    isFilterDataLoading: false
 };
 
 export const appointment = createSlice({
@@ -81,6 +96,18 @@ export const appointment = createSlice({
     });
     builder.addCase(updateAppointmentDetail.fulfilled, (state, { payload }) => {
       console.log(state, payload, 'fulfilled');
+    });
+
+    builder.addCase(getFiltersData.pending, (state, action) => {
+      state.isFilterDataLoading = true;
+    });
+    builder.addCase(getFiltersData.rejected, (state, action) => {
+      console.log(state, action, 'rejected');
+      state.isFilterDataLoading = false;
+    });
+    builder.addCase(getFiltersData.fulfilled, (state, { payload }) => {
+      state.filtersData = payload;
+      state.isFilterDataLoading = false;
     });
   },
 });

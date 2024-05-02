@@ -34,3 +34,8 @@ export const updateAppointmentDetail = createAsyncThunk('updateAppointmentDetail
   const result = await axiosInstance.put(`appointment-details/${payload.appointment_id}/${payload.screening_id}`, payload.action);
   return result.data;
 });
+
+export const getFiltersData = createAsyncThunk('getFiltersData', async () => {  
+  const result = await axiosInstance.get(`filter-data`);
+  return result.data;
+});

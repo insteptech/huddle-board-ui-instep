@@ -11,7 +11,6 @@ import {
     TableHead, 
     TableBody, 
     Tooltip,
-    CircularProgress
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -39,16 +38,16 @@ import { getTime } from '@/app/utils/helper';
 
 
 interface MyButtonProps {
-    btnState: string;
+    buttonState: any;
     onClick: () => void;
     children: React.ReactNode;
 }
 
 const outComes = [{name:"Clinician Agrees", key:"clinician_agrees"},{name:"Clinician Disagrees",key:"clinician_disagrees"},{name:"Test Ordered",key:"test_ordered"}]
   
-const MyButton: React.FC<MyButtonProps> = ({ btnState, onClick, children }:any) => {
+const MyButton: React.FC<MyButtonProps> = ({ buttonState, onClick, children }: any) => {
     return (
-        <StyledMuiButton btnState={btnState} onClick={onClick}>
+        <StyledMuiButton buttonState={buttonState} onClick={onClick}>
         {children}
         </StyledMuiButton>
     );
@@ -131,18 +130,19 @@ return (
                 <TableBody>
                 {!isDetailLoading && appointmentDetail.map((detail:any) => (
                     <TableRow key={detail.uuid}>
-                    <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
-                    <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
-                    <TableMidData><Text>{detail.description}</Text></TableMidData>
-                    <TableMidData>
-                    {outComes.map((item,index)=>(
-                        <MyButton
-                        btnState={getOutComeBtnState(detail,item.key)}
-                        onClick={() => updateOutCome(item.key, getOutComeBtnState(detail,item.key), detail)}>
-                        {item.name}
-                        </MyButton>
-                    ))}
-                    </TableMidData>
+                        <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
+                        <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
+                        <TableMidData><Text>{detail.description}</Text></TableMidData>
+                        <TableMidData>
+                        {outComes.map((item,index)=>(
+                            <MyButton
+                                key={index}
+                                buttonState={getOutComeBtnState(detail,item.key)}
+                                onClick={() => updateOutCome(item.key, getOutComeBtnState(detail,item.key), detail)}>
+                            {item.name}
+                            </MyButton>
+                        ))}
+                        </TableMidData>
                     </TableRow>
                 ))}
                 </TableBody>

@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, updateAppointmentDetail } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -23,19 +23,17 @@ import {
   Table_Head,
   StyledTableCell,
   TableDiv,
-  TableTopmain,
+  TableTopMain,
   TableTop,
   FilterMenu,
   TableOtherContainer,
   RightPrint,
   RightBox,
-  MainBoxtop,
-  TypoSpan,
-
-
+  MainBoxTop,
+  TypoSpan
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
-import { Box, Input, InputAdornment, Typography } from '@mui/material';
+import { Input, InputAdornment } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
@@ -48,12 +46,15 @@ type AppointmentListProps = {
 
 const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments }) => {
   const [page, setPage] = useState(1);
+  const [isPatientNotFound, setIsPatientNotFound] = useState(true);
+
   const dispatch = useDispatch<AppDispatch>();
   const appointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.results) || [];
   const appointmentDetail = useSelector((state: AppState) => state.appointment?.appointmentDetail) || [];
   const isNextAppointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.next);
   const isDetailLoading = useSelector((state: AppState) => state.appointment.isDetailLoading);
-  const isPatientNotFound = true;
+  const filtersData = useSelector((state: AppState) => state.appointment.filtersData);
+  const isFilterDataLoading = useSelector((state: AppState) => state.appointment.isFilterDataLoading);
 
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
@@ -64,7 +65,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   };
 
   useEffect(() => {
-    dispatch(getAppointmentsList({ page_size: 10, page: page }));
+    dispatch(getAppointmentsList({ page_size: 10, page: page })).then(() => {
+      setIsPatientNotFound(false);
+    })
     setPage(page + 1);
   }, []);
 
@@ -110,115 +113,146 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const handlePrint=()=>{
     console.log("print");
   }
+
   const handlePdf=()=>{
     console.log("PDF");
   }
+
+  const getAppointmentFiltersData = () => {
+    dispatch(getFiltersData());
+  }
+
   return (
     <>
-      {/* <HeadingTag variant="h1">My Schedule</HeadingTag> */}
-      <MainBoxtop  >
-      <HeadingTag variant="h1" sx={{margin:'0'}}>
-        My Schedule       
+      <MainBoxTop>
+        <HeadingTag variant="h1" sx={{ margin: "0" }}>
+          My Schedule
         </HeadingTag>
-        <RightPrint>  
-       
-        <RightBox  >
-              <ArrowBackIosNewIcon style={{fontSize:"15px"}}/> 
-        </RightBox>
-
-       <RightBox >
-                  <ArrowForwardIosIcon  style={{fontSize:"15px"}}/>
-        </RightBox>
-        <RightBox onClick={()=>handlePdf()}> 
-              <SaveAltIcon 
-              sx={{fontSize:"20px",  marginRight:"5px",}}/>
-              <TypoSpan variant="caption" >PDF</TypoSpan>
+        <RightPrint>
+          <RightBox>
+            <ArrowBackIosNewIcon style={{ fontSize: "15px" }} />
           </RightBox>
-          
-          <RightBox onClick={()=>handlePrint()}
->
-              <PrintOutlinedIcon style={{fontSize:"20px",marginRight:"5px",}}/>
-              <TypoSpan variant="caption" >Print</TypoSpan>
+  
+          <RightBox>
+            <ArrowForwardIosIcon style={{ fontSize: "15px" }} />
           </RightBox>
-      </RightPrint>     
-      </MainBoxtop>
-
-
-
-      
+          <RightBox onClick={() => handlePdf()}>
+            <SaveAltIcon sx={{ fontSize: "20px", marginRight: "5px" }} />
+            <TypoSpan variant="caption">PDF</TypoSpan>
+          </RightBox>
+  
+          <RightBox onClick={() => handlePrint()}>
+            <PrintOutlinedIcon style={{ fontSize: "20px", marginRight: "5px" }} />
+            <TypoSpan variant="caption">Print</TypoSpan>
+          </RightBox>
+        </RightPrint>
+      </MainBoxTop>
+  
       <TableDiv>
-      <TableTopmain >
-
-        <FilterMenu>
-        <FilterButton />
-        </FilterMenu>
-
-        <TableTop >
-        <Input sx={{"&::before, &::after":{display:'none'}, border: 'none', padding: '10px', width:'100%',fontSize: '14px',fontWeight: '400',lineHeight: '14px',color:'#5C6469',}}
-
-          id="input-with-icon-adornment" placeholder="With sxSearch Patient Name.." inputProps={{ disableUnderline: true }}
-          startAdornment={
-            <InputAdornment position="start">
-              <SearchIcon  sx={{color:'#0D426A',}}/>
-            </InputAdornment>
-          }
-        />
-
-        </TableTop>
-
-        </TableTopmain>
-        {/* Empty data  */}
-      {isPatientNotFound && <TableOtherContainer sx={{ m: '30px 0' }}>
-        <Table aria-label="collapsible table">
-          <Table_Head sx={{ backgroundColor: '#17236D', color: '#fff' }}>
-            <TableRow>
-              <StyledTableCell>Appt Time <ArrowDownwardIcon style={{ verticalAlign: 'middle', fontSize: '18px' }} /></StyledTableCell>
-              <StyledTableCell>Patient Name <ArrowDownwardIcon style={{ verticalAlign: 'middle', fontSize: '18px' }} /></StyledTableCell>
-              <StyledTableCell>Type of Visit</StyledTableCell>
-              <StyledTableCell>Screening</StyledTableCell>
-              <StyledTableCell>Providers</StyledTableCell>
-              <StyledTableCell>Action</StyledTableCell>
-            </TableRow>
-          </Table_Head>
-          <TableBody>
-        <PatientNotFound icon = {true} />
-          </TableBody>
-        </Table>
-        
-      </TableOtherContainer>}
-
-      {!isPatientNotFound && <TableMainContainer sx={{ m: '30px 0' }}>
-        <Table aria-label="collapsible table">
-          <Table_Head sx={{ backgroundColor: '#17236D', color: '#fff' }}>
-            <TableRow>
-              <StyledTableCell>Appt Time <ArrowDownwardIcon style={{ verticalAlign: 'middle', fontSize: '18px' }} /></StyledTableCell>
-              <StyledTableCell>Patient Name <ArrowDownwardIcon style={{ verticalAlign: 'middle', fontSize: '18px' }} /></StyledTableCell>
-              <StyledTableCell>Type of Visit</StyledTableCell>
-              <StyledTableCell>Screening</StyledTableCell>
-              <StyledTableCell>Providers</StyledTableCell>
-              <StyledTableCell>Action</StyledTableCell>
-            </TableRow>
-          </Table_Head>
-          <TableBody>
-          {appointmentsList.map((appointment: AppointmentState,index: number) => (
-              <Row
-                key={index}
-                appointment={appointment}
-                selectedAppointmentUuid={selectedAppointmentUuid}
-                setSelectedAppointmentUuid={setSelectedAppointmentUuid}
-                appointmentDetail={appointmentDetail}
-                appointmentDetails={appointmentDetails}
-                updateOutCome={updateOutCome}
-                isDetailLoading={isDetailLoading}
-              />
-            ))}
-          </TableBody>
-        </Table>
-        
-      </TableMainContainer>}
-   </TableDiv>
+        <TableTopMain>
+          <FilterMenu>
+            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} filtersData={filtersData} isFilterDataLoading={isFilterDataLoading}/>
+          </FilterMenu>
+  
+          <TableTop>
+            <Input
+              sx={{
+                "&::before, &::after": { display: "none" },
+                border: "none",
+                padding: "10px",
+                width: "100%",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "14px",
+                color: "#5C6469",
+              }}
+              id="input-with-icon-adornment"
+              placeholder="Search by patient name or MRN"
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: "#0D426A" }} />
+                </InputAdornment>
+              }
+            />
+          </TableTop>
+        </TableTopMain>
+        {isPatientNotFound && (
+          <TableOtherContainer sx={{ m: "30px 0" }}>
+            <Table aria-label="collapsible table">
+              <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
+                <TableRow>
+                  <StyledTableCell>
+                    Appt Time{" "}
+                    <ArrowDownwardIcon
+                      style={{ verticalAlign: "middle", fontSize: "18px" }}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    Patient Name{" "}
+                    <ArrowDownwardIcon
+                      style={{ verticalAlign: "middle", fontSize: "18px" }}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell>Type of Visit</StyledTableCell>
+                  <StyledTableCell>Screening</StyledTableCell>
+                  <StyledTableCell>Providers</StyledTableCell>
+                  <StyledTableCell>Action</StyledTableCell>
+                </TableRow>
+              </Table_Head>
+              <TableBody>
+                <PatientNotFound icon={false} />
+              </TableBody>
+            </Table>
+          </TableOtherContainer>
+        )}
+  
+        {!isPatientNotFound && (
+          <TableMainContainer sx={{ m: "30px 0" }}>
+            <Table aria-label="collapsible table">
+              <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
+                <TableRow>
+                  <StyledTableCell>
+                    Appt Time{" "}
+                    <ArrowDownwardIcon
+                      style={{ verticalAlign: "middle", fontSize: "18px" }}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    Patient Name{" "}
+                    <ArrowDownwardIcon
+                      style={{ verticalAlign: "middle", fontSize: "18px" }}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell>Type of Visit</StyledTableCell>
+                  <StyledTableCell>Screening</StyledTableCell>
+                  <StyledTableCell>Providers</StyledTableCell>
+                  <StyledTableCell>Action</StyledTableCell>
+                </TableRow>
+              </Table_Head>
+              <TableBody>
+                {appointmentsList.map(
+                  (appointment: AppointmentState, index: number) => (
+                    <Row
+                      key={index}
+                      appointment={appointment}
+                      selectedAppointmentUuid={selectedAppointmentUuid}
+                      setSelectedAppointmentUuid={setSelectedAppointmentUuid}
+                      appointmentDetail={appointmentDetail}
+                      appointmentDetails={appointmentDetails}
+                      updateOutCome={updateOutCome}
+                      isDetailLoading={isDetailLoading}
+                    />
+                  )
+                )}
+              </TableBody>
+            </Table>
+            <div ref={ref}></div>
+          </TableMainContainer>
+        )}
+      </TableDiv>
     </>
   );
+  
 };
 
 export default CollapsibleTable;

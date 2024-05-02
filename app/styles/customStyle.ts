@@ -1,10 +1,8 @@
-import { Diversity1 } from "@mui/icons-material";
 import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer,Link,TableHead, Button, Checkbox } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
-import { cursorTo } from "readline";
 
 interface StyledButtonProps {
-  btnState: string;
+  buttonState: string;
   onClick: () => void;
   children: React.ReactNode;
 }
@@ -46,13 +44,28 @@ export const Typography_Grid = styled('div')
 )
 );
 
+export const LoaderBox = styled('div')
+(({ div }: any) => (
+  { 
+    flexDirection: 'column',  
+    display: 'flex',
+    alignItems:'center',
+    marginTop:'85px',
+    width: '600px',
+    height: '150px',
+  }
+)
+);
+
+
 export const TableMainContainer = styled(TableContainer)
 (({ theme }: any) => (
   {
     boxShadow:'none',
     backgroundColor: 'transparent',
     overflow: 'auto',
-    height: '670px',
+    height: '615px',
+    margin: '10px 0 0 0 !important',
   }
 )
 );
@@ -63,7 +76,6 @@ export const TableOtherContainer = styled(TableContainer)
     boxShadow:'none',
     backgroundColor: 'transparent',
     overflow: 'auto',
-    
   }
 )
 );
@@ -86,7 +98,6 @@ export const StyledText = styled(Typography)(({ div }: any) => ({
 }));
 
 export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
-  
   margin:'20px',
   boxShadow: '0px 2px 5px 0px #0000000D',
   background:'#fff',
@@ -134,11 +145,11 @@ export const IconProgress = styled(Typography)(({ div }: any) => ({
 }));
 
 export const ProviderCell = styled(Typography)(({ div }: any) => ({
-marginLeft:'10px',
-fontSize: '14px',
-fontWeight: '500',
-lineHeight: '20px',
-color:'#344054',
+  marginLeft:'10px',
+  fontSize: '14px',
+  fontWeight: '500',
+  lineHeight: '20px',
+  color:'#344054',
 }));
 
 export const TableMid = styled(TableCell)(({ div }: any) => ({
@@ -156,7 +167,6 @@ export const TableMidData = styled(TableCell)(({ div }: any) => ({
   background:'#EBF4FF',
   padding: '12px',
 }));
-  
 
 export const ActionBtn = styled(Typography)(({ div }: any) => ({
   border: '1px solid #17236D',
@@ -177,24 +187,23 @@ export const Text = styled(Typography)(({ div }: any) => ({
   lineHeight: '16px',
   textAlign: 'left',
   color: '#242629',
-
 }));
   
 export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     background-color: ${(props) => 
-      props.btnState=='active' ? '#0D426A' : 
-      props.btnState=='enable' ? 'transparent' : 
-      props.btnState=='disable' ? 'transparent' : 'transparent'};
+      props.buttonState=='active' ? '#0D426A' : 
+      props.buttonState=='enable' ? 'transparent' : 
+      props.buttonState=='disable' ? 'transparent' : 'transparent'};
     color: ${(props) => 
-      props.btnState=='active' ? '#fff' : 
-      props.btnState=='enable' ? '#5C6469' : 
-      props.btnState=='disable'? '#C8CED2' : '#5C6469'};
+      props.buttonState=='active' ? '#fff' : 
+      props.buttonState=='enable' ? '#5C6469' : 
+      props.buttonState=='disable'? '#C8CED2' : '#5C6469'};
     border: ${props => 
-        props.btnState=='active' ? '1px solid #5C6469' : 
-        props.btnState=='enable'? '1px solid #5C6469' : 
-        props.btnState=='disable'  ? '1px solid #C8CED2' : '1px solid #5C6469'};
+        props.buttonState=='active' ? '1px solid #5C6469' : 
+        props.buttonState=='enable'? '1px solid #5C6469' : 
+        props.buttonState=='disable'  ? '1px solid #C8CED2' : '1px solid #5C6469'};
     cursor: ${props =>
-          props.btnState=='disable'  ? 'not-allowed' : 'pointer'};
+          props.buttonState=='disable'  ? 'not-allowed' : 'pointer'};
     font-size: 10px;
     font-weight: 600;
     line-height: 16px;
@@ -205,17 +214,17 @@ export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     margin-right: 10px;
     &:hover{
       background-color: ${(props) => 
-        props.btnState=='active' ? '#0D426A' : 
-        props.btnState=='enable' ? 'transparent' : 
-        props.btnState=='disable' ? 'transparent' : 'transparent'};
+        props.buttonState=='active' ? '#0D426A' : 
+        props.buttonState=='enable' ? 'transparent' : 
+        props.buttonState=='disable' ? 'transparent' : 'transparent'};
       color: ${(props) => 
-        props.btnState=='active' ? '#fff' : 
-        props.btnState=='enable' ? '#5C6469' : 
-        props.btnState=='disable' ? '#C8CED2' : '#5C6469'};
+        props.buttonState=='active' ? '#fff' : 
+        props.buttonState=='enable' ? '#5C6469' : 
+        props.buttonState=='disable' ? '#C8CED2' : '#5C6469'};
         border: ${props => 
-          props.btnState=='active' ? '1px solid #5C6469' : 
-          props.btnState=='enable' ? '1px solid #5C6469' : 
-          props.btnState=='disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
+          props.buttonState=='active' ? '1px solid #5C6469' : 
+          props.buttonState=='enable' ? '1px solid #5C6469' : 
+          props.buttonState=='disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
     }
 `;
 
@@ -254,14 +263,13 @@ export const HeadingTag= styled(Typography)(({ div }: any) => ({
   margin: '30px 0',
 }));
 
-export const TableTopmain = styled('div')(({ div }: any) => ({
+export const TableTopMain = styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
   margin:'0 10px',
 }));
 
 export const TableTop= styled('div')(({ div }: any) => ({
-  
   width: '500px',
   border: '1px solid #D2E6FF',
   background: '#F3F7FC',
@@ -270,34 +278,22 @@ export const TableTop= styled('div')(({ div }: any) => ({
 }));
 
 export const FilterMenu= styled('div')(({ div }: any) => ({
-
   margin: '0',
-  
 }));
 
-
 export const TableDiv = styled('div')(({ div }: any) => ({
-  
   background: '#fff',
   padding:'10px 0',
   margin:'25px 0',
-
 }));
 
-
 export const BoxFilter = styled('div')(({ div }: any) => ({
-  
   background: '#fff',
   borderBottom: '1px solid #DFE1E6',
   padding:'12px 16px',
-
 }));
 
-
-
- 
-export const FilterButtons = styled('button')(({ div }: any) => ({
-  
+export const FilterButtons = styled('button')(({ div }: any) => ({ 
   fontSize: '14px',
   fontWeight: '600',
   lineHeight: '20px',
@@ -311,10 +307,7 @@ export const FilterButtons = styled('button')(({ div }: any) => ({
   cursor:'pointer',
   background:'#fff',
   width:'auto',
-
 }));
-
-
 
 export const RightPrint= styled('div')(({ div }: any) => ({
   display:'flex' ,
@@ -323,9 +316,7 @@ export const RightPrint= styled('div')(({ div }: any) => ({
   gap: '10px' ,
   alignItems:'center',
   flexWrap:'wrap',
-
 }));
-
 
 export const RightBox= styled('div')(({ div }: any) => ({
   border: '1px solid #D0D5DD' ,
@@ -335,27 +326,22 @@ export const RightBox= styled('div')(({ div }: any) => ({
   padding:'10px 16px',
   display:'flex' ,
   alignItems:'center',
-
 }));
 
-export const MainBoxtop= styled('div')(({ div }: any) => ({
+export const MainBoxTop= styled('div')(({ div }: any) => ({
   display:'flex',
   justifyContent:'space-between',
   alignItems:'center',
   marginTop:'20px'
-
 }));
 
-
-export const BoxfilterLeft= styled(Typography)(({ div }: any) => ({
+export const BoxFilterLeft= styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '600',
   lineHeight: '20px',
   textAlign: 'left',
   color: '#344054',
-
 }));
-
 
 export const TypoSpan= styled(Typography)(({ div }: any) => ({
   fontSize:'14px',
@@ -363,21 +349,18 @@ export const TypoSpan= styled(Typography)(({ div }: any) => ({
   lineHeight:'20px',
   cursor:'pointer',
   color: '#344054',
-
 }));
 
-
-export const BoxfilterRightmid= styled(Typography)(({ div }: any) => ({
+export const BoxFilterRightMid= styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '600',
   lineHeight: '17.05px',
   textAlign: 'left',
   color: '#17236D',
   margin:'0 10px',
-
 }));
 
-export const TablecellHd= styled(TableCell)(({ div }: any) => ({
+export const TableCellHd= styled(TableCell)(({ div }: any) => ({
   fontSize: '11px',
   fontWeight: '700',
   lineHeight: '16px',
@@ -385,10 +368,9 @@ export const TablecellHd= styled(TableCell)(({ div }: any) => ({
   padding:'8px 16px',
   border:'none',
   borderRight:'1px solid #DFE1E6',
-
 }));
 
-export const TablecellHdmain= styled(TableCell)(({ div }: any) => ({
+export const TableCellHdMain= styled(TableCell)(({ div }: any) => ({
   fontSize: '11px',
   fontWeight: '700',
   lineHeight: '16px',
@@ -401,8 +383,7 @@ export const TablecellHdmain= styled(TableCell)(({ div }: any) => ({
   borderRight:'1px solid #DFE1E6',
 }));
 
-
-export const TablecellTd= styled(TableCell)(({ div }: any) => ({
+export const TableCellTd= styled(TableCell)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '400',
   lineHeight: '20px',
@@ -411,70 +392,47 @@ export const TablecellTd= styled(TableCell)(({ div }: any) => ({
   padding:'8px 16px',
   border:'none',
   borderRight:'1px solid #DFE1E6',
-
 }));
 
-export const BoxfilterRight= styled('div')(({ div }: any) => ({
-
+export const BoxFilterRight= styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
-  
 }));
 
 export const CheckboxInner= styled(Checkbox)(({ div }: any) => ({
-
   marginRight:'10px',
   padding:' 0px',
-  
-  
-}));   
-
+}));
 
 export const MainBox= styled('div')(({ div }: any) => ({
   display:'flex',
   alignItems: 'center',
   flexDirection:'column',
-
 }));
 
-export const StyledTablecenter= styled(TableCell)(({ div }: any) => ({
-
+export const StyledTableCenter= styled(TableCell)(({ div }: any) => ({
   borderBottom:'none',
- 
-
 }));
 
-
-
-
-export const MainBoxheading= styled(Typography)(({ div }: any) => ({
+export const MainBoxHeading= styled(Typography)(({ div }: any) => ({
   fontSize: '20px',
   fontWeight: '600',
   lineHeight: '24px',
   textAlign: 'left',
   color:'#172B4D',
   margin:'20px 0',
-
-
 }));
 
-
-export const MainBoxsubheading= styled(Typography)(({ div }: any) => ({
+export const MainBoxSubHeading= styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '400',
   lineHeight: '20px',
   textAlign: 'left',
   color:'#44546F',
   marginBottom:'20px',
-
-
-
 }));
 
-
-
 export const ClearButton = styled('button')(({ div }: any) => ({
-  
   fontSize: '14px',
   fontWeight: '600',
   lineHeight: '18px',
@@ -484,8 +442,4 @@ export const ClearButton = styled('button')(({ div }: any) => ({
   background:'#B5C0C7',
   border:'none',
   color:'#fff',
-
-
 }));
-
-

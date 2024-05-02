@@ -1,5 +1,5 @@
 export const getOutComeBtnState = (detail: any, key: any) => {
-  let btnState = "enable";
+  let buttonState = "enable";
   const {
       clinician_agrees,
       clinician_disagrees,
@@ -7,35 +7,35 @@ export const getOutComeBtnState = (detail: any, key: any) => {
   } = detail;
   if (key == 'clinician_agrees') {
       if (clinician_agrees) {
-          btnState = "active";
+          buttonState = "active";
       }
       if (clinician_disagrees) {
-          btnState = "disable";
+          buttonState = "disable";
       }
   }
 
   if (key == 'clinician_disagrees') {
       if (clinician_disagrees) {
-          btnState = "active";
+          buttonState = "active";
       }
       if (clinician_agrees || test_ordered) {
-          btnState = "disable";
+          buttonState = "disable";
       }
   }
 
   if (key == 'test_ordered') {
       if (test_ordered) {
-          btnState = "active";
+          buttonState = "active";
       }
       if (clinician_agrees) {
-          btnState = "enable";
+          buttonState = "enable";
       }
       if (clinician_disagrees) {
-          btnState = "disable";
+          buttonState = "disable";
       }
       if (test_ordered && clinician_agrees) {
-          btnState = "active";
+          buttonState = "active";
       }
   }
-  return btnState;
+  return buttonState;
 }
