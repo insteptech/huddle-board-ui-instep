@@ -26,10 +26,16 @@ import {
   TableTopmain,
   TableTop,
   FilterMenu,
+  TableOtherContainer,
+  RightPrint,
+  RightBox,
+  MainBoxtop,
+  TypoSpan,
+
 
 } from '../../styles/customStyle';
 import { AppointmentState } from '@/app/redux/slices/appointment';
-import { Box, Input, InputAdornment } from '@mui/material';
+import { Box, Input, InputAdornment, Typography } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
@@ -110,63 +116,32 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   return (
     <>
       {/* <HeadingTag variant="h1">My Schedule</HeadingTag> */}
-      <Box component={'div'} sx={{
-      display:'flex',
-      justifyContent:'space-between',
-      alignItems:'center',
-      marginTop:'20px'
-    }}>
+      <MainBoxtop  >
       <HeadingTag variant="h1" sx={{margin:'0'}}>
         My Schedule       
         </HeadingTag>
-        <div style={{display:"flex" , flexDirection:"row" ,justifyContent: "end", gap: "10px" , alignItems:'center',flexWrap:'wrap'}}>  
+        <RightPrint>  
        
-        <Box        
-        height={35}
-                width={35}
-                display="flex"
-                alignItems="center"
-                gap={1}
-                p={1}
-                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px",background:"#fff", cursor:"pointer",}}>
+        <RightBox  >
               <ArrowBackIosNewIcon style={{fontSize:"15px"}}/> 
-        </Box>
+        </RightBox>
 
-       <Box height={35}
-                width={35}
-                display="flex"
-                alignItems="center"
-                gap={1}
-                p={1}
-                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px", background:"#fff",cursor:"pointer",}}>
+       <RightBox >
                   <ArrowForwardIosIcon  style={{fontSize:"15px"}}/>
-        </Box>
-        <Box onClick={()=>handlePdf()}
-          height={35}
-                width={80}
-                display="flex"
-                alignItems="center"
-                gap={1}
-                p={1}
-                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px", background:"#fff",cursor:"pointer",}}> 
+        </RightBox>
+        <RightBox onClick={()=>handlePdf()}> 
               <SaveAltIcon 
-              style={{fontSize:"15px"}}/>
-              <span style={{fontSize:"14px",fontWeight:"600",lineHeight:"20px",cursor:"pointer",}}>PDF</span>
-          </Box>
+              sx={{fontSize:"20px",  marginRight:"5px",}}/>
+              <TypoSpan variant="caption" >PDF</TypoSpan>
+          </RightBox>
           
-          <Box onClick={()=>handlePrint()}
-            height={35}
-                width={80}
-                display="flex"
-                alignItems="center"
-                gap={1}
-                p={1}
-                sx={{ border: '1px solid #D0D5DD' , borderRadius:"8px", background:"#fff",cursor:"pointer",}}>
-              <PrintOutlinedIcon style={{fontSize:"15px"}}/>
-              <span style={{fontSize:"14px",fontWeight:"600",lineHeight:"20px",}}>Print</span>
-          </Box>
-      </div>     
-      </Box>
+          <RightBox onClick={()=>handlePrint()}
+>
+              <PrintOutlinedIcon style={{fontSize:"20px",marginRight:"5px",}}/>
+              <TypoSpan variant="caption" >Print</TypoSpan>
+          </RightBox>
+      </RightPrint>     
+      </MainBoxtop>
 
 
 
@@ -192,7 +167,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         </TableTop>
 
         </TableTopmain>
-      <TableMainContainer sx={{ m: '30px 0' }}>
+        {/* Empty data  */}
+      {isPatientNotFound && <TableOtherContainer sx={{ m: '30px 0' }}>
         <Table aria-label="collapsible table">
           <Table_Head sx={{ backgroundColor: '#17236D', color: '#fff' }}>
             <TableRow>
@@ -205,7 +181,26 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             </TableRow>
           </Table_Head>
           <TableBody>
-          {isPatientNotFound? <PatientNotFound icon = {false} />:appointmentsList.map((appointment: AppointmentState,index: number) => (
+        <PatientNotFound icon = {true} />
+          </TableBody>
+        </Table>
+        
+      </TableOtherContainer>}
+
+      {!isPatientNotFound && <TableMainContainer sx={{ m: '30px 0' }}>
+        <Table aria-label="collapsible table">
+          <Table_Head sx={{ backgroundColor: '#17236D', color: '#fff' }}>
+            <TableRow>
+              <StyledTableCell>Appt Time <ArrowDownwardIcon style={{ verticalAlign: 'middle', fontSize: '18px' }} /></StyledTableCell>
+              <StyledTableCell>Patient Name <ArrowDownwardIcon style={{ verticalAlign: 'middle', fontSize: '18px' }} /></StyledTableCell>
+              <StyledTableCell>Type of Visit</StyledTableCell>
+              <StyledTableCell>Screening</StyledTableCell>
+              <StyledTableCell>Providers</StyledTableCell>
+              <StyledTableCell>Action</StyledTableCell>
+            </TableRow>
+          </Table_Head>
+          <TableBody>
+          {appointmentsList.map((appointment: AppointmentState,index: number) => (
               <Row
                 key={index}
                 appointment={appointment}
@@ -219,8 +214,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             ))}
           </TableBody>
         </Table>
-        <div ref={ref}></div>
-      </TableMainContainer>
+        
+      </TableMainContainer>}
    </TableDiv>
     </>
   );

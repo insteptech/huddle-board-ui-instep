@@ -57,6 +57,17 @@ export const TableMainContainer = styled(TableContainer)
 )
 );
 
+export const TableOtherContainer = styled(TableContainer)
+(({ theme }: any) => (
+  {
+    boxShadow:'none',
+    backgroundColor: 'transparent',
+    overflow: 'auto',
+    
+  }
+)
+);
+
 export const Table_Head = styled(TableHead)
 (({ theme }: any) => (
   {  
@@ -304,6 +315,38 @@ export const FilterButtons = styled('button')(({ div }: any) => ({
 }));
 
 
+
+export const RightPrint= styled('div')(({ div }: any) => ({
+  display:'flex' ,
+  flexDirection:'row',
+  justifyContent: 'end', 
+  gap: '10px' ,
+  alignItems:'center',
+  flexWrap:'wrap',
+
+}));
+
+
+export const RightBox= styled('div')(({ div }: any) => ({
+  border: '1px solid #D0D5DD' ,
+  borderRadius:'8px',
+  background:'#fff',
+  cursor:'pointer',
+  padding:'10px 16px',
+  display:'flex' ,
+  alignItems:'center',
+
+}));
+
+export const MainBoxtop= styled('div')(({ div }: any) => ({
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'center',
+  marginTop:'20px'
+
+}));
+
+
 export const BoxfilterLeft= styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '600',
@@ -312,6 +355,17 @@ export const BoxfilterLeft= styled(Typography)(({ div }: any) => ({
   color: '#344054',
 
 }));
+
+
+export const TypoSpan= styled(Typography)(({ div }: any) => ({
+  fontSize:'14px',
+  fontWeight:'600',
+  lineHeight:'20px',
+  cursor:'pointer',
+  color: '#344054',
+
+}));
+
 
 export const BoxfilterRightmid= styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
@@ -376,11 +430,62 @@ export const CheckboxInner= styled(Checkbox)(({ div }: any) => ({
 }));   
 
 
+export const MainBox= styled('div')(({ div }: any) => ({
+  display:'flex',
+  alignItems: 'center',
+  flexDirection:'column',
+
+}));
+
+export const StyledTablecenter= styled(TableCell)(({ div }: any) => ({
+
+  borderBottom:'none',
+ 
+
+}));
 
 
 
 
+export const MainBoxheading= styled(Typography)(({ div }: any) => ({
+  fontSize: '20px',
+  fontWeight: '600',
+  lineHeight: '24px',
+  textAlign: 'left',
+  color:'#172B4D',
+  margin:'20px 0',
 
 
+}));
+
+
+export const MainBoxsubheading= styled(Typography)(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '20px',
+  textAlign: 'left',
+  color:'#44546F',
+  marginBottom:'20px',
+
+
+
+}));
+
+
+
+export const ClearButton = styled('button')(({ div }: any) => ({
+  
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '18px',
+  padding:'10px 20px',
+  borderRadius:'3px',
+  cursor:'pointer',
+  background:'#B5C0C7',
+  border:'none',
+  color:'#fff',
+
+
+}));
 
 

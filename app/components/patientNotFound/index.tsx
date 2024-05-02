@@ -3,6 +3,15 @@ import { StyledTableCell } from "@/app/styles/customStyle";
 import { Box, Button, Container } from "@mui/material";
 import TableRow from '@mui/material/TableRow';
 import { QuestionMarkIcon, SearchNotFoundIcon } from '../../images/index';
+import {
+
+    MainBox,
+    MainBoxheading,
+    MainBoxsubheading,
+    StyledTablecenter,
+    ClearButton,
+  
+  } from '../../styles/customStyle';
 
 
 const PatientNotFound = (props : any) => {
@@ -12,44 +21,32 @@ const PatientNotFound = (props : any) => {
     <> 
     {icon?
     <TableRow>
-    <StyledTableCell  sx={{textAlign:'center', color:'#000'}} colSpan={6}>
-        <Box sx={{
-            display:'flex',
-            flexDirection:'column',
-            gap:'10px',
-            alignItems:'center',
-            paddingTop:'30px 10px 30px 10px'
-        }}>
+ <StyledTablecenter  sx={{textAlign:'center', color:'#000'}} colSpan={6}>
+ <MainBox>
             <QuestionMarkIcon/>
-        <Box component={'h2'}>
+        <MainBoxheading variant="h2">
               We can't seem to find the patient you are looking for.
-        </Box>
-        <Box >
+        </MainBoxheading>
+        <MainBoxsubheading >
             Modify your search criteria and search again.
-        </Box>
-        <Button variant="outlined">Clear Search</Button>
+        </MainBoxsubheading>
+        <ClearButton>Clear Search</ClearButton>
     
-        </Box>
-    </StyledTableCell>
+        </MainBox>
+    </StyledTablecenter>
     </TableRow>
     :<TableRow>
-    <StyledTableCell  sx={{textAlign:'center', color:'#000'}} colSpan={6}>
-        <Box sx={{
-            display:'flex',
-            flexDirection:'column',
-            gap:'10px',
-            alignItems:'center',
-            paddingTop:'30px 10px 30px 10px'
-        }}>
+    <StyledTablecenter  sx={{textAlign:'center', color:'#000'}} colSpan={6}>
+        <MainBox>
             <SearchNotFoundIcon/>
-        <Box component={'h2'}>
+        <MainBoxheading variant='h2'>
              No Appointments for today.
-        </Box>
-        <Box>
+        </MainBoxheading>
+        <MainBoxsubheading>
             Try refreshing the page after some time.
-        </Box>      
-        </Box>
-    </StyledTableCell>
+        </MainBoxsubheading>      
+        </MainBox>
+    </StyledTablecenter>
     </TableRow> }
      </>
    

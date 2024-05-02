@@ -141,7 +141,9 @@ function FilterButton() {
       </Table>
     </TableContainer>
              
-                 </Menu>                  
+                 </Menu>   
+                 
+{/*                                 
                     <div>
                 {selectedFilter && (
                     <div>
@@ -153,7 +155,7 @@ function FilterButton() {
                         </ul>
                     </div>
                 )}
-                   </div>
+                   </div> */}
                    
                    </Grid>
                        
