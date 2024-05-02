@@ -68,11 +68,13 @@ function GetScreening({ screening }: { screening: string[] }) {
 const Row = ( props: any) => { 
 const { appointment, selectedAppointmentUuid, setSelectedAppointmentUuid, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading } = props;
 const [open, setOpen] = useState(false);
+const [rowColor, setRowColor] = useState("#fff");
 
 const setRow = (id: any) => {
     setSelectedAppointmentUuid(id);
     appointmentDetails(id);
     setOpen(!open);
+    setRowColor(prevColor => prevColor === '#fff' ? '#D2E6FF' : '#fff')
 };
 
 const renderCellContent = (content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<React.AwaitedReactNode> | null | undefined, isBold: boolean) => (
@@ -81,7 +83,7 @@ const renderCellContent = (content: string | number | boolean | React.ReactEleme
 
 return (
     <>
-    <StyledTableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+    <StyledTableRow sx={{ '& > *': { borderBottom: 'unset', backgroundColor: rowColor  } }}>
         <TdTableCell>
         {renderCellContent(getTime(appointment.appointment_timestamp), appointment.selected_gap_count === 0)}
         </TdTableCell>
