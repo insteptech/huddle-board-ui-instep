@@ -360,7 +360,7 @@ export const BoxFilterRightMid= styled(Typography)(({ div }: any) => ({
   margin:'0 10px',
 }));
 
-export const TableCellHd= styled(TableCell)(({ div }: any) => ({
+export const TableCellHd= styled('div')(({ div }: any) => ({
   fontSize: '11px',
   fontWeight: '700',
   lineHeight: '16px',
@@ -370,7 +370,7 @@ export const TableCellHd= styled(TableCell)(({ div }: any) => ({
   borderRight:'1px solid #DFE1E6',
 }));
 
-export const TableCellHdMain= styled(TableCell)(({ div }: any) => ({
+export const TableCellHdMain= styled('div')(({ div }: any) => ({
   fontSize: '11px',
   fontWeight: '700',
   lineHeight: '16px',
@@ -378,18 +378,18 @@ export const TableCellHdMain= styled(TableCell)(({ div }: any) => ({
   display:'flex',
   alignItems:'Center',
   justifyContent:'space-between',
-  padding:'8px 16px',
+  padding:'8px 12px',
   border:'none',
   borderRight:'1px solid #DFE1E6',
 }));
 
-export const TableCellTd= styled(TableCell)(({ div }: any) => ({
+export const TableCellTd= styled('div')(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '400',
   lineHeight: '20px',
   textAlign: 'left',
   color:'#172B4D',
-  padding:'8px 16px',
+  padding:'8px 12px',
   border:'none',
   borderRight:'1px solid #DFE1E6',
 }));
@@ -442,4 +442,14 @@ export const ClearButton = styled('button')(({ div }: any) => ({
   background:'#B5C0C7',
   border:'none',
   color:'#fff',
+}));
+
+export const TabledataList= styled('div')(({ div }: any) => ({
+  width: '160px',
+}));
+
+
+export const TableData= styled('div')(({ div }: any) => ({
+  display:'flex',
+  justifyContent:'space-between',
 }));

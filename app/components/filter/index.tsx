@@ -23,11 +23,13 @@ import {
     CheckboxInner,
     TableCellHdMain,
     LoaderBox,
+    TabledataList,
+    TableData,
 } from '../../styles/customStyle';
 
 function FilterButton(props:any) {
   const { getAppointmentFiltersData, filtersData, isFilterDataLoading } = props;
-  const { patient_screening, provider, visit_type } = filtersData;
+  const { patient_screening, provider, visit_type } = filtersData || {};
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
 
@@ -123,44 +125,53 @@ function FilterButton(props:any) {
                 </LoaderBox>}
                 {!isFilterDataLoading && <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
-                    <TableRow>
+                    <TableData>
+                      <TabledataList>
                       <TableCellHdMain>
                         Saved Filter{" "}
                         <SettingsOutlinedIcon style={{ fontSize: "12px" }} />
                       </TableCellHdMain>
-                      <TableCellHd>Visit Type ({visit_type.length})</TableCellHd>
-                      <TableCellHd>Screening ({patient_screening.length})</TableCellHd>
-                      <TableCellHd>Providers ({provider.length})</TableCellHd>
-                    </TableRow>
+                      <TableCellTd >savedFilter</TableCellTd>
+                      </TabledataList>
+
+                      <TabledataList>
+                      <TableCellHd>Visit Type ({visit_type?.length})</TableCellHd>
+                      <TableCellTd>
+                          <CheckboxInner
+                            sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                            {...label}
+                          />
+                          New Patient
+                        </TableCellTd>
+                      </TabledataList>
+
+
+                      <TabledataList>
+                      <TableCellHd>Screening ({patient_screening?.length})</TableCellHd>
+                      <TableCellTd>
+                          <CheckboxInner
+                            sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                            {...label}
+                          />
+                          PVD
+                        </TableCellTd>
+                      </TabledataList>
+
+
+                      <TabledataList>
+                      <TableCellHd>Providers ({provider?.length})</TableCellHd>
+                      <TableCellTd>
+                          <CheckboxInner
+                            sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                            {...label}
+                          />
+                          Dr. David Smith
+
+                        </TableCellTd>
+                      </TabledataList>
+                      
+                    </TableData>
                   </TableHead>
-                  <TableBody>
-                    {rows.map((row, i) => (
-                      <TableRow key={i}>
-                        <TableCellTd scope="row">{row.savedFilter}</TableCellTd>
-                        <TableCellTd>
-                          <CheckboxInner
-                            sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
-                            {...label}
-                          />
-                          {row.visitType}
-                        </TableCellTd>
-                        <TableCellTd>
-                          <CheckboxInner
-                            sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
-                            {...label}
-                          />
-                          {row.Screening}
-                        </TableCellTd>
-                        <TableCellTd>
-                          <CheckboxInner
-                            sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
-                            {...label}
-                          />
-                          {row.Providers}
-                        </TableCellTd>
-                      </TableRow>
-                    ))}
-                  </TableBody>
                 </Table>}
               </TableContainer>
             </Menu>
