@@ -30,7 +30,8 @@ import {
     SpanText, 
     ActionBtn, 
     Text, 
-    StyledMuiButton 
+    StyledMuiButton ,
+    StyledPatient
 } from '@/app/styles/customStyle';
 
 import { getOutComeBtnState } from '@/app/utils/appointment';
@@ -86,7 +87,7 @@ return (
         </TdTableCell>
         <TdTableCell>
         <StyledName>
-            {renderCellContent(appointment.patient_name, appointment.selected_gap_count === 0)}
+        <StyledPatient>{renderCellContent(appointment.patient_name, appointment.selected_gap_count === 0)}</StyledPatient>
             <StyledCopy>
             {appointment.mrn}
                 <Tooltip title="Copy" placement="top">
@@ -124,7 +125,7 @@ return (
                     <TableMidData>Screening</TableMidData>
                     <TableMidData>Action</TableMidData>
                     <TableMidData>Reason</TableMidData>
-                    <TableMidData>Outcome</TableMidData>
+                    <TableMidData  sx={{ width: '430px' }}>Outcome</TableMidData>
                 </TableRow>
                 </TableHead>
                 <TableBody>
@@ -133,7 +134,7 @@ return (
                         <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
                         <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                         <TableMidData><Text>{detail.description}</Text></TableMidData>
-                        <TableMidData>
+                        <TableMidData  sx={{ width: '430px' }}>
                         {outComes.map((item,index)=>(
                             <MyButton
                                 key={index}

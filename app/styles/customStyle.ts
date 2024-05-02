@@ -126,6 +126,11 @@ export const LinkText = styled(Link)(({ div }: any) => ({
   background: '#fff',
 }));
 
+export const StyledPatient = styled(Typography)(({ div }: any) => ({
+ 
+  textDecoration:'underline',
+}));
+
 export const StyledName = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   lineHeight: '20px',
@@ -160,6 +165,7 @@ export const TableMid = styled(TableCell)(({ div }: any) => ({
   border: '1px solid #B1C6E2',
   background:'#EBF4FF',
   padding: '12px',
+
 }));
 
 export const TableMidData = styled(TableCell)(({ div }: any) => ({
@@ -178,7 +184,8 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
   borderRadius: '34px',
   color:'#17236D',
   textAlign: 'center',
-  whiteSpace: 'nowrap',
+ 
+  
 }));
   
 export const Text = styled(Typography)(({ div }: any) => ({
@@ -187,6 +194,10 @@ export const Text = styled(Typography)(({ div }: any) => ({
   lineHeight: '16px',
   textAlign: 'left',
   color: '#242629',
+  whiteSpace: 'nowrap',
+  width: '60px',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 }));
   
 export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
@@ -212,6 +223,7 @@ export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
     border-radius: 3px;
     text-align: center;
     margin-right: 10px;
+    margin-bottom: 10px;
     &:hover{
       background-color: ${(props) => 
         props.buttonState=='active' ? '#0D426A' : 
