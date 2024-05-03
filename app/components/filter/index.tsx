@@ -120,7 +120,7 @@ function FilterButton(props:any) {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableData>
-                        <TableDataList>
+                        <TableDataList sx={{width:'160px', }}>
                           <TableCellHdMain>
                             Saved Filter{" "}
                             <SettingsOutlinedIcon style={{ fontSize: "12px" }} />
