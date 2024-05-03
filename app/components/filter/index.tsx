@@ -24,6 +24,7 @@ import {
     TableDataList,
     TableData,
 } from '../../styles/customStyle';
+import SaveFilterModal from '@/app/components/saveFilterModal';
 
 function FilterButton(props:any) {
   const { getAppointmentFiltersData, filtersData, isFilterDataLoading } = props;
@@ -32,6 +33,17 @@ function FilterButton(props:any) {
   
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [filterName , setFilterName] = React.useState('');
+
+  const modalToggle = () => {
+    setIsModalOpen(!isModalOpen);
+  }
+
+  const handleInput = (data: any) => {    
+    setFilterName(data.target.value);
+  }
 
   const [selectedVisitType, setSelectedVisitType] = useState([]);
   const [selectedScreening, setSelectedScreening] = useState([]);
@@ -62,6 +74,10 @@ function FilterButton(props:any) {
   const applyFilters = () => {
     console.log('selectedFilter:--', selectedFilter);
     
+  }
+
+  const createFilter = () => {
+    modalToggle();
   }
   
 
@@ -101,7 +117,7 @@ function FilterButton(props:any) {
                   <BoxFilterLeft>Filter by</BoxFilterLeft>
                   <BoxFilterRight>
                     <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={()=>applyFilters()}>Apply</BoxFilterRightMid>
-                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }}>
+                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilter()}>
                       Create Filter
                     </BoxFilterRightMid>
                     <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }}>
@@ -190,6 +206,7 @@ function FilterButton(props:any) {
           </Grid>
         </Grid>
       </Box>
+      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput}/>
     </>
   );
   

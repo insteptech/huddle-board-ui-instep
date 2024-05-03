@@ -36,7 +36,6 @@ import { AppointmentState } from '@/app/redux/slices/appointment';
 import { Box, Input, InputAdornment } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
-import FilterModal from '@/app/components/filterModal';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -157,7 +156,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           <FilterMenu>
             <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} filtersData={filtersData} isFilterDataLoading={isFilterDataLoading}/>
           </FilterMenu>
-          <FilterModal filterTitle = "deleteFilter"/>
           <TableTop>
             <Input
               sx={{
