@@ -68,14 +68,18 @@ function GetScreening({ screening }: { screening: string[] }) {
 const Row = ( props: any) => { 
 const { appointment, selectedAppointmentUuid, setSelectedAppointmentUuid, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading } = props;
 const [open, setOpen] = useState(false);
-const [rowColor, setRowColor] = useState("#fff");
+const [isCopied, setIsCopied] = useState(false);
 
 const setRow = (id: any) => {
     setSelectedAppointmentUuid(id);
     appointmentDetails(id);
     setOpen(!open);
-    setRowColor(prevColor => prevColor === '#fff' ? '#D2E6FF' : '#fff')
 };
+
+const copyMrn = (mrn: any) => {
+    navigator.clipboard.writeText(mrn);
+    setIsCopied(true);
+}
 
 const renderCellContent = (content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<React.AwaitedReactNode> | null | undefined, isBold: boolean) => (
     isBold ? <FontBold>{content}</FontBold> : <StyledText>{content}</StyledText>
@@ -83,7 +87,7 @@ const renderCellContent = (content: string | number | boolean | React.ReactEleme
 
 return (
     <>
-    <StyledTableRow sx={{ '& > *': { borderBottom: 'unset', backgroundColor: rowColor  } }}>
+    <StyledTableRow sx={{ '& > *': { borderBottom: 'unset', backgroundColor: (open && selectedAppointmentUuid === appointment.uuid)? '#D2E6FF' : '#fff'  } }}>
         <TdTableCell>
         {renderCellContent(getTime(appointment.appointment_timestamp), appointment.selected_gap_count === 0)}
         </TdTableCell>
@@ -91,10 +95,10 @@ return (
         <StyledName>
         <StyledPatient>{renderCellContent(appointment.patient_name, appointment.selected_gap_count === 0)}</StyledPatient>
             <StyledCopy>
-            {appointment.mrn}
-                <Tooltip title="Copy" placement="top">
+            MRN: {appointment.mrn}
+                <Tooltip title={isCopied ? "Copied" : "Copy"} placement="top">
                     <ContentCopyIcon
-                        onClick={() => navigator.clipboard.writeText(appointment.mrn)}
+                        onClick={() => copyMrn(appointment.mrn)}
                         sx={{ verticalAlign: 'middle', color: '#17236D', fontSize: '15px', marginLeft: '5px' }}
                     />
                 </Tooltip>
@@ -111,7 +115,7 @@ return (
             </Stack>
             <ProviderCell>{`${appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
             <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid)}>
-            {open && selectedAppointmentUuid === appointment.uuid ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                {open && selectedAppointmentUuid === appointment.uuid ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
             </IconButton>
         </IconProgress>
         </TdTableCell>
