@@ -474,3 +474,120 @@ export const TableData= styled('div')(({ div }: any) => ({
   display:'flex',
   justifyContent:'space-between',
 }));
+
+
+export const ModalHder= styled('div')(({ div }: any) => ({
+  padding:'0 24px',
+  margin:'15px 0',
+  display:'flex',
+  alignItems:'Center',
+  justifyContent:'space-between',
+}));
+
+
+export const ModalHderIcon= styled('div')(({ div }: any) => ({
+  width:'48px',
+  height: '48px',
+  border:'1px solid #EAECF0',
+  borderRadius:'10px',
+  display:'flex',
+  alignItems:'Center',
+  justifyContent:'Center',
+}));
+
+
+export const DialogTitleInner = styled(Typography)(({ div }: any) => ({
+  fontSize: '18px',
+  fontWeight: '600',
+  lineHeight: '28px',
+  color:'#101828',
+}));
+
+export const DialogContentTextInner = styled(Typography)(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '20px',
+  color:'#8B8D97',
+}));
+
+export const InputTitleInner = styled(Typography)(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '20px',
+  color:'#344054',
+  marginBottom:'10px',
+}));
+
+
+
+export const DialogContent = styled('div')(({ div }: any) => ({
+  padding:'0 24px',
+  margin:'0 0 15px 0',
+}));
+
+export const DialogActionsMain = styled('div')(({ div }: any) => ({
+  display:'flex',
+  alignItems:'Center',
+  justifyContent:'space-between',
+  gap:'10px',
+  margin:'30px 0 20px 0',
+}));
+
+
+
+
+export const ButtonCancel = styled('button')(({ div }: any) => ({ 
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '24px',
+  border: '1px solid #D0D5DD',
+  padding:'10px 18px',
+  borderRadius:'8px',
+  width:'50%',
+  cursor:'pointer',
+  background:'#fff',
+  "&:hover": {
+    background: '#F9FAFB',
+  },
+
+}));
+
+export const ButtonSave = styled('button')(({ div }: any) => ({ 
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '24px',
+  border: '1px solid #D0D5DD',
+  padding:'10px 18px',
+  borderRadius:'8px',
+  cursor:'pointer',
+  background:'#17236D',
+  color:'#fff',
+  width:'50%',
+   "&:hover": {
+    background: '#6941C6',
+  },
+  
+}));
+
+
+
+export const TextFieldInput = styled('input')(({ div }: any) => ({ 
+  fontSize: '16px',
+  fontWeight: '400',
+  lineHeight: '24px',
+  border: '1px solid #D0D5DD',
+  padding:'10px 14px',
+  borderRadius:'8px',
+  background:'#fff',
+  color:'#0D426A',
+  width:'100%',
+
+  "&:focus": {
+    
+    boxShadow: 'unset',
+    outline:'0',
+ 
+  },
+  
+}));
+

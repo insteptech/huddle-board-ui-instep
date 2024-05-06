@@ -2,15 +2,26 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { Container } from "@mui/material";
-import OutlinedFlagOutlinedIcon from "@mui/icons-material/OutlinedFlagOutlined";
-import TextField from "@mui/material/TextField";
+import AssistantPhotoOutlinedIcon from '@mui/icons-material/AssistantPhotoOutlined';
+
+
+import {
+  ModalHder,
+  ModalHderIcon,
+  DialogTitleInner,
+  DialogContentTextInner,
+  DialogContent,
+  InputTitleInner,
+  DialogActionsMain,
+  ButtonSave,
+  ButtonCancel,
+  TextFieldInput,
+} from '../../styles/customStyle';
 
 const SaveTransition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -27,75 +38,61 @@ const SaveFilterModal = (props: any) => {
   return (
     <React.Fragment>
       <Dialog
+       sx={{ zIndex: "99999", }}
+       PaperProps={{ sx: { borderRadius: '12px',width:'400px' } }} 
         open={isModalOpen}
         TransitionComponent={SaveTransition}
         keepMounted
         onClose={modalToggle}
         aria-describedby="alert-dialog-slide-description"
       >
-        <Container
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "10px",
-          }}
-        >
-          <OutlinedFlagOutlinedIcon
-            fontSize="large"
-            sx={{
-              border: "1px solid #EAECF0",
-              padding: "7px",
-              borderRadius: "5px",
-            }}
+        <ModalHder>
+        <ModalHderIcon>
+          <AssistantPhotoOutlinedIcon
+            
           />
-          <CloseIcon onClick={modalToggle} />
-        </Container>
+           </ModalHderIcon>
+          <CloseIcon sx={{ cursor:'pointer', }} onClick={modalToggle} />
+        </ModalHder>
 
-        <DialogTitle>{"Save a filter"}</DialogTitle>
+
         <DialogContent>
+        <DialogTitleInner  >{"Save a filter"}</DialogTitleInner>
+        
           <DialogContentText id="alert-dialog-slide-description">
+          <DialogContentTextInner>
             Using a set of filters regularly, save it to reuse.
+          </DialogContentTextInner>
           </DialogContentText>
-        </DialogContent>
+          </DialogContent>
+
+
+
         <Container>
-          Filter
-          <TextField
+        <InputTitleInner  >Filter name</InputTitleInner>
+          <TextFieldInput
             value={filterName}
-            fullWidth
             id="fullWidth"
-            size="small"
             placeholder="AWV+PVD"
             onChange={setFilterName}
           />
-          <DialogActions sx={{ marginBottom: "10px" }}>
-            <Button
+          <DialogActionsMain>
+            <ButtonCancel
               onClick={modalToggle}
-              variant="contained"
-              sx={{
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #D0D5DD",
-                color: "#344054",
-                width: "50%",
-                textTransform: "capitalize",
-              }}
+              
+              
             >
               Cancel
-            </Button>
-            <Button
+            </ButtonCancel>
+            <ButtonSave
               onClick={modalToggle}
-              variant="contained"
-              sx={{
-                backgroundColor: "#17236D",
-                border: "1px solid #17236D",
-                color: "#FFFFFF",
-                width: "50%",
-                textTransform: "capitalize",
-              }}
+              
+            
               disabled={filterName.length === 0}
             >
               Save
-            </Button>
-          </DialogActions>
+            </ButtonSave>
+          </DialogActionsMain>
         </Container>
       </Dialog>
     </React.Fragment>
