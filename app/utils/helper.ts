@@ -30,14 +30,24 @@ export const deleteCookie = (name: string) => {
 };
 
 export const getTime = (timestamp:string) => {
-  var date = new Date(timestamp);
-  var hour = date.getHours();
-  var minute = date.getMinutes();
+  // var date = new Date(timestamp);
+  // var hour = date.getHours();
+  // var minute = date.getMinutes();
 
-  var amPm = "am";
-  if( hour > 12 ) {
-      hour -= 12;
-      amPm = "pm";
-  }
-  return hour + ":" + minute + " " + amPm ;
+  // var amPm = "am";
+  // if( hour > 12 ) {
+  //     hour -= 12;
+  //     amPm = "pm";
+  // }
+  // return hour + ":" + minute + " " + amPm ;
+
+
+  const date = new Date(timestamp);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+  const formattedTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
+  return formattedTime;
 }

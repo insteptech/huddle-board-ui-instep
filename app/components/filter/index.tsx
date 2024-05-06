@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import Paper from '@mui/material/Paper';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import { useDispatch } from 'react-redux';
 
 import {
     BoxFilter,
@@ -25,17 +26,22 @@ import {
     TableData,
 } from '../../styles/customStyle';
 import SaveFilterModal from '@/app/components/saveFilterModal';
+import { AppDispatch } from '@/app/redux/store';
+import { updateFilter } from '@/app/redux/slices/appointment';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, filtersData, isFilterDataLoading } = props;
-  const { patient_screening, provider, visit_type } = filtersData || {};
+  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment } = props;
+  const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
-
+  const [selectedVisitType, setSelectedVisitType] = useState<any>([]);
+  const [selectedScreening, setSelectedScreening] = useState<any>([]);
+  const [selectedProviders, setSelectedProviders] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
+  const dispatch = useDispatch<AppDispatch>();
 
   const modalToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -45,26 +51,40 @@ function FilterButton(props:any) {
     setFilterName(data.target.value);
   }
 
-  const [selectedVisitType, setSelectedVisitType] = useState([]);
-  const [selectedScreening, setSelectedScreening] = useState([]);
-  const [selectedProviders, setSelectedProviders] = useState([]);
-
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
     getAppointmentFiltersData();
   };
 
-  const handleMenuItemClick = (filter: any, type: string) => {
-    console.log('filter:--',filter,'type:--',type );
+  const handleMenuItemClick = (filter: any | never, type: string) => {
     if(type === "visit_type") {
-      // setSelectedVisitType(selectedVisitType.push(filter.uuid))
-
+      const index = selectedVisitType.indexOf(filter.visit_type);
+      if (index === -1) {
+        setSelectedVisitType([...selectedVisitType, filter.visit_type]);
+      } else {
+        const updatedEmployees = [...selectedVisitType];
+        updatedEmployees.splice(index, 1);
+        setSelectedVisitType(updatedEmployees);
+      }
     } else if (type === "patient_screening") {
-
+      const index = selectedScreening.indexOf(filter.uuid);
+      if (index === -1) {
+        setSelectedScreening([...selectedScreening, filter.uuid]);
+      } else {
+        const updatedEmployees = [...selectedScreening];
+        updatedEmployees.splice(index, 1);
+        setSelectedScreening(updatedEmployees);
+      }
     } else if (type === "provider") {
-
+      const index = selectedProviders.indexOf(filter.uuid);
+      if (index === -1) {
+        setSelectedProviders([...selectedProviders, filter.uuid]);
+      } else {
+        const updatedEmployees = [...selectedProviders];
+        updatedEmployees.splice(index, 1);
+        setSelectedProviders(updatedEmployees);
+      }
     }
-    
   };
 
   const handleClose = () => {
@@ -72,8 +92,16 @@ function FilterButton(props:any) {
   };
 
   const applyFilters = () => {
-    console.log('selectedFilter:--', selectedFilter);
+    const filters = {
+      visit_type: selectedVisitType,
+      providers_uuids: selectedProviders,
+      screening_uuids: selectedScreening,
+      page: 1
+    };
+    console.log('filters:--',filters);
     
+    // dispatch(updateFilter(filters));
+    // loadMoreAppointment();
   }
 
   const createFilter = () => {

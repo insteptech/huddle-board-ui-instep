@@ -54,7 +54,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const appointmentDetail = useSelector((state: AppState) => state.appointment?.appointmentDetail) || [];
   const isNextAppointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.next);
   const isDetailLoading = useSelector((state: AppState) => state.appointment.isDetailLoading);
-  const filtersData = useSelector((state: AppState) => state.appointment.filtersData);
+  const appointmentFiltersData = useSelector((state: AppState) => state.appointment.appointmentFiltersData);
   const isFilterDataLoading = useSelector((state: AppState) => state.appointment.isFilterDataLoading);
 
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
@@ -154,7 +154,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       <TableDiv>
         <TableTopMain>
           <FilterMenu>
-            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} filtersData={filtersData} isFilterDataLoading={isFilterDataLoading}/>
+            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} appointmentFiltersData={appointmentFiltersData} isFilterDataLoading={isFilterDataLoading}/>
           </FilterMenu>
           <TableTop>
             <Input

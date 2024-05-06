@@ -11,13 +11,26 @@ export type AppointmentsState = {
     appointmentDetail: AppointmentDetail[];
     selectedPatientDetail: string | null;
     isDetailLoading: boolean;
-    filtersData: AppointmentFiltersDataState | null;
+    appointmentFiltersData: AppointmentFiltersDataState | null;
     isFilterDataLoading: boolean;
+    filtersData: FiltersDataState;
 };
+
+export type FiltersDataState = {
+  page_size?: number,
+  page?: number,
+  appointment_start_date?: string | number,
+  appointment_end_date?: string | number,
+  visit_type?: string[],
+  providers_uuids?: string[],
+  screening_uuids?: string[],
+  patient_name?: string,
+  sort_by?: string
+}
 
 export type AppointmentFiltersDataState = {
   patient_screening: IFilterDataState[],
-  provider: IFilterDataState[],
+  providers_uuids: IFilterDataState[],
   visit_type: IFilterDataState[]
 }
 
@@ -34,7 +47,7 @@ export type AppointmentState = {
     gap_count: Number,
     selected_gap_count: Number,
     screening: String[],
-    provider: String,
+    providers_uuids: String,
     mrn: String
 }
 
@@ -55,8 +68,12 @@ const initialState: AppointmentsState = {
     appointmentDetail: [],
     selectedPatientDetail: null,
     isDetailLoading: false,
-    filtersData: null,
-    isFilterDataLoading: false
+    appointmentFiltersData: null,
+    isFilterDataLoading: false,
+    filtersData: {
+      page_size: 10,
+      page: 1,
+    }
 };
 
 export const appointment = createSlice({
@@ -65,6 +82,9 @@ export const appointment = createSlice({
   reducers: {
     locationData(state, action) {
       console.log('state:--',state, 'action:---',action);
+    },
+    updateFilter(state, {payload}) {
+      state.filtersData = {...state.filtersData, ...payload};
     }
   },
   extraReducers: (builder) => {
@@ -106,7 +126,7 @@ export const appointment = createSlice({
       state.isFilterDataLoading = false;
     });
     builder.addCase(getFiltersData.fulfilled, (state, { payload }) => {
-      state.filtersData = payload;
+      state.appointmentFiltersData = payload;
       state.isFilterDataLoading = false;
     });
   },
@@ -140,5 +160,5 @@ const appointmentsList = (previousAppointments: any, payload: any) => {
   }
 };
 
-export const { locationData } = appointment.actions;
+export const { locationData, updateFilter } = appointment.actions;
 export default appointment.reducer;
