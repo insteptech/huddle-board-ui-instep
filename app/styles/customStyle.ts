@@ -126,18 +126,18 @@ export const LinkText = styled(Link)(({ div }: any) => ({
   background: '#fff',
 }));
 
-export const StyledPatient = styled(Typography)(({ div }: any) => ({
+export const StyledPatient = styled('div')(({ div }: any) => ({
  
   textDecoration:'underline',
 }));
 
-export const StyledName = styled(Typography)(({ div }: any) => ({
+export const StyledName = styled('div')(({ div }: any) => ({
   fontSize: '14px',
   lineHeight: '20px',
   color:'#17236D',
 }));
 
-export const StyledCopy = styled(Typography)(({ div }: any) => ({
+export const StyledCopy = styled('div')(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '400',
   lineHeight: '20px',
@@ -496,7 +496,7 @@ export const ModalHeaderIcon= styled('div')(({ div }: any) => ({
 }));
 
 
-export const DialogTitleInner = styled(Typography)(({ div }: any) => ({
+export const DialogTitleInner = styled('h2')(({ div }: any) => ({
   fontSize: '18px',
   fontWeight: '600',
   lineHeight: '28px',
@@ -524,6 +524,12 @@ export const DialogContent = styled('div')(({ div }: any) => ({
   padding:'0 24px',
   margin:'0 0 15px 0',
 }));
+
+export const DialogContentTexts = styled('div')(({ div }: any) => ({
+  background: '#fff',
+}));
+
+
 
 export const DialogActionsMain = styled('div')(({ div }: any) => ({
   display:'flex',

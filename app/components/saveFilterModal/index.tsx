@@ -1,6 +1,5 @@
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
-import DialogContentText from "@mui/material/DialogContentText";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,6 +17,7 @@ import {
   ButtonSave,
   ButtonCancel,
   TextFieldInput,
+  DialogContentTexts,
 } from "../../styles/customStyle";
 
 const SaveTransition = React.forwardRef(function Transition(
@@ -53,11 +53,11 @@ const SaveFilterModal = (props: any) => {
         <DialogContent>
           <DialogTitleInner>{"Save a filter"}</DialogTitleInner>
 
-          <DialogContentText id="alert-dialog-slide-description">
+          <DialogContentTexts id="alert-dialog-slide-description">
             <DialogContentTextInner>
               Using a set of filters regularly, save it to reuse.
             </DialogContentTextInner>
-          </DialogContentText>
+          </DialogContentTexts>
         </DialogContent>
 
         <Container>
