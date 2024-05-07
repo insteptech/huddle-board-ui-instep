@@ -49,7 +49,7 @@ const outComes = [{name:"Clinician Agrees", key:"clinician_agrees"},{name:"Clini
 const MyButton: React.FC<MyButtonProps> = ({ buttonState, onClick, children }: any) => {
     return (
         <StyledMuiButton buttonState={buttonState} onClick={onClick}>
-        {children}
+            {children}
         </StyledMuiButton>
     );
 };
@@ -111,7 +111,7 @@ return (
         <TdTableCell>
         <IconProgress>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
-            <BorderLinearProgress variant="determinate" value={(appointment.selected_gap_count / appointment.gap_count) * 100} />
+                <BorderLinearProgress variant="determinate" value={(appointment.selected_gap_count / appointment.gap_count) * 100} />
             </Stack>
             <ProviderCell>{`${appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
             <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid)}>

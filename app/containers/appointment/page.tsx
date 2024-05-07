@@ -32,7 +32,7 @@ import {
   MainBoxTop,
   TypoSpan
 } from '../../styles/customStyle';
-import { AppointmentState } from '@/app/redux/slices/appointment';
+import { AppointmentState, FiltersDataState, updateFilter } from '@/app/redux/slices/appointment';
 import { Box, Input, InputAdornment } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
@@ -46,8 +46,8 @@ type AppointmentListProps = {
 };
 
 const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments }) => {
-  const [page, setPage] = useState(1);
   const [isPatientNotFound, setIsPatientNotFound] = useState(true);
+  const [isClearFilter, setIsClearFilter] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const appointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.results) || [];
@@ -56,20 +56,29 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const isDetailLoading = useSelector((state: AppState) => state.appointment.isDetailLoading);
   const appointmentFiltersData = useSelector((state: AppState) => state.appointment.appointmentFiltersData);
   const isFilterDataLoading = useSelector((state: AppState) => state.appointment.isFilterDataLoading);
+  const filters = useSelector((state: AppState) => state.appointment.filtersData);
+  const { page } = filters;
 
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
 
-  const loadMoreAppointment = () => {
-    dispatch(getAppointmentsList({ page: page, page_size: 10 }));
-    setPage(page + 1);
+  const loadMoreAppointment = (filter?: FiltersDataState) => {    
+    dispatch(getAppointmentsList(filter || filters)).then(( response: any ) => {
+      if(response?.payload?.results.length===0){
+        setIsClearFilter(true);
+      } else {
+        setIsClearFilter(false);
+      }
+      
+    })
+    dispatch(updateFilter({ page: Number(page) + 1 }));
   };
 
   useEffect(() => {
-    dispatch(getAppointmentsList({ page_size: 10, page: page })).then(() => {
+    dispatch(getAppointmentsList(filters)).then(() => {
       setIsPatientNotFound(false);
     })
-    setPage(page + 1);
+    dispatch(updateFilter({ page: Number(page) + 1 }));
   }, []);
 
   useEffect(() => {
@@ -154,7 +163,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       <TableDiv>
         <TableTopMain>
           <FilterMenu>
-            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} appointmentFiltersData={appointmentFiltersData} isFilterDataLoading={isFilterDataLoading}/>
+            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} appointmentFiltersData={appointmentFiltersData} isFilterDataLoading={isFilterDataLoading} loadMoreAppointment={loadMoreAppointment} filters={filters}/>
           </FilterMenu>
           <TableTop>
             <Input
@@ -178,7 +187,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             />
           </TableTop>
         </TableTopMain>
-        {isPatientNotFound && (
+        {(isPatientNotFound || isClearFilter) && (
           <TableOtherContainer sx={{ m: "30px 0" }}>
             <Table aria-label="collapsible table">
               <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
@@ -202,13 +211,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 </TableRow>
               </Table_Head>
               <TableBody>
-                <PatientNotFound icon={false} />
+                <PatientNotFound icon={isClearFilter} />
               </TableBody>
             </Table>
           </TableOtherContainer>
         )}
   
-        {!isPatientNotFound && (
+        {!isPatientNotFound && !isClearFilter && (
           <TableMainContainer sx={{ m: "30px 0" }}>
             <Table aria-label="collapsible table">
               <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>

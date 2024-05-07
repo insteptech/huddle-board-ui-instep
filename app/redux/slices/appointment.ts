@@ -85,7 +85,10 @@ export const appointment = createSlice({
     },
     updateFilter(state, {payload}) {
       state.filtersData = {...state.filtersData, ...payload};
-    }
+    },
+    emptyAppointmentList(state) {
+      state.appointmentsData = {};
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAppointmentsList.pending, (state, action) => {
@@ -160,5 +163,5 @@ const appointmentsList = (previousAppointments: any, payload: any) => {
   }
 };
 
-export const { locationData, updateFilter } = appointment.actions;
+export const { locationData, updateFilter, emptyAppointmentList } = appointment.actions;
 export default appointment.reducer;

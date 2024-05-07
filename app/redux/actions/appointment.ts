@@ -1,5 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '../config/axiosInstance';
+import { FiltersDataState } from '../slices/appointment';
+import { urlParams } from '@/app/utils/helper';
 
 export interface IGetAppointmentsListPayload {
   page_size: number,
@@ -20,8 +22,8 @@ export interface IUpdateAppointmentDetailPayload {
   screening_id: string;
 }
 
-export const getAppointmentsList = createAsyncThunk('getAppointmentsList', async (payload: IGetAppointmentsListPayload) => {  
-  const result = await axiosInstance.get(`appointment-details/?page_size=${payload.page_size}&page=${payload.page}`, payload);
+export const getAppointmentsList = createAsyncThunk('getAppointmentsList', async (payload: FiltersDataState) => {  
+  const result = await axiosInstance.get(`appointment-details/?${urlParams(payload)}`, payload);
   return result.data;
 });
 

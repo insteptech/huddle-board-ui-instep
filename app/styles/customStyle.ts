@@ -144,7 +144,7 @@ export const StyledCopy = styled(Typography)(({ div }: any) => ({
   color:'#475467',
 }));
 
-export const IconProgress = styled(Typography)(({ div }: any) => ({
+export const IconProgress = styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems:'center',
 }));
@@ -195,7 +195,7 @@ export const Text = styled(Typography)(({ div }: any) => ({
   textAlign: 'left',
   color: '#242629',
   whiteSpace: 'nowrap',
-  width: '60px',
+  width: '120px',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
 }));
@@ -462,7 +462,7 @@ export const ClearButton = styled('button')(({ div }: any) => ({
   color:'#fff',
 }));
 
-export const TableDataList= styled('div')(({ div }: any) => ({
+export const TableDataList= styled('th')(({ div }: any) => ({
   width:'215px',
   height: '300px',
   overflowX: 'auto',
@@ -470,13 +470,13 @@ export const TableDataList= styled('div')(({ div }: any) => ({
 }));
 
 
-export const TableData= styled('div')(({ div }: any) => ({
+export const TableData= styled('tr')(({ div }: any) => ({
   display:'flex',
   justifyContent:'space-between',
 }));
 
 
-export const ModalHder= styled('div')(({ div }: any) => ({
+export const ModalHeader= styled('div')(({ div }: any) => ({
   padding:'0 24px',
   margin:'15px 0',
   display:'flex',
@@ -485,7 +485,7 @@ export const ModalHder= styled('div')(({ div }: any) => ({
 }));
 
 
-export const ModalHderIcon= styled('div')(({ div }: any) => ({
+export const ModalHeaderIcon= styled('div')(({ div }: any) => ({
   width:'48px',
   height: '48px',
   border:'1px solid #EAECF0',
@@ -546,6 +546,7 @@ export const ButtonCancel = styled('button')(({ div }: any) => ({
   width:'50%',
   cursor:'pointer',
   background:'#fff',
+  color:'#344054',
   "&:hover": {
     background: '#F9FAFB',
   },

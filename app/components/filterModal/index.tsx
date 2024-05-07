@@ -38,7 +38,6 @@ const FilterModal =(props:any)=> {
     const [input , setInput] = React.useState()
 
     const {filterTitle} = props
-    console.log(filterTitle)
   
     const handleClickOpen = () => {
       setOpen(true);

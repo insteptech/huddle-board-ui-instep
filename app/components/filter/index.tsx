@@ -27,18 +27,19 @@ import {
 } from '../../styles/customStyle';
 import SaveFilterModal from '@/app/components/saveFilterModal';
 import { AppDispatch } from '@/app/redux/store';
-import { updateFilter } from '@/app/redux/slices/appointment';
+import { emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment } = props;
+  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
+  
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
-  const [selectedVisitType, setSelectedVisitType] = useState<any>([]);
-  const [selectedScreening, setSelectedScreening] = useState<any>([]);
-  const [selectedProviders, setSelectedProviders] = useState<any>([]);
+  const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_type||[]);
+  const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
+  const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
   const dispatch = useDispatch<AppDispatch>();
@@ -96,16 +97,35 @@ function FilterButton(props:any) {
       visit_type: selectedVisitType,
       providers_uuids: selectedProviders,
       screening_uuids: selectedScreening,
-      page: 1
+      page: 1,
+      page_size: 10
     };
-    console.log('filters:--',filters);
-    
-    // dispatch(updateFilter(filters));
-    // loadMoreAppointment();
+        
+    dispatch(updateFilter(filters));
+    dispatch(emptyAppointmentList());
+    loadMoreAppointment(filters);
+    setAnchorEl(null);
   }
 
   const createFilter = () => {
     modalToggle();
+  }
+
+  const resetFilters = () => {
+    const filters = {
+      visit_type: [],
+      providers_uuids: [],
+      screening_uuids: [],
+      page: 1,
+      page_size: 10
+    };
+    setSelectedVisitType([]);
+    setSelectedScreening([]);
+    setSelectedProviders([]);
+    dispatch(updateFilter(filters));
+    dispatch(emptyAppointmentList());
+    loadMoreAppointment(filters);
+    setAnchorEl(null);
   }
   
 
@@ -148,7 +168,7 @@ function FilterButton(props:any) {
                     <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilter()}>
                       Create Filter
                     </BoxFilterRightMid>
-                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }}>
+                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>resetFilters()}>
                       Reset
                     </BoxFilterRightMid>
                   </BoxFilterRight>
@@ -184,6 +204,7 @@ function FilterButton(props:any) {
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
                                 onClick={()=>handleMenuItemClick(visit,'visit_type')}
+                                checked={filters?.visit_type?.includes(visit.visit_type)|| selectedVisitType?.includes(visit.visit_type)|| false}
                               />
                               {visit.visit_type}
                             </TableCellTd>
@@ -202,6 +223,7 @@ function FilterButton(props:any) {
                                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                   {...label}
                                   onClick={()=>handleMenuItemClick(patient,'patient_screening')}
+                                  checked={filters?.screening_uuids?.includes(patient.uuid)|| selectedScreening?.includes(patient.uuid)||false} 
                                 />
                                 {patient.name}
                               </TableCellTd>
@@ -220,6 +242,7 @@ function FilterButton(props:any) {
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
                                 onClick={()=>handleMenuItemClick(pro,'provider')}
+                                checked={filters?.providers_uuids?.includes(pro.uuid)||selectedProviders?.includes(pro.uuid)||false} 
                               />
                               {pro.name}
                             </TableCellTd>

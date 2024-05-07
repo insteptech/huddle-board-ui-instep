@@ -30,18 +30,6 @@ export const deleteCookie = (name: string) => {
 };
 
 export const getTime = (timestamp:string) => {
-  // var date = new Date(timestamp);
-  // var hour = date.getHours();
-  // var minute = date.getMinutes();
-
-  // var amPm = "am";
-  // if( hour > 12 ) {
-  //     hour -= 12;
-  //     amPm = "pm";
-  // }
-  // return hour + ":" + minute + " " + amPm ;
-
-
   const date = new Date(timestamp);
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -50,4 +38,14 @@ export const getTime = (timestamp:string) => {
   const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
   const formattedTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
   return formattedTime;
+}
+
+export const urlParams = (params:any) =>{
+  const query = Object.entries(params)
+    .filter(([key, value]:any) => {
+        return Array.isArray(value) ? value.length > 0 : value !== '';
+    })
+    .map(([key, value]:any) => `${encodeURIComponent(key)}=${Array.isArray(value) ? JSON.stringify(value).replace(/"/g, '\\"') : encodeURIComponent(value)}`)
+    .join('&');    
+    return query;
 }

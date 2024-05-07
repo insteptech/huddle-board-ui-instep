@@ -18,7 +18,6 @@ export function isAuthenticated(token?: string|null) {
   let currentDate = new Date();
   currentDate.setHours(currentDate.getHours() + 2);
 var a = Math.round(new Date(currentDate).getTime() + 1) / 1000;
-  console.log('token:--',token,'exp:-',exp,new Date(currentDate),a);
 
   // try {
   //   const { exp }: any = decodeToken(token);
