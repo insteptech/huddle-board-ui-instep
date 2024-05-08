@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosInstance } from '../config/axiosInstance';
+import { axiosInstance, axiosWrapper } from '../config/axiosInstance';
 import { FiltersDataState } from '../slices/appointment';
 import { urlParams } from '@/app/utils/helper';
 
@@ -30,26 +30,25 @@ export interface ICreateFilterPayload {
 }
 
 export const getAppointmentsList = createAsyncThunk('getAppointmentsList', async (payload: FiltersDataState) => {  
-  const result = await axiosInstance.get(`appointment-details/?${urlParams(payload)}`, payload);
-  return result.data;
+  return await axiosWrapper({method:"get", url:`appointment-details/?${urlParams(payload)}`,payload})
 });
 
 export const getAppointmentDetail = createAsyncThunk('getAppointmentDetail', async (payload: IGetAppointmentDetailPayload) => {
-  const result = await axiosInstance.get(`appointment-details/${payload.appointment_id}`, payload);
-  return result.data;
+  return await axiosWrapper({method:"get", url:`appointment-details/${payload.appointment_id}`,payload})
 });
 
 export const updateAppointmentDetail = createAsyncThunk('updateAppointmentDetail', async (payload: IUpdateAppointmentDetailPayload) => {
-  const result = await axiosInstance.put(`appointment-details/${payload.appointment_id}/${payload.screening_id}`, payload.action);
-  return result.data;
+  return await axiosWrapper({method:"put", url:`appointment-details/${payload.appointment_id}/${payload.screening_id}`, payload: payload.action})
 });
 
 export const getFiltersData = createAsyncThunk('getFiltersData', async () => {  
-  const result = await axiosInstance.get(`filter-data`);
-  return result.data;
+  return await axiosWrapper({method:"get", url:`filter-data`})
 });
 
 export const createAppointmentFilter = createAsyncThunk('createFilter', async (payload: ICreateFilterPayload) => {  
-  const result = await axiosInstance.post(`filters`, payload);
-  return result.data;
+  return await axiosWrapper({method:"post", url:'filters/',payload})
+});
+
+export const getSelectedFilterList = createAsyncThunk('getSelectedFilterList', async () => {  
+  return await axiosWrapper({method:"get", url:'select-filter-list'})
 });

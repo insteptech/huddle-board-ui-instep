@@ -29,9 +29,10 @@ import SaveFilterModal from '@/app/components/saveFilterModal';
 import { AppDispatch } from '@/app/redux/store';
 import { emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
 import { createAppointmentFilter } from '@/app/redux/actions/appointment';
+import { toast } from 'react-toastify';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters } = props;
+  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
   
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -45,6 +46,8 @@ function FilterButton(props:any) {
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
+  const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const modalToggle = () => {
@@ -149,9 +152,14 @@ function FilterButton(props:any) {
       screening: selectedScreening,
       provider: selectedProviders
     };
-    setIsModalOpen(false);
-    console.log('payload:---',payload);
-    dispatch(createAppointmentFilter(payload))
+
+    dispatch(createAppointmentFilter(payload)).then((e)=> {
+      console.log('then',e);
+      if (e?.payload) {
+        toast.success(e?.payload?.message);
+        setIsModalOpen(false);
+      }
+    })
   }
 
   return (
@@ -209,13 +217,22 @@ function FilterButton(props:any) {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableData>
-                        <TableDataList sx={{width:'160px', }}>
+                       {selectedFilterList?.length > 0 && <TableDataList sx={{width:'160px'}}>
                           <TableCellHdMain>
                             Saved Filter{" "}
-                            <SettingsOutlinedIcon style={{ fontSize: "12px" }} />
+                            <SettingsOutlinedIcon style={{ fontSize: "12px", cursor: "pointer" }} onClick={()=>setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked)}/>
                           </TableCellHdMain>
-                          <TableCellTd>savedFilter</TableCellTd>
-                        </TableDataList>
+                          {selectedFilterList?.map((list: any, index: number) => (
+                            <TableCellTd key={index}>
+                              {isSavedFilterSettingClicked &&<CheckboxInner
+                                key={index}
+                                sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                                {...label}
+                              />}
+                              {list.name}
+                            </TableCellTd>
+                          ))}
+                        </TableDataList>}
   
                         <TableDataList>
                           <TableCellHd>

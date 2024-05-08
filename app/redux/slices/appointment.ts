@@ -1,5 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData } from '../actions/appointment';
+import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList } from '../actions/appointment';
 
 export type AppointmentsState = {
     appointmentsData: {
@@ -14,6 +14,7 @@ export type AppointmentsState = {
     appointmentFiltersData: AppointmentFiltersDataState | null;
     isFilterDataLoading: boolean;
     filtersData: FiltersDataState;
+    selectedFilterList: IFilterDataState[];
 };
 
 export type FiltersDataState = {
@@ -73,7 +74,8 @@ const initialState: AppointmentsState = {
     filtersData: {
       page_size: 10,
       page: 1,
-    }
+    },
+    selectedFilterList: []
 };
 
 export const appointment = createSlice({
@@ -130,6 +132,18 @@ export const appointment = createSlice({
     });
     builder.addCase(getFiltersData.fulfilled, (state, { payload }) => {
       state.appointmentFiltersData = payload;
+      state.isFilterDataLoading = false;
+    });
+
+    builder.addCase(getSelectedFilterList.pending, (state, action) => {
+      state.isFilterDataLoading = true;
+    });
+    builder.addCase(getSelectedFilterList.rejected, (state, action) => {
+      console.log(state, action, 'rejected');
+      state.isFilterDataLoading = false;
+    });
+    builder.addCase(getSelectedFilterList.fulfilled, (state, { payload }) => {
+      state.selectedFilterList = payload;
       state.isFilterDataLoading = false;
     });
   },

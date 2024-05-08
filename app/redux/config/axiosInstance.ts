@@ -1,5 +1,7 @@
 
 import axios from "axios";
+import { toast } from 'react-toastify';
+
 import { getAndSetAccessToken, isAuthenticated,isTokenExpired,sessionKeys } from "../../utils/auth";
 
 let API_URL = process.env.REACT_APP_API_URL;
@@ -46,7 +48,7 @@ const onResponseError = async (error:any) => {
         return Promise.reject(_error);
       }
     }
-  }
+  }  
   return Promise.reject(error);
 };
 
@@ -61,3 +63,14 @@ export const axiosInstance = setupInterceptorsTo(
     baseURL: API_URL,
   })
 );
+
+export const axiosWrapper = async (config:any) => {
+  try {
+    const response = await axiosInstance[config.method](config.url,config.payload);
+      return response.data;
+  } catch (error:any) {
+      if(error?.response?.data?.error) {
+        toast.error(error?.response?.data?.error);
+      } else throw error;
+  }
+};

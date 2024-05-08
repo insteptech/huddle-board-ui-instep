@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, getFiltersData, updateAppointmentDetail } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -59,6 +59,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const isDetailLoading = useSelector((state: AppState) => state.appointment.isDetailLoading);
   const appointmentFiltersData = useSelector((state: AppState) => state.appointment.appointmentFiltersData);
   const isFilterDataLoading = useSelector((state: AppState) => state.appointment.isFilterDataLoading);
+  const selectedFilterList = useSelector((state: AppState) => state.appointment.selectedFilterList);
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const { page } = filters;
 
@@ -133,6 +134,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const getAppointmentFiltersData = () => {
     dispatch(getFiltersData());
+    dispatch(getSelectedFilterList());
   }
 
   const resetFilters = () => {
@@ -199,7 +201,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       <TableDiv>
         <TableTopMain>
           <FilterMenu>
-            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} appointmentFiltersData={appointmentFiltersData} isFilterDataLoading={isFilterDataLoading} loadMoreAppointment={loadMoreAppointment} filters={filters}/>
+            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} appointmentFiltersData={appointmentFiltersData} isFilterDataLoading={isFilterDataLoading} loadMoreAppointment={loadMoreAppointment} filters={filters} selectedFilterList={selectedFilterList} />
           </FilterMenu>
           <TableTop>
             <Input
