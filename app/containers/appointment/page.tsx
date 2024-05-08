@@ -32,7 +32,7 @@ import {
   RightBox,
   MainBoxTop,
   TypoSpan,
-  InputCloase
+  SearchClearIcon
 } from '../../styles/customStyle';
 import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
 import { Box, Input, InputAdornment } from '@mui/material';
@@ -141,8 +141,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       providers_uuids: [],
       screening_uuids: [],
       page: 1,
-      page_size: 10
+      page_size: 10,
+      patient_name: ''
     };
+    setPatientNameSearch('');
     dispatch(updateFilter(filters));
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filters);
@@ -221,9 +223,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     <SearchIcon sx={{ color: "#0D426A" }} />
                   </InputAdornment>
 
-                  <InputAdornment position="end">
-                  <InputCloase><CloseIcon sx={{ color: "#0D426A" }} /></InputCloase>
-                  </InputAdornment>
+                  {patientNameSearch.length > 0 && <InputAdornment position="end">
+                    <SearchClearIcon onClick={() => resetFilters()}><CloseIcon sx={{ color: "#0D426A" }} /></SearchClearIcon>
+                  </InputAdornment>}
                 </>
               }
             />

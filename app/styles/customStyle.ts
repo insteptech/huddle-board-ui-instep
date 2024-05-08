@@ -7,88 +7,55 @@ interface StyledButtonProps {
   children: React.ReactNode;
 }
 
-export const FontBold = styled(Typography)
-(({ theme }: any) => (
-  { 
+export const FontBold = styled(Typography)(({ theme }: any) => ({ 
     fontWeight: '700',
-  }
-)
-);
+}));
 
-export const StyledTableCell = styled(TableCell)
-(({ theme }: any) => (
-  {
+export const StyledTableCell = styled(TableCell)(({ theme }: any) => ({
   color:'#fff',
   fontSize: '12px',
   fontWeight: '600',
   lineHeight: '14.62px',
-  }
-)
-);
+}));
 
-export const TdTableCell = styled(TableCell)
-(({ theme }: any) => (
-  {  
-    borderBottom: 'none', 
-  }
-)
-);
+export const TdTableCell = styled(TableCell)(({ theme }: any) => ({  
+  borderBottom: 'none', 
+}));
 
-export const Typography_Grid = styled('div')
-(({ div }: any) => (
-  { 
-    flexDirection: 'row',  
-    display: 'flex',
-    alignItems:'center',
-  }
-)
-);
+export const Typography_Grid = styled('div')(({ div }: any) => ({ 
+  flexDirection: 'row',  
+  display: 'flex',
+  alignItems:'center',
+}));
 
-export const LoaderBox = styled('div')
-(({ div }: any) => (
-  { 
-    flexDirection: 'column',  
-    display: 'flex',
-    alignItems:'center',
-    marginTop:'85px',
-    width: '600px',
-    height: '150px',
-  }
-)
-);
+export const LoaderBox = styled('div')(({ div }: any) => ({ 
+  flexDirection: 'column',  
+  display: 'flex',
+  alignItems:'center',
+  marginTop:'85px',
+  width: '600px',
+  height: '150px',
+}));
 
+export const TableMainContainer = styled(TableContainer)(({ theme }: any) => ({
+  boxShadow:'none',
+  backgroundColor: 'transparent',
+  overflow: 'auto',
+  height: '615px',
+  margin: '10px 0 0 0 !important',
+}));
 
-export const TableMainContainer = styled(TableContainer)
-(({ theme }: any) => (
-  {
-    boxShadow:'none',
-    backgroundColor: 'transparent',
-    overflow: 'auto',
-    height: '615px',
-    margin: '10px 0 0 0 !important',
-  }
-)
-);
+export const TableOtherContainer = styled(TableContainer)(({ theme }: any) => ({
+  boxShadow:'none',
+  backgroundColor: 'transparent',
+  overflow: 'auto',
+}));
 
-export const TableOtherContainer = styled(TableContainer)
-(({ theme }: any) => (
-  {
-    boxShadow:'none',
-    backgroundColor: 'transparent',
-    overflow: 'auto',
-  }
-)
-);
-
-export const Table_Head = styled(TableHead)
-(({ theme }: any) => (
-  {  
-    position: 'sticky',
-    top: '0px',
-    zIndex:'99',
-  }
-)
-);
+export const Table_Head = styled(TableHead)(({ theme }: any) => ({  
+  position: 'sticky',
+  top: '0px',
+  zIndex:'99',
+}));
 
 export const StyledText = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
@@ -127,7 +94,6 @@ export const LinkText = styled(Link)(({ div }: any) => ({
 }));
 
 export const StyledPatient = styled('div')(({ div }: any) => ({
- 
   textDecoration:'underline',
 }));
 
@@ -165,7 +131,6 @@ export const TableMid = styled(TableCell)(({ div }: any) => ({
   border: '1px solid #B1C6E2',
   background:'#EBF4FF',
   padding: '12px',
-
 }));
 
 export const TableMidData = styled(TableCell)(({ div }: any) => ({
@@ -184,8 +149,6 @@ export const ActionBtn = styled(Typography)(({ div }: any) => ({
   borderRadius: '34px',
   color:'#17236D',
   textAlign: 'center',
- 
-  
 }));
   
 export const Text = styled(Typography)(({ div }: any) => ({
@@ -234,9 +197,9 @@ export  const StyledMuiButton = styled(Button)<StyledButtonProps>`
         props.buttonState=='enable' ? '#5C6469' : 
         props.buttonState=='disable' ? '#C8CED2' : '#5C6469'};
         border: ${props => 
-          props.buttonState=='active' ? '1px solid #5C6469' : 
-          props.buttonState=='enable' ? '1px solid #5C6469' : 
-          props.buttonState=='disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
+        props.buttonState=='active' ? '1px solid #5C6469' : 
+        props.buttonState=='enable' ? '1px solid #5C6469' : 
+        props.buttonState=='disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
     }
 `;
 
@@ -383,8 +346,6 @@ export const TableCellHd= styled('div')(({ div }: any) => ({
   top:'0',
   background:'#fff',
   zIndex:'99',
-  
-  
 }));
 
 export const TableCellHdMain= styled('div')(({ div }: any) => ({
@@ -398,7 +359,6 @@ export const TableCellHdMain= styled('div')(({ div }: any) => ({
   padding:'8px 12px',
   border:'none',
   borderRight:'1px solid #DFE1E6',
-  
 }));
 
 export const TableCellTd= styled('div')(({ div }: any) => ({
@@ -469,12 +429,10 @@ export const TableDataList= styled('th')(({ div }: any) => ({
   borderRight:'1px solid #DFE1E6',
 }));
 
-
 export const TableData= styled('tr')(({ div }: any) => ({
   display:'flex',
   justifyContent:'space-between',
 }));
-
 
 export const ModalHeader= styled('div')(({ div }: any) => ({
   padding:'0 24px',
@@ -483,7 +441,6 @@ export const ModalHeader= styled('div')(({ div }: any) => ({
   alignItems:'Center',
   justifyContent:'space-between',
 }));
-
 
 export const ModalHeaderIcon= styled('div')(({ div }: any) => ({
   width:'48px',
@@ -494,7 +451,6 @@ export const ModalHeaderIcon= styled('div')(({ div }: any) => ({
   alignItems:'Center',
   justifyContent:'Center',
 }));
-
 
 export const DialogTitleInner = styled('h2')(({ div }: any) => ({
   fontSize: '18px',
@@ -518,8 +474,6 @@ export const InputTitleInner = styled(Typography)(({ div }: any) => ({
   marginBottom:'10px',
 }));
 
-
-
 export const DialogContent = styled('div')(({ div }: any) => ({
   padding:'0 24px',
   margin:'0 0 15px 0',
@@ -529,8 +483,6 @@ export const DialogContentTexts = styled('div')(({ div }: any) => ({
   background: '#fff',
 }));
 
-
-
 export const DialogActionsMain = styled('div')(({ div }: any) => ({
   display:'flex',
   alignItems:'Center',
@@ -539,15 +491,12 @@ export const DialogActionsMain = styled('div')(({ div }: any) => ({
   margin:'30px 0 20px 0',
 }));
 
-
-export const InputCloase = styled('div')(({ div }: any) => ({
+export const SearchClearIcon = styled('div')(({ div }: any) => ({
  position:"absolute",
  right:'0',
+ marginRight: '10px',
+ cursor: 'pointer'
 }));
-
-
-
-
 
 export const ButtonCancel = styled('button')(({ div }: any) => ({ 
   fontSize: '16px',
@@ -563,27 +512,25 @@ export const ButtonCancel = styled('button')(({ div }: any) => ({
   "&:hover": {
     background: '#F9FAFB',
   },
-
 }));
 
-export const ButtonSave = styled('button')(({ div }: any) => ({ 
+export const ButtonSave = styled(Button)(({ div }: any) => ({ 
   fontSize: '16px',
   fontWeight: '600',
   lineHeight: '24px',
   border: '1px solid #D0D5DD',
   padding:'10px 18px',
   borderRadius:'8px',
-  cursor:'pointer',
   background:'#17236D',
-  color:'#fff',
+  color:'#fff !important',
   width:'50%',
    "&:hover": {
     background: '#6941C6',
   },
-  
+  "&:disabled": {
+    background: '#B5C0C7'
+  }
 }));
-
-
 
 export const TextFieldInput = styled('input')(({ div }: any) => ({ 
   fontSize: '16px',
@@ -595,13 +542,8 @@ export const TextFieldInput = styled('input')(({ div }: any) => ({
   background:'#fff',
   color:'#0D426A',
   width:'100%',
-
   "&:focus": {
-    
     boxShadow: 'unset',
     outline:'0',
- 
   },
-  
 }));
-

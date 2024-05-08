@@ -5,12 +5,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDateRangePicker } from "@mui/x-date-pickers-pro/StaticDateRangePicker";
 import { PickersShortcutsItem } from "@mui/x-date-pickers/PickersShortcuts";
 import { DateRange } from "@mui/x-date-pickers-pro/models";
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import dayjs  from 'dayjs';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Box , Button} from '@mui/material';
 import { Dayjs } from 'dayjs';
 import { useState } from 'react';
+import { getCurrentDateFormatted } from '@/app/utils/helper';
 
 const Calender = () => {
     const shortcutsItems: PickersShortcutsItem<DateRange<Dayjs>>[] = [
@@ -78,7 +80,7 @@ const Calender = () => {
         onClick={handleClick}
         variant="contained"
         >
-        Calender
+        <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }}/>{}{getCurrentDateFormatted()}
       </Button>
       <Menu
         id="simple-menu"

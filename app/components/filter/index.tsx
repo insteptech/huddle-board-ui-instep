@@ -40,6 +40,8 @@ function FilterButton(props:any) {
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types||[]);
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
   const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
+  const [selectedVisitTypeUuid, setSelectedVisitTypeUuid] = useState<any>(filters.visit_types||[]);
+
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
   const dispatch = useDispatch<AppDispatch>();
@@ -107,7 +109,7 @@ function FilterButton(props:any) {
     setAnchorEl(null);
   }
 
-  const createFilter = () => {
+  const createFilterModal = () => {
     modalToggle();
   }
 
@@ -117,7 +119,8 @@ function FilterButton(props:any) {
       providers_uuids: [],
       screening_uuids: [],
       page: 1,
-      page_size: 10
+      page_size: 10,
+      patient_name: ''
     };
     setSelectedVisitType([]);
     setSelectedScreening([]);
@@ -128,6 +131,17 @@ function FilterButton(props:any) {
     setAnchorEl(null);
   }
   
+  const createFilter = () => {
+    const payload = {
+      filter_name : filterName,
+      visit_type: selectedVisitType,
+      screening: selectedScreening,
+      provider: selectedProviders
+    };
+    setIsModalOpen(false);
+    console.log('payload:---',payload);
+    
+  }
 
   return (
     <>
@@ -165,7 +179,7 @@ function FilterButton(props:any) {
                   <BoxFilterLeft>Filter by</BoxFilterLeft>
                   <BoxFilterRight>
                     <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={()=>applyFilters()}>Apply</BoxFilterRightMid>
-                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilter()}>
+                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
                       Create Filter
                     </BoxFilterRightMid>
                     <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>resetFilters()}>
@@ -257,7 +271,7 @@ function FilterButton(props:any) {
           </Grid>
         </Grid>
       </Box>
-      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput}/>
+      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter}/>
     </>
   );
   

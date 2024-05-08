@@ -30,7 +30,7 @@ const SaveTransition = React.forwardRef(function Transition(
 });
 
 const SaveFilterModal = (props: any) => {
-  const { isModalOpen, modalToggle, filterName, setFilterName } = props;
+  const { isModalOpen, modalToggle, filterName, setFilterName, createFilter } = props;
 
   return (
     <React.Fragment>
@@ -71,7 +71,7 @@ const SaveFilterModal = (props: any) => {
           <DialogActionsMain>
             <ButtonCancel onClick={modalToggle}>Cancel</ButtonCancel>
             <ButtonSave
-              onClick={modalToggle}
+              onClick={()=>createFilter()}
               disabled={filterName.length === 0}
             >
               Save
