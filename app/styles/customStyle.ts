@@ -540,6 +540,13 @@ export const DialogActionsMain = styled('div')(({ div }: any) => ({
 }));
 
 
+export const InputCloase = styled('div')(({ div }: any) => ({
+ position:"absolute",
+ right:'0',
+}));
+
+
+
 
 
 export const ButtonCancel = styled('button')(({ div }: any) => ({ 

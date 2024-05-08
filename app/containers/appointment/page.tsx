@@ -16,6 +16,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 
 import {
   HeadingTag,
@@ -30,7 +31,8 @@ import {
   RightPrint,
   RightBox,
   MainBoxTop,
-  TypoSpan
+  TypoSpan,
+  InputCloase
 } from '../../styles/customStyle';
 import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
 import { Box, Input, InputAdornment } from '@mui/material';
@@ -217,6 +219,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 <>
                   <InputAdornment position="start">
                     <SearchIcon sx={{ color: "#0D426A" }} />
+                  </InputAdornment>
+
+                  <InputAdornment position="end">
+                  <InputCloase><CloseIcon sx={{ color: "#0D426A" }} /></InputCloase>
                   </InputAdornment>
                 </>
               }
