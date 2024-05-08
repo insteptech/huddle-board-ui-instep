@@ -28,6 +28,7 @@ import {
 import SaveFilterModal from '@/app/components/saveFilterModal';
 import { AppDispatch } from '@/app/redux/store';
 import { emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
+import { createAppointmentFilter } from '@/app/redux/actions/appointment';
 
 function FilterButton(props:any) {
   const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters } = props;
@@ -65,27 +66,37 @@ function FilterButton(props:any) {
       if (index === -1) {
         setSelectedVisitType([...selectedVisitType, filter.visit_type]);
       } else {
-        const updatedEmployees = [...selectedVisitType];
-        updatedEmployees.splice(index, 1);
-        setSelectedVisitType(updatedEmployees);
+        const updatedFilters = [...selectedVisitType];
+        updatedFilters.splice(index, 1);
+        setSelectedVisitType(updatedFilters);
       }
+
+      const ind = selectedVisitTypeUuid.indexOf(filter.uuid);
+      if (ind === -1) {
+        setSelectedVisitTypeUuid([...selectedVisitTypeUuid, filter.uuid]);
+      } else {
+        const updatedFilters = [...selectedVisitTypeUuid];
+        updatedFilters.splice(ind, 1);
+        setSelectedVisitTypeUuid(updatedFilters);
+      }
+
     } else if (type === "patient_screening") {
       const index = selectedScreening.indexOf(filter.uuid);
       if (index === -1) {
         setSelectedScreening([...selectedScreening, filter.uuid]);
       } else {
-        const updatedEmployees = [...selectedScreening];
-        updatedEmployees.splice(index, 1);
-        setSelectedScreening(updatedEmployees);
+        const updatedFilters = [...selectedScreening];
+        updatedFilters.splice(index, 1);
+        setSelectedScreening(updatedFilters);
       }
     } else if (type === "provider") {
       const index = selectedProviders.indexOf(filter.uuid);
       if (index === -1) {
         setSelectedProviders([...selectedProviders, filter.uuid]);
       } else {
-        const updatedEmployees = [...selectedProviders];
-        updatedEmployees.splice(index, 1);
-        setSelectedProviders(updatedEmployees);
+        const updatedFilters = [...selectedProviders];
+        updatedFilters.splice(index, 1);
+        setSelectedProviders(updatedFilters);
       }
     }
   };
@@ -134,13 +145,13 @@ function FilterButton(props:any) {
   const createFilter = () => {
     const payload = {
       filter_name : filterName,
-      visit_type: selectedVisitType,
+      visit_type: selectedVisitTypeUuid,
       screening: selectedScreening,
       provider: selectedProviders
     };
     setIsModalOpen(false);
     console.log('payload:---',payload);
-    
+    dispatch(createAppointmentFilter(payload))
   }
 
   return (
