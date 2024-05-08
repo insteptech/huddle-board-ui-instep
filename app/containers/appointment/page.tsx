@@ -32,7 +32,7 @@ import {
   MainBoxTop,
   TypoSpan
 } from '../../styles/customStyle';
-import { AppointmentState, FiltersDataState, updateFilter } from '@/app/redux/slices/appointment';
+import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
 import { Box, Input, InputAdornment } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
@@ -48,6 +48,7 @@ type AppointmentListProps = {
 const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments }) => {
   const [isPatientNotFound, setIsPatientNotFound] = useState(true);
   const [isClearFilter, setIsClearFilter] = useState(false);
+  const [patientNameSearch , setPatientNameSearch] = React.useState('');
 
   const dispatch = useDispatch<AppDispatch>();
   const appointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.results) || [];
@@ -132,6 +133,37 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getFiltersData());
   }
 
+  const resetFilters = () => {
+    const filters = {
+      visit_types: [],
+      providers_uuids: [],
+      screening_uuids: [],
+      page: 1,
+      page_size: 10
+    };
+    dispatch(updateFilter(filters));
+    dispatch(emptyAppointmentList());
+    loadMoreAppointment(filters);
+  }
+
+  const searchAppointmentPatientName = (e : any) => {    
+    setPatientNameSearch(e.target.value);
+  
+    if(e?.target?.value?.length > 3) {
+      const filters = {
+        visit_types: [],
+        providers_uuids: [],
+        screening_uuids: [],
+        page: 1,
+        page_size: 10,
+        patient_name: e.target.value
+      };
+      dispatch(updateFilter(filters));
+      dispatch(emptyAppointmentList());
+      loadMoreAppointment(filters);
+    }
+  }
+  
   return (
     <>
       <MainBoxTop>
@@ -179,10 +211,14 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               }}
               id="input-with-icon-adornment"
               placeholder="Search by patient name or MRN"
+              value={patientNameSearch}
+              onChange={(e)=>searchAppointmentPatientName(e)}
               startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "#0D426A" }} />
-                </InputAdornment>
+                <>
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: "#0D426A" }} />
+                  </InputAdornment>
+                </>
               }
             />
           </TableTop>
@@ -211,7 +247,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 </TableRow>
               </Table_Head>
               <TableBody>
-                <PatientNotFound icon={isClearFilter} />
+                <PatientNotFound icon={isClearFilter} resetFilters={resetFilters}/>
               </TableBody>
             </Table>
           </TableOtherContainer>

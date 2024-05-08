@@ -45,7 +45,7 @@ export const urlParams = (params:any) =>{
     .filter(([key, value]:any) => {
         return Array.isArray(value) ? value.length > 0 : value !== '';
     })
-    .map(([key, value]:any) => `${encodeURIComponent(key)}=${Array.isArray(value) ? JSON.stringify(value).replace(/"/g, '\\"') : encodeURIComponent(value)}`)
+    .map(([key, value]:any) => `${encodeURIComponent(key)}=${Array.isArray(value) ? JSON.stringify(value) : encodeURIComponent(value)}`)
     .join('&');    
     return query;
 }

@@ -10,7 +10,7 @@ import {
 } from '../../styles/customStyle';
 
 const PatientNotFound = (props: any) => {
-    const { icon } = props;
+    const { icon, resetFilters } = props;
   
     return (
       <>
@@ -28,7 +28,7 @@ const PatientNotFound = (props: any) => {
                 <MainBoxSubHeading>
                   Modify your search criteria and search again.
                 </MainBoxSubHeading>
-                <ClearButton>Clear Search</ClearButton>
+                <ClearButton onClick={()=>resetFilters()}>Clear Search</ClearButton>
               </MainBox>
             </StyledTableCenter>
           </TableRow>

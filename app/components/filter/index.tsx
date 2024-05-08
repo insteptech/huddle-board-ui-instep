@@ -37,7 +37,7 @@ function FilterButton(props:any) {
   
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
-  const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_type||[]);
+  const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types||[]);
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
   const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -94,7 +94,7 @@ function FilterButton(props:any) {
 
   const applyFilters = () => {
     const filters = {
-      visit_type: selectedVisitType,
+      visit_types: selectedVisitType,
       providers_uuids: selectedProviders,
       screening_uuids: selectedScreening,
       page: 1,
@@ -113,7 +113,7 @@ function FilterButton(props:any) {
 
   const resetFilters = () => {
     const filters = {
-      visit_type: [],
+      visit_types: [],
       providers_uuids: [],
       screening_uuids: [],
       page: 1,
@@ -204,7 +204,7 @@ function FilterButton(props:any) {
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
                                 onClick={()=>handleMenuItemClick(visit,'visit_type')}
-                                checked={filters?.visit_type?.includes(visit.visit_type)|| selectedVisitType?.includes(visit.visit_type)|| false}
+                                checked={filters?.visit_types?.includes(visit.visit_type)|| selectedVisitType?.includes(visit.visit_type)|| false}
                               />
                               {visit.visit_type}
                             </TableCellTd>
