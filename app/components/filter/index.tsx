@@ -63,18 +63,19 @@ function FilterButton(props:any) {
     getAppointmentFiltersData();
   };
 
-  const handleMenuItemClick = (filter: any | never, type: string) => {
-    if(type === "visit_type") {
-      const index = selectedVisitType.indexOf(filter);
-      if (index === -1) {
-        setSelectedVisitType([...selectedVisitType, filter]);
-      } else {
-        const updatedFilters = [...selectedVisitType];
-        updatedFilters.splice(index, 1);
-        setSelectedVisitType(updatedFilters);
-      }
-    } else if (type === "patient_screening") {
-      const index = selectedScreening.indexOf(filter);
+  const handleVisitTypeFilterClick = (filter: any) => {
+    const index = selectedVisitType.indexOf(filter);
+    if (index === -1) {
+      setSelectedVisitType([...selectedVisitType, filter]);
+    } else {
+      const updatedFilters = [...selectedVisitType];
+      updatedFilters.splice(index, 1);
+      setSelectedVisitType(updatedFilters);
+    }
+  }
+
+  const handleScreeningFilterClick = (filter: any) => {
+    const index = selectedScreening.indexOf(filter);
       if (index === -1) {
         setSelectedScreening([...selectedScreening, filter]);
       } else {
@@ -82,8 +83,10 @@ function FilterButton(props:any) {
         updatedFilters.splice(index, 1);
         setSelectedScreening(updatedFilters);
       }
-    } else if (type === "provider") {
-      const index = selectedProviders.indexOf(filter.uuid);
+  }
+
+  const handleProvidersFilterClick = (filter: any) => {
+    const index = selectedProviders.indexOf(filter.uuid);
       if (index === -1) {
         setSelectedProviders([...selectedProviders, filter.uuid]);
       } else {
@@ -91,8 +94,7 @@ function FilterButton(props:any) {
         updatedFilters.splice(index, 1);
         setSelectedProviders(updatedFilters);
       }
-    }
-  };
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -221,7 +223,7 @@ function FilterButton(props:any) {
                                 key={index}
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
-                                onClick={()=>handleMenuItemClick(visit,'visit_type')}
+                                onClick={()=>handleVisitTypeFilterClick(visit)}
                                 checked={filters?.visit_types?.includes(visit)|| selectedVisitType?.includes(visit)|| false}
                               />
                               {visit}
@@ -240,7 +242,7 @@ function FilterButton(props:any) {
                                   key={index}
                                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                   {...label}
-                                  onClick={()=>handleMenuItemClick(patient,'patient_screening')}
+                                  onClick={()=>handleScreeningFilterClick(patient)}
                                   checked={filters?.screening_uuids?.includes(patient)|| selectedScreening?.includes(patient)||false} 
                                 />
                                 {patient}
@@ -259,7 +261,7 @@ function FilterButton(props:any) {
                                 key={index}
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
-                                onClick={()=>handleMenuItemClick(pro,'provider')}
+                                onClick={()=>handleProvidersFilterClick(pro)}
                                 checked={filters?.providers_uuids?.includes(pro.uuid)||selectedProviders?.includes(pro.uuid)||false} 
                               />
                               {pro.name}
