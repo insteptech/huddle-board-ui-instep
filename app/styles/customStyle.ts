@@ -485,7 +485,7 @@ export const DialogContent = styled('div')(({ div }: any) => ({
 export const RadioMain = styled('div')(({ div }: any) => ({
   
   '.radio_sec_inner':{
-    padding:'4px 6px',
+    padding:'8px 12px',
     margin:'0',
     fontSize: '14px',
     fontWeight: '400',
@@ -499,6 +499,21 @@ export const RadioMain = styled('div')(({ div }: any) => ({
   '.Mui-checked':{
 
     color:'#17236D',
+
+  },
+
+  '.MuiRadio-root':{
+    padding:'0',
+    paddingLeft:'0',
+    paddingRight:'5px',
+
+  },
+
+  '.MuiTypography-root':{
+
+    fontSize: '14px',
+    fontWeight: '400',
+    lineHeight: '20px',
 
   }
 }));
