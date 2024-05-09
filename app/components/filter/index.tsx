@@ -192,11 +192,11 @@ function FilterButton(props:any) {
                     <TableHead>
                       <TableData>
                        {selectedFilterList?.length > 0 && <TableDataList sx={{width:'160px'}}>
-                          <TableCellHdMain>
+                          <TableCellHd sx={{display:'flex',justifyContent:'space-between'}}>
                             Saved Filter{" "}
                             <SettingsOutlinedIcon style={{ fontSize: "12px", cursor: "pointer" }} onClick={()=>setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked)}/>
-                          </TableCellHdMain>
-                          <TableDataList >
+                          </TableCellHd>
+                         
                           <RadioMain>
                             <RadioGroup
                               aria-labelledby="demo-radio-buttons-group-label"
@@ -209,7 +209,7 @@ function FilterButton(props:any) {
                           ))}
                             </RadioGroup>
                           </RadioMain>
-                        </TableDataList>
+                       
                         </TableDataList>}
   
                         <TableDataList>

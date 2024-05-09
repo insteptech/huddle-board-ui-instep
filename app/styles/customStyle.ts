@@ -485,7 +485,7 @@ export const DialogContent = styled('div')(({ div }: any) => ({
 export const RadioMain = styled('div')(({ div }: any) => ({
   
   '.radio_sec_inner':{
-    padding:'8px 12px',
+    padding:'8px 16px',
     margin:'0',
     fontSize: '14px',
     fontWeight: '400',
@@ -505,7 +505,7 @@ export const RadioMain = styled('div')(({ div }: any) => ({
   '.MuiRadio-root':{
     padding:'0',
     paddingLeft:'0',
-    paddingRight:'5px',
+    paddingRight:'7px',
 
   },
 
