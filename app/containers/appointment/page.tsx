@@ -84,7 +84,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   };
 
   useEffect(() => {
-    // dispatch(getToken({ slug: slug}));
     dispatch(getAppointmentsList(filters)).then(() => {
       setIsPatientNotFound(false);
     })
@@ -225,6 +224,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             selectedVisitType={selectedVisitType}
             selectedScreening={selectedScreening}
             selectedProviders={selectedProviders}
+            resetFilters={resetFilters}
             />
           </FilterMenu>
           <TableTop>

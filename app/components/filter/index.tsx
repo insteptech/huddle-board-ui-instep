@@ -34,18 +34,16 @@ import {
 import SaveFilterModal from '@/app/components/saveFilterModal';
 import { AppDispatch } from '@/app/redux/store';
 import { emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
-import { createAppointmentFilter } from '@/app/redux/actions/appointment';
+import { createAppointmentFilter, getSelectedFilterList } from '@/app/redux/actions/appointment';
 import { toast } from 'react-toastify';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders
+  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters
   } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
   
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   
-  
-
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
   const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
@@ -118,24 +116,6 @@ function FilterButton(props:any) {
   const createFilterModal = () => {
     modalToggle();
   }
-
-  const resetFilters = () => {
-    const filters = {
-      visit_types: [],
-      providers_uuids: [],
-      screening_uuids: [],
-      page: 1,
-      page_size: 10,
-      patient_name: ''
-    };
-    setSelectedVisitType([]);
-    setSelectedScreening([]);
-    setSelectedProviders([]);
-    dispatch(updateFilter(filters));
-    dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
-    setAnchorEl(null);
-  }
   
   const createFilter = () => {
     const payload = {
@@ -146,10 +126,10 @@ function FilterButton(props:any) {
     };
 
     dispatch(createAppointmentFilter(payload)).then((e)=> {
-      console.log('then',e);
       if (e?.payload) {
         toast.success(e?.payload?.message);
         setIsModalOpen(false);
+        dispatch(getSelectedFilterList());
       }
     })
   }
@@ -298,8 +278,6 @@ function FilterButton(props:any) {
       <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter}/>
     </>
   );
-  
-  
 }
 
 export default FilterButton;
