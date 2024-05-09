@@ -38,6 +38,7 @@ import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter 
 import { Box, Input, InputAdornment } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
+import { getToken } from '@/app/redux/actions/auth';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -79,6 +80,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   };
 
   useEffect(() => {
+    // dispatch(getToken({ slug: slug}));
     dispatch(getAppointmentsList(filters)).then(() => {
       setIsPatientNotFound(false);
     })

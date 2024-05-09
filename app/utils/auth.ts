@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 
 let API_URL = process.env.REACT_APP_API_URL;
 API_URL = "https://dev-api.pdap.doctustech.com/api/";
+export const slug = "c5c16a0b-f012-4ef5-b6d7-22cf8a588868";
 
 export const decodeToken = function (token: any) {
   if (!token) {
@@ -66,22 +67,34 @@ export function isTokenExpired(token?:string|null) {
 export const sessionKeys = {accessToken:"access_token", slugKey:"slug", refreshToken:"refresh_token"};
 
 export const getAndSetAccessToken = async () => {
-  const { accessToken, slugKey, refreshToken} = sessionKeys;
+  const { accessToken, slugKey, refreshToken } = sessionKeys;
   const refresh = sessionStorage.getItem(refreshToken);
   const access = sessionStorage.getItem(accessToken);
-
   const isExpired = isTokenExpired(access);
 
+  if (refresh && access && !isExpired) return;
 
-  if ((!refresh && !access)|| isExpired) {
-  const rs = await axios.post(`${API_URL}token/refresh/`,{"refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNTE0OTk3MCwiaWF0IjoxNzE0NTQ1MTcwLCJqdGkiOiJlNThiN2RjODAyMjE0NDUzYTc4ZjAwNWM2NjJmZWFkMiIsInVzZXJfaWQiOjF9.sZ7AJGzCrC9GOUZ4LyvxB6FAI99V-MJLxD3yN1Fqpck"});
-
-    if (rs && rs.data) {
-      let finalResponse = rs.data;
-      const token = finalResponse.access; 
-      const refresh = finalResponse.refresh; 
-      sessionStorage.setItem(accessToken, token);
-      sessionStorage.setItem(refreshToken, refresh);
+  const fetchNewTokens = async () => {
+    const response = await axios.post(`${API_URL}slug-token/`, { slug });
+    if (response && response.data) {
+      const { access: newAccessToken, refresh: newRefreshToken } = response.data;
+      sessionStorage.setItem(accessToken, newAccessToken);
+      sessionStorage.setItem(refreshToken, newRefreshToken);
     }
+  };
+
+  const refreshTokens = async () => {
+    const response = await axios.post(`${API_URL}token/refresh/`, { "refresh": refresh });
+    if (response && response.data) {
+      const { access: newAccessToken, refresh: newRefreshToken } = response.data;
+      sessionStorage.setItem(accessToken, newAccessToken);
+      sessionStorage.setItem(refreshToken, newRefreshToken);
+    }
+  };
+
+  if (!refresh && !access) {
+    await fetchNewTokens();
+  } else if (refresh && access && isExpired) {
+    await refreshTokens();
   }
-}
+};

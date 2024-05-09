@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { useDispatch } from 'react-redux';
 import Radio from '@mui/material/Radio';
+import List from '@mui/material/List';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
@@ -47,7 +48,6 @@ function FilterButton(props:any) {
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types||[]);
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
   const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
-  const [selectedVisitTypeUuid, setSelectedVisitTypeUuid] = useState<any>(filters.visit_types||[]);
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
@@ -70,28 +70,18 @@ function FilterButton(props:any) {
 
   const handleMenuItemClick = (filter: any | never, type: string) => {
     if(type === "visit_type") {
-      const index = selectedVisitType.indexOf(filter.visit_type);
+      const index = selectedVisitType.indexOf(filter);
       if (index === -1) {
-        setSelectedVisitType([...selectedVisitType, filter.visit_type]);
+        setSelectedVisitType([...selectedVisitType, filter]);
       } else {
         const updatedFilters = [...selectedVisitType];
         updatedFilters.splice(index, 1);
         setSelectedVisitType(updatedFilters);
       }
-
-      const ind = selectedVisitTypeUuid.indexOf(filter.uuid);
-      if (ind === -1) {
-        setSelectedVisitTypeUuid([...selectedVisitTypeUuid, filter.uuid]);
-      } else {
-        const updatedFilters = [...selectedVisitTypeUuid];
-        updatedFilters.splice(ind, 1);
-        setSelectedVisitTypeUuid(updatedFilters);
-      }
-
     } else if (type === "patient_screening") {
-      const index = selectedScreening.indexOf(filter.uuid);
+      const index = selectedScreening.indexOf(filter);
       if (index === -1) {
-        setSelectedScreening([...selectedScreening, filter.uuid]);
+        setSelectedScreening([...selectedScreening, filter]);
       } else {
         const updatedFilters = [...selectedScreening];
         updatedFilters.splice(index, 1);
@@ -153,7 +143,7 @@ function FilterButton(props:any) {
   const createFilter = () => {
     const payload = {
       filter_name : filterName,
-      visit_type: selectedVisitTypeUuid,
+      visit_type: selectedVisitType,
       screening: selectedScreening,
       provider: selectedProviders
     };
@@ -227,37 +217,21 @@ function FilterButton(props:any) {
                             Saved Filter{" "}
                             <SettingsOutlinedIcon style={{ fontSize: "12px", cursor: "pointer" }} onClick={()=>setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked)}/>
                           </TableCellHdMain>
-                          {selectedFilterList?.map((list: any, index: number) => (
-                            <TableCellTd key={index}>
-                              {isSavedFilterSettingClicked &&<CheckboxInner
-                                key={index}
-                                sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
-                                {...label}
-                              />}
-                              {list.name}
-                            </TableCellTd>
-                          ))}
-                        </TableDataList>}
-                        <TableDataList >
-                        <TableCellHd>
-                            Visit Type ({visit_type?.length})
-                          </TableCellHd>
+                          <TableDataList >
                           <RadioMain>
-                         
-
-                          <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            defaultValue="female"
-                            name="radio-buttons-group"
-                            className='radio_sec'
-                          >
-                            <FormControlLabel className='radio_sec_inner'  value="female" control={<Radio />} label="Female" />
-                            <FormControlLabel className='radio_sec_inner'value="male" control={<Radio />} label="Male" />
-
-                          </RadioGroup>
-                          
+                            <RadioGroup
+                              aria-labelledby="demo-radio-buttons-group-label"
+                              defaultValue="female"
+                              name="radio-buttons-group"
+                              className='radio_sec'
+                            >
+                          {selectedFilterList?.map((list: any, index: number) => (
+                            <FormControlLabel className='radio_sec_inner' value={list.uuid} control={isSavedFilterSettingClicked ?<Radio /> : <List />} label={list.name} />
+                          ))}
+                            </RadioGroup>
                           </RadioMain>
-                          </TableDataList>
+                        </TableDataList>
+                        </TableDataList>}
   
                         <TableDataList>
                           <TableCellHd>
@@ -271,9 +245,9 @@ function FilterButton(props:any) {
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
                                 onClick={()=>handleMenuItemClick(visit,'visit_type')}
-                                checked={filters?.visit_types?.includes(visit.visit_type)|| selectedVisitType?.includes(visit.visit_type)|| false}
+                                checked={filters?.visit_types?.includes(visit)|| selectedVisitType?.includes(visit)|| false}
                               />
-                              {visit.visit_type}
+                              {visit}
                             </TableCellTd>
                           ))}
                         </TableDataList>
@@ -290,9 +264,9 @@ function FilterButton(props:any) {
                                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                   {...label}
                                   onClick={()=>handleMenuItemClick(patient,'patient_screening')}
-                                  checked={filters?.screening_uuids?.includes(patient.uuid)|| selectedScreening?.includes(patient.uuid)||false} 
+                                  checked={filters?.screening_uuids?.includes(patient)|| selectedScreening?.includes(patient)||false} 
                                 />
-                                {patient.name}
+                                {patient}
                               </TableCellTd>
                             )
                           )}
