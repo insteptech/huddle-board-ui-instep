@@ -38,16 +38,13 @@ import { createAppointmentFilter } from '@/app/redux/actions/appointment';
 import { toast } from 'react-toastify';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList } = props;
+  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders
+  } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
   
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedFilter, setSelectedFilter] = useState(null);
-  const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types||[]);
-  const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
-  const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
+  
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
@@ -226,7 +223,7 @@ function FilterButton(props:any) {
                               className='radio_sec'
                             >
                           {selectedFilterList?.map((list: any, index: number) => (
-                            <FormControlLabel className='radio_sec_inner' value={list.uuid} control={isSavedFilterSettingClicked ?<Radio /> : <List />} label={list.name} />
+                            <FormControlLabel key={index} className='radio_sec_inner' value={list.uuid} control={isSavedFilterSettingClicked ?<Radio /> : <List />} label={list.name} />
                           ))}
                             </RadioGroup>
                           </RadioMain>

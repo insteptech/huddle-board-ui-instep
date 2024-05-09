@@ -46,14 +46,6 @@ interface MyButtonProps {
 
 const outComes = [{name:"Clinician Agrees", key:"clinician_agrees"},{name:"Clinician Disagrees",key:"clinician_disagrees"},{name:"Test Ordered",key:"test_ordered"}]
   
-const MyButton: React.FC<MyButtonProps> = ({ buttonState, onClick, children }: any) => {
-    return (
-        <StyledMuiButton buttonState={buttonState} onClick={onClick}>
-            {children}
-        </StyledMuiButton>
-    );
-};
-
 function GetScreening({ screening }: { screening: string[] }) {
     return (
       <>
@@ -142,12 +134,9 @@ return (
                         <TableMidData><Text>{detail.description}</Text></TableMidData>
                         <TableMidData  sx={{ width: '430px' }}>
                         {outComes.map((item,index)=>(
-                            <MyButton
-                                key={index}
-                                buttonState={getOutComeBtnState(detail,item.key)}
-                                onClick={() => updateOutCome(item.key, getOutComeBtnState(detail,item.key), detail)}>
-                            {item.name}
-                            </MyButton>
+                            <StyledMuiButton key={index} buttonState={getOutComeBtnState(detail,item.key)} onClick={() => updateOutCome(item.key, getOutComeBtnState(detail,item.key), detail)}>
+                                {item.name}
+                            </StyledMuiButton>
                         ))}
                         </TableMidData>
                     </TableRow>

@@ -3,10 +3,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import {LogoIcon} from '../../images';
-import Container from "@mui/material/Container";
 import { useTheme } from '@mui/material';
-import { Typography } from '@mui/material';
-import { Link } from '@mui/material';
 import {Typography_Grid,StaticTypo,LinkText} from  '../../styles/customStyle'; 
 
 

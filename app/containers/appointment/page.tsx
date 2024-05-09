@@ -64,6 +64,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const { page } = filters;
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types||[]);
+  const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
+  const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const { ref, inView } = useInView();
 
@@ -148,10 +152,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       page_size: 10,
       patient_name: ''
     };
-    setPatientNameSearch('');
+    setSelectedVisitType([]);
+    setSelectedScreening([]);
+    setSelectedProviders([]);
     dispatch(updateFilter(filters));
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filters);
+    setAnchorEl(null);
   }
 
   const searchAppointmentPatientName = (e : any) => {    
@@ -203,7 +210,22 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       <TableDiv>
         <TableTopMain>
           <FilterMenu>
-            <FilterButton getAppointmentFiltersData={getAppointmentFiltersData} appointmentFiltersData={appointmentFiltersData} isFilterDataLoading={isFilterDataLoading} loadMoreAppointment={loadMoreAppointment} filters={filters} selectedFilterList={selectedFilterList} />
+            <FilterButton 
+            getAppointmentFiltersData={getAppointmentFiltersData} 
+            appointmentFiltersData={appointmentFiltersData} 
+            isFilterDataLoading={isFilterDataLoading} 
+            loadMoreAppointment={loadMoreAppointment} 
+            filters={filters} 
+            selectedFilterList={selectedFilterList} 
+            setSelectedVisitType={setSelectedVisitType}
+            setSelectedScreening={setSelectedScreening}
+            setSelectedProviders={setSelectedProviders}
+            setAnchorEl={setAnchorEl}
+            anchorEl={anchorEl}
+            selectedVisitType={selectedVisitType}
+            selectedScreening={selectedScreening}
+            selectedProviders={selectedProviders}
+            />
           </FilterMenu>
           <TableTop>
             <Input
