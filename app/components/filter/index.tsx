@@ -10,6 +10,10 @@ import TableHead from '@mui/material/TableHead';
 import Paper from '@mui/material/Paper';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { useDispatch } from 'react-redux';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 
 import {
     BoxFilter,
@@ -24,6 +28,7 @@ import {
     LoaderBox,
     TableDataList,
     TableData,
+    RadioMain,
 } from '../../styles/customStyle';
 import SaveFilterModal from '@/app/components/saveFilterModal';
 import { AppDispatch } from '@/app/redux/store';
@@ -233,6 +238,26 @@ function FilterButton(props:any) {
                             </TableCellTd>
                           ))}
                         </TableDataList>}
+                        <TableDataList >
+                        <TableCellHd>
+                            Visit Type ({visit_type?.length})
+                          </TableCellHd>
+                          <RadioMain>
+                         
+
+                          <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="female"
+                            name="radio-buttons-group"
+                            className='radio_sec'
+                          >
+                            <FormControlLabel className='radio_sec_inner'  value="female" control={<Radio />} label="Female" />
+                            <FormControlLabel className='radio_sec_inner'value="male" control={<Radio />} label="Male" />
+
+                          </RadioGroup>
+                          
+                          </RadioMain>
+                          </TableDataList>
   
                         <TableDataList>
                           <TableCellHd>

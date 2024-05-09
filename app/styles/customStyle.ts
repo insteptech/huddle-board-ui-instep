@@ -466,6 +466,8 @@ export const DialogContentTextInner = styled(Typography)(({ div }: any) => ({
   color:'#8B8D97',
 }));
 
+
+
 export const InputTitleInner = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '600',
@@ -478,6 +480,31 @@ export const DialogContent = styled('div')(({ div }: any) => ({
   padding:'0 24px',
   margin:'0 0 15px 0',
 }));
+
+
+export const RadioMain = styled('div')(({ div }: any) => ({
+  
+  '.radio_sec_inner':{
+    padding:'4px 6px',
+    margin:'0',
+    fontSize: '14px',
+    fontWeight: '400',
+    lineHeight: '20px',
+    color:'#172B4D',
+    "&:hover": {
+      background: '#F5F5F5',
+    },
+  },
+
+  '.Mui-checked':{
+
+    color:'#17236D',
+
+  }
+}));
+
+
+
 
 export const DialogContentTexts = styled('div')(({ div }: any) => ({
   background: '#fff',
