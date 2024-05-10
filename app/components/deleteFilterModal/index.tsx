@@ -10,6 +10,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { Container } from "@mui/material";
+import { ButtonCancel, DialogActionsMain, DialogContentTextInner, DialogContentTexts, DialogTitleInner, ModalHeader,ButtonDelete } from "@/app/styles/customStyle";
 
 const DeleteTransition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -26,56 +27,48 @@ const DeleteFilterModal = (props: any) => {
   return (
     <React.Fragment>
       <Dialog
+      sx={{ zIndex: "99999" }}
+      PaperProps={{ sx: { borderRadius: "12px", width: "400px" } }}
         open={isModalOpen}
         TransitionComponent={DeleteTransition}
         keepMounted
         onClose={modalToggle}
         aria-describedby="alert-dialog-slide-description"
       >
-        <Container
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "10px",
-          }}
-        >
+         <ModalHeader>
           <DeleteOutlineOutlinedIcon color="warning" />
-          <CloseIcon onClick={modalToggle} />
-        </Container>
-        <DialogTitle>{"Are you sure?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
+          <CloseIcon sx={{ cursor: "pointer" }} onClick={modalToggle} />
+          
+          </ModalHeader>
+
+          
+        
+        <DialogContent sx={{ paddingBottom:'0', }}>
+        <DialogTitleInner>{"Are you sure?"}</DialogTitleInner>
+
+         <DialogContentTexts id="alert-dialog-slide-description">
+         <DialogContentTextInner>
             You want to delete this saved filter.
-          </DialogContentText>
+          </DialogContentTextInner>
+          </DialogContentTexts>
         </DialogContent>
-        <DialogActions sx={{ marginBottom: "10px" }}>
-          <Button
-            onClick={modalToggle}
-            variant="contained"
-            sx={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #D0D5DD",
-              color: "#344054",
-              width: "50%",
-              textTransform: "capitalize",
-            }}
-          >
+
+
+        <Container>
+        <DialogActionsMain >
+          <ButtonCancel
+            onClick={modalToggle} >
             Cancel
-          </Button>
-          <Button
+          </ButtonCancel> 
+          <ButtonDelete
             onClick={modalToggle}
-            variant="contained"
-            sx={{
-              backgroundColor: "#D92D20",
-              border: "1px solid #D92D20",
-              color: "#FFFFFF",
-              width: "50%",
-              textTransform: "capitalize",
-            }}
           >
             Delete
-          </Button>
-        </DialogActions>
+          </ButtonDelete>
+        </DialogActionsMain>
+      </Container>
+
+      
       </Dialog>
     </React.Fragment>
   );
