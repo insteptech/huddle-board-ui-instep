@@ -25,7 +25,6 @@ import {
     TableCellHd,
     TableCellTd,
     CheckboxInner,
-    TableCellHdMain,
     LoaderBox,
     TableDataList,
     TableData,
@@ -34,7 +33,7 @@ import {
 import SaveFilterModal from '@/app/components/saveFilterModal';
 import { AppDispatch } from '@/app/redux/store';
 import { emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
-import { createAppointmentFilter, getSelectedFilterList } from '@/app/redux/actions/appointment';
+import { createAppointmentFilter, deleteSelectedFilterDetail, getSelectedFilterList } from '@/app/redux/actions/appointment';
 import { toast } from 'react-toastify';
 import DeleteFilterModal from '../deleteFilterModal';
 
@@ -48,6 +47,7 @@ function FilterButton(props:any) {
   const [filterName , setFilterName] = React.useState('');
   const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = React.useState(false);
+  const [selectedFilter , setSelectedFilter] = React.useState<any>({});
   
   const dispatch = useDispatch<AppDispatch>();
 
@@ -139,7 +139,7 @@ function FilterButton(props:any) {
   }
 
   const onRadioButtonClick = (filter: any) => {
-    console.log('HERE');
+    setSelectedFilter(filter)
   }
 
   const deleteFilterModal = () => {
@@ -148,6 +148,19 @@ function FilterButton(props:any) {
 
   const deleteModalToggle = () => {
     setDeleteModalOpen(!isModalOpen);
+  }
+
+  const deleteModalClose = () => {
+    setDeleteModalOpen(false);
+  }
+
+  const deleteFilterDetail = () => {
+    dispatch(deleteSelectedFilterDetail(selectedFilter.uuid)).then((response: any) => {
+      toast.success("Filter deleted successfully");
+      dispatch(getSelectedFilterList());
+      resetFilters(true);
+      setDeleteModalOpen(false);
+    })
   }
 
   return (
@@ -302,7 +315,7 @@ function FilterButton(props:any) {
         </Grid>
       </Box>
       <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter}/>
-      <DeleteFilterModal isModalOpen={isDeleteModalOpen} modalToggle={deleteModalToggle} />
+      <DeleteFilterModal isModalOpen={isDeleteModalOpen} modalToggle={deleteModalToggle} deleteModalClose={deleteModalClose} deleteFilterDetail={deleteFilterDetail}/>
     </>
   );
 }

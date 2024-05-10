@@ -56,3 +56,7 @@ export const getSelectedFilterList = createAsyncThunk('getSelectedFilterList', a
 export const getSelectedFilterDetail = createAsyncThunk('getSelectedFilterDetail', async (uuid: string) => {  
   return await axiosWrapper({method:"get", url:`filter-detail/${uuid}`})
 });
+
+export const deleteSelectedFilterDetail = createAsyncThunk('deleteSelectedFilterDetail', async (uuid: string) => {  
+  return await axiosWrapper({method:"delete", url:`filters/${uuid}`})
+});
