@@ -158,6 +158,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filters);
     setPatientNameSearch('');
+    setSelectedSavedFilterUuid('');
     if(!isFilterPopOpen) {
       setAnchorEl(null);
     }
@@ -200,8 +201,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setSelectedProviders(payload.providers);
       dispatch(updateFilter(filters));
       dispatch(emptyAppointmentList());
-      loadMoreAppointment(filters);
-      
+      loadMoreAppointment(filters); 
     })
   }
   

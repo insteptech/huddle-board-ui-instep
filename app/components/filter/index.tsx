@@ -36,6 +36,7 @@ import { AppDispatch } from '@/app/redux/store';
 import { emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
 import { createAppointmentFilter, getSelectedFilterList } from '@/app/redux/actions/appointment';
 import { toast } from 'react-toastify';
+import DeleteFilterModal from '../deleteFilterModal';
 
 function FilterButton(props:any) {
   const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid } = props;
@@ -46,6 +47,7 @@ function FilterButton(props:any) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
   const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = React.useState(false);
   
   const dispatch = useDispatch<AppDispatch>();
 
@@ -136,6 +138,18 @@ function FilterButton(props:any) {
     })
   }
 
+  const onRadioButtonClick = (filter: any) => {
+    console.log('HERE');
+  }
+
+  const deleteFilterModal = () => {
+    setDeleteModalOpen(!isDeleteModalOpen);
+  }
+
+  const deleteModalToggle = () => {
+    setDeleteModalOpen(!isModalOpen);
+  }
+
   return (
     <>
       <Box
@@ -171,13 +185,23 @@ function FilterButton(props:any) {
                 >
                   <BoxFilterLeft>Filter by</BoxFilterLeft>
                   <BoxFilterRight>
-                    <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={()=>applyFilters()}>Apply</BoxFilterRightMid>
-                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
-                      Create Filter
-                    </BoxFilterRightMid>
-                    <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>resetFilters()}>
-                      Reset
-                    </BoxFilterRightMid>
+                    {!isSavedFilterSettingClicked ? <>
+                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={()=>applyFilters()}>Apply</BoxFilterRightMid>
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
+                        Create Filter
+                      </BoxFilterRightMid>
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>resetFilters()}>
+                        Reset
+                      </BoxFilterRightMid>
+                      </> : <>
+                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => createFilterModal()}>
+                        Rename
+                      </BoxFilterRightMid>
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>deleteFilterModal()}>
+                        Delete
+                      </BoxFilterRightMid>
+                      </>
+                    }
                   </BoxFilterRight>
                 </BoxFilter>
                 {isFilterDataLoading && (
@@ -205,7 +229,7 @@ function FilterButton(props:any) {
                               className='radio_sec'
                             >
                           {selectedFilterList?.map((list: any, index: number) => (
-                            <FormControlLabel onClick={()=>getFilterDetail(list)} key={index} className={selectedSavedFilterUuid ===list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ?<Radio /> : <List />} label={list.name} />
+                            <FormControlLabel onClick={()=> {getFilterDetail(list)}} key={index} className={selectedSavedFilterUuid ===list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ? <Radio onClick={()=>onRadioButtonClick(list)}/> : <List />} label={list.name} />
                           ))}
                             </RadioGroup>
                           </RadioMain>
@@ -278,6 +302,7 @@ function FilterButton(props:any) {
         </Grid>
       </Box>
       <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter}/>
+      <DeleteFilterModal isModalOpen={isDeleteModalOpen} modalToggle={deleteModalToggle} />
     </>
   );
 }
