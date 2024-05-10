@@ -7,6 +7,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import dynamic from 'next/dynamic';
 import ReduxProvider from '@/app/redux/provider';
+import { ToastContainer } from 'react-toastify';
+
 const inter = Inter({ subsets: ['latin'] });
 
 const RootLayout = dynamic(() => import('./components/rootLayout').then((mod) => mod), {
@@ -24,12 +26,13 @@ export default function MainLayout({
 }>) {
   return (
     <AppRouterCacheProvider>
+          
       <ReduxProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <html lang="en">
             <body className={inter.className}>
-              <RootLayout>{children}</RootLayout>
+              <RootLayout><ToastContainer />{children}</RootLayout>
             </body>
           </html>
         </ThemeProvider>

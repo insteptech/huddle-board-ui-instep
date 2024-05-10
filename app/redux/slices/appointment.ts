@@ -1,5 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList } from '../actions/appointment';
+import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail } from '../actions/appointment';
 
 export type AppointmentsState = {
     appointmentsData: {
@@ -15,7 +15,16 @@ export type AppointmentsState = {
     isFilterDataLoading: boolean;
     filtersData: FiltersDataState;
     selectedFilterList: IFilterDataState[];
+    selectedFilterDetail: SelectedFilterDetailState | null;
 };
+
+export type SelectedFilterDetailState = {
+  uuid: string;
+  name: string;
+  visit_type: [{uuid: string}];
+  screening: [{uuid: string}];
+  providers: [{uuid: string}];
+}
 
 export type FiltersDataState = {
   page_size?: number,
@@ -75,7 +84,8 @@ const initialState: AppointmentsState = {
       page_size: 10,
       page: 1,
     },
-    selectedFilterList: []
+    selectedFilterList: [],
+    selectedFilterDetail: null
 };
 
 export const appointment = createSlice({
@@ -145,6 +155,10 @@ export const appointment = createSlice({
     builder.addCase(getSelectedFilterList.fulfilled, (state, { payload }) => {
       state.selectedFilterList = payload;
       state.isFilterDataLoading = false;
+    });
+
+    builder.addCase(getSelectedFilterDetail.fulfilled, (state, { payload }) => {
+      state.selectedFilterDetail = payload;
     });
   },
 });

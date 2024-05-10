@@ -80,6 +80,7 @@ export const getAndSetAccessToken = async () => {
       const { access: newAccessToken, refresh: newRefreshToken } = response.data;
       sessionStorage.setItem(accessToken, newAccessToken);
       sessionStorage.setItem(refreshToken, newRefreshToken);
+      return;
     }
   };
 
@@ -89,6 +90,7 @@ export const getAndSetAccessToken = async () => {
       const { access: newAccessToken, refresh: newRefreshToken } = response.data;
       sessionStorage.setItem(accessToken, newAccessToken);
       sessionStorage.setItem(refreshToken, newRefreshToken);
+      return;
     }
   };
 

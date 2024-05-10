@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -38,7 +38,6 @@ import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter 
 import { Box, Input, InputAdornment } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
-import { getToken } from '@/app/redux/actions/auth';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -142,7 +141,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getSelectedFilterList());
   }
 
-  const resetFilters = () => {
+  const resetFilters = (isFilterPopOpen: boolean = false) => {
     const filters = {
       visit_types: [],
       providers_uuids: [],
@@ -157,7 +156,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(updateFilter(filters));
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filters);
-    setAnchorEl(null);
+    setPatientNameSearch('');
+    if(!isFilterPopOpen) {
+      setAnchorEl(null);
+    }
   }
 
   const searchAppointmentPatientName = (e : any) => {    
@@ -176,6 +178,15 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       dispatch(emptyAppointmentList());
       loadMoreAppointment(filters);
     }
+  }
+
+  const getFilterDetail = (filter: any) => {
+    dispatch(getSelectedFilterDetail(filter.uuid)).then((response:any) => {
+      console.log('e:--',response);
+      const { payload } = response || {};
+      if(!payload) return;
+      
+    })
   }
   
   return (
@@ -210,21 +221,22 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         <TableTopMain>
           <FilterMenu>
             <FilterButton 
-            getAppointmentFiltersData={getAppointmentFiltersData} 
-            appointmentFiltersData={appointmentFiltersData} 
-            isFilterDataLoading={isFilterDataLoading} 
-            loadMoreAppointment={loadMoreAppointment} 
-            filters={filters} 
-            selectedFilterList={selectedFilterList} 
-            setSelectedVisitType={setSelectedVisitType}
-            setSelectedScreening={setSelectedScreening}
-            setSelectedProviders={setSelectedProviders}
-            setAnchorEl={setAnchorEl}
-            anchorEl={anchorEl}
-            selectedVisitType={selectedVisitType}
-            selectedScreening={selectedScreening}
-            selectedProviders={selectedProviders}
-            resetFilters={resetFilters}
+              getAppointmentFiltersData={getAppointmentFiltersData} 
+              appointmentFiltersData={appointmentFiltersData} 
+              isFilterDataLoading={isFilterDataLoading} 
+              loadMoreAppointment={loadMoreAppointment} 
+              filters={filters} 
+              selectedFilterList={selectedFilterList} 
+              setSelectedVisitType={setSelectedVisitType}
+              setSelectedScreening={setSelectedScreening}
+              setSelectedProviders={setSelectedProviders}
+              setAnchorEl={setAnchorEl}
+              anchorEl={anchorEl}
+              selectedVisitType={selectedVisitType}
+              selectedScreening={selectedScreening}
+              selectedProviders={selectedProviders}
+              resetFilters={resetFilters}
+              getFilterDetail={getFilterDetail}
             />
           </FilterMenu>
           <TableTop>

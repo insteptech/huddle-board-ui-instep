@@ -52,3 +52,7 @@ export const createAppointmentFilter = createAsyncThunk('createFilter', async (p
 export const getSelectedFilterList = createAsyncThunk('getSelectedFilterList', async () => {  
   return await axiosWrapper({method:"get", url:'select-filter-list'})
 });
+
+export const getSelectedFilterDetail = createAsyncThunk('getSelectedFilterDetail', async (uuid: string) => {  
+  return await axiosWrapper({method:"get", url:`filter-detail/${uuid}`})
+});

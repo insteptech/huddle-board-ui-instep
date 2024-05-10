@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { isAuthenticated } from './app/utils/auth';
 
 export function middleware(request: NextRequest) {
+  console.log(request,'requestrequestrequestrequest')
   const jwtToken = request.cookies.get('jwt-token')?.value;
   const isAuthenticate = isAuthenticated(jwtToken);
 
