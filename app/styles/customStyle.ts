@@ -482,6 +482,8 @@ export const DialogContent = styled('div')(({ div }: any) => ({
 }));
 
 
+
+
 export const RadioMain = styled('div')(({ div }: any) => ({
   
   '.radio_sec_inner':{
@@ -494,6 +496,10 @@ export const RadioMain = styled('div')(({ div }: any) => ({
     "&:hover": {
       background: '#F5F5F5',
     },
+  },
+
+  '.selectedSavedFilter':{
+    background: '#F5F5F5',
   },
 
   '.Mui-checked':{
@@ -514,6 +520,7 @@ export const RadioMain = styled('div')(({ div }: any) => ({
     fontSize: '14px',
     fontWeight: '400',
     lineHeight: '20px',
+    
 
   }
 }));
