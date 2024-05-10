@@ -38,7 +38,7 @@ import { createAppointmentFilter, getSelectedFilterList } from '@/app/redux/acti
 import { toast } from 'react-toastify';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail } = props;
+  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
   
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -46,7 +46,7 @@ function FilterButton(props:any) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [filterName , setFilterName] = React.useState('');
   const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
-
+  
   const dispatch = useDispatch<AppDispatch>();
 
   const modalToggle = () => {
@@ -205,7 +205,7 @@ function FilterButton(props:any) {
                               className='radio_sec'
                             >
                           {selectedFilterList?.map((list: any, index: number) => (
-                            <FormControlLabel onClick={()=>getFilterDetail(list)} key={index} className='radio_sec_inner' value={list.uuid} control={isSavedFilterSettingClicked ?<Radio /> : <List />} label={list.name} />
+                            <FormControlLabel onClick={()=>getFilterDetail(list)} key={index} className={selectedSavedFilterUuid ===list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ?<Radio /> : <List />} label={list.name} />
                           ))}
                             </RadioGroup>
                           </RadioMain>

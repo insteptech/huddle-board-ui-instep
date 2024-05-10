@@ -39,3 +39,20 @@ export const getOutComeBtnState = (detail: any, key: any) => {
   }
   return buttonState;
 }
+
+export const sortArraysInObject = (obj:any) => {
+    for (let key in obj) {
+        if (Array.isArray(obj[key])) {
+            if (obj[key].length > 0 && typeof obj[key][0] === 'object' && 'name' in obj[key][0]) {
+                obj[key].sort((a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name));
+            } else {
+                obj[key].sort();
+            }
+        }
+    }
+    return obj;
+}
+
+export const sortObjectsByName = (arr:any) => {
+    return arr.sort((a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name));
+}

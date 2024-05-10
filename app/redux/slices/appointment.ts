@@ -1,5 +1,6 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail } from '../actions/appointment';
+import { sortArraysInObject, sortObjectsByName } from '@/app/utils/appointment';
 
 export type AppointmentsState = {
     appointmentsData: {
@@ -140,8 +141,8 @@ export const appointment = createSlice({
       console.log(state, action, 'rejected');
       state.isFilterDataLoading = false;
     });
-    builder.addCase(getFiltersData.fulfilled, (state, { payload }) => {
-      state.appointmentFiltersData = payload;
+    builder.addCase(getFiltersData.fulfilled, (state, { payload }) => {      
+      state.appointmentFiltersData = sortArraysInObject(payload);
       state.isFilterDataLoading = false;
     });
 
@@ -153,7 +154,7 @@ export const appointment = createSlice({
       state.isFilterDataLoading = false;
     });
     builder.addCase(getSelectedFilterList.fulfilled, (state, { payload }) => {
-      state.selectedFilterList = payload;
+      state.selectedFilterList = sortObjectsByName(payload);;
       state.isFilterDataLoading = false;
     });
 

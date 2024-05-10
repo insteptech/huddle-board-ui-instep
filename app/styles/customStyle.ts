@@ -485,7 +485,7 @@ export const DialogContent = styled('div')(({ div }: any) => ({
 export const RadioMain = styled('div')(({ div }: any) => ({
   
   '.radio_sec_inner':{
-    padding:'8px 16px',
+    padding:'4px 6px',
     margin:'0',
     fontSize: '14px',
     fontWeight: '400',
