@@ -1,7 +1,10 @@
 'use client';
 import { Roboto } from 'next/font/google';
 import { createTheme } from '@mui/material/styles';
-import localFont from 'next/font/local'
+import localFont from 'next/font/local';
+import '@iroomit/react-date-range/dist/theme/default.css'; // theme css file
+import '@iroomit/react-date-range/dist/theme/default.css'; // theme css file
+
 const myFont = localFont({
   src: [
     {

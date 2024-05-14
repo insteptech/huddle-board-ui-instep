@@ -1,110 +1,64 @@
 'use client'
 import React from 'react'
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { StaticDateRangePicker } from "@mui/x-date-pickers-pro/StaticDateRangePicker";
-import { PickersShortcutsItem } from "@mui/x-date-pickers/PickersShortcuts";
-import { DateRange } from "@mui/x-date-pickers-pro/models";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import dayjs  from 'dayjs';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { Box , Button} from '@mui/material';
-import { Dayjs } from 'dayjs';
+import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { getCurrentDateFormatted } from '@/app/utils/helper';
+import { DateRangePicker } from '@iroomit/react-date-range';
+import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
 
 const Calender = () => {
-    const shortcutsItems: PickersShortcutsItem<DateRange<Dayjs>>[] = [
-        {
-          label: "Today",
-          getValue: () => {
-            const today = dayjs();
-            return [today.startOf("week"), today.endOf("week")];
-          },
-        },
-        {
-          label: "Yesterday",
-          getValue: () => {
-            const today = dayjs();
-            return [today.startOf("week"), today.endOf("week")];
-          },
-        },
-        {
-          label: "This Week",
-          getValue: () => {
-            const today = dayjs();
-            return [today.startOf("week"), today.endOf("week")];
-          },
-        },
-        {
-          label: "Last Week",
-          getValue: () => {
-            const today = dayjs();
-            const prevWeek = today.subtract(7, "day");
-            return [prevWeek.startOf("week"), prevWeek.endOf("week")];
-          },
-        },
-    
-        {
-          label: "This Month",
-          getValue: () => {
-            const today = dayjs();
-            return [today.startOf("month"), today.endOf("month")];
-          },
-        },
-        {
-          label: "Next Month",
-          getValue: () => {
-            const today = dayjs();
-            const startOfNextMonth = today.endOf("month").add(1, "day");
-            return [startOfNextMonth, startOfNextMonth.endOf("month")];
-          },
-        },
-        { label: "Reset", getValue: () => [null, null] },
-      ];
-    
-      const [anchorEl, setAnchorEl] = useState(null);
-      const handleClick = (event:any) => {
-        setAnchorEl(event.currentTarget);
-      };
-      const handleClose = () => {
-        setAnchorEl(null);
-      };
+
+  const [anchorEl, setAnchorEl] = useState(false);
+
+  const handleClick = () => {
+    setAnchorEl(!anchorEl);
+  };
+
+  const [range, setRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection'
+  });
+
   return (
-    <>
-       <Button
+    <CalenderSection>
+      <Button
         className=""
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
         variant="contained"
-        >
-        <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }}/>{}{getCurrentDateFormatted()}
-      </Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
       >
-      <MenuItem > 
-        <Box>
-          <LocalizationProvider dateAdapter={AdapterDayjs} >
-            <StaticDateRangePicker
-              slotProps={{
-                shortcuts: {
-                  items: shortcutsItems,
-                },
-                actionBar: { actions: [] },
+        <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted()}
+      </Button>
+      <Box
+        className={anchorEl ? 'CustomCalender' : 'CustomCalenderhide'}
+      >
+        <Box sx={{
+          padding: '0'
+        }}>
+
+          <DataRangeBox>
+            <DateRangePicker className='DateRangePickerComp'
+              ranges={[range]}
+              onChange={(newRange: { [x: string]: any }) => {
+                if (typeof newRange === 'object' && 'selection' in newRange) {
+                  const { startDate, endDate } = newRange.selection;
+                  setRange({
+                    startDate,
+                    endDate,
+                    key: 'selection'
+                  });
+                } else {
+
+                }
               }}
             />
-          </LocalizationProvider>
+          </DataRangeBox>
         </Box>
-      </MenuItem>
-      </Menu>
-    </>
+      </Box>
+    </CalenderSection>
   )
 }
 
