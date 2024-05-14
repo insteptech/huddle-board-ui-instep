@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Menu from '@mui/material/Menu';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Box, CircularProgress } from '@mui/material';
@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import Paper from '@mui/material/Paper';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Radio from '@mui/material/Radio';
 import List from '@mui/material/List';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -31,9 +31,9 @@ import {
     RadioMain,
 } from '../../styles/customStyle';
 import SaveFilterModal from '@/app/components/saveFilterModal';
-import { AppDispatch } from '@/app/redux/store';
+import { AppDispatch, AppState } from '@/app/redux/store';
 import { emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
-import { createAppointmentFilter, deleteSelectedFilterDetail, getSelectedFilterList } from '@/app/redux/actions/appointment';
+import { createAppointmentFilter, deleteSelectedFilterDetail, getSelectedFilterList, updateAppointmentFilter } from '@/app/redux/actions/appointment';
 import { toast } from 'react-toastify';
 import DeleteFilterModal from '../deleteFilterModal';
 
@@ -48,8 +48,10 @@ function FilterButton(props:any) {
   const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = React.useState(false);
   const [selectedFilter , setSelectedFilter] = React.useState<any>({});
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   
   const dispatch = useDispatch<AppDispatch>();
+  const selectedFilterDetail = useSelector((state: AppState) => state.appointment.selectedFilterDetail);
 
   const modalToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -116,26 +118,37 @@ function FilterButton(props:any) {
     setAnchorEl(null);
   }
 
-  const createFilterModal = () => {
+  const createFilterModal = (isEdit:boolean = false) => {
     modalToggle();
+    if(isEdit) setIsEditModalOpen(true);
   }
   
-  const createFilter = () => {
+  const createFilter = (isEdit: boolean = false) => {
     const payload = {
       filter_name : filterName,
       visit_type: selectedVisitType,
       screening: selectedScreening,
       provider: selectedProviders
     };
-
-    dispatch(createAppointmentFilter(payload)).then((e)=> {
-      if (e?.payload) {
-        toast.success(e?.payload?.message);
-        setIsModalOpen(false);
-        dispatch(getSelectedFilterList());
-        resetFilters(true);
-      }
-    })
+    if(isEdit) {
+      dispatch(updateAppointmentFilter({action: payload, uuid: selectedFilterDetail?.uuid})).then((e)=> {
+        if (e?.payload) {
+          toast.success(e?.payload?.message);
+          setIsModalOpen(false);
+          dispatch(getSelectedFilterList());
+          resetFilters(true);
+        }
+      });
+    } else {
+      dispatch(createAppointmentFilter(payload)).then((e)=> {
+        if (e?.payload) {
+          toast.success(e?.payload?.message);
+          setIsModalOpen(false);
+          dispatch(getSelectedFilterList());
+          resetFilters(true);
+        }
+      });
+    }
   }
 
   const onRadioButtonClick = (filter: any) => {
@@ -161,6 +174,11 @@ function FilterButton(props:any) {
       resetFilters(true);
       setDeleteModalOpen(false);
     })
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setFilterName('');
   }
 
   return (
@@ -207,7 +225,7 @@ function FilterButton(props:any) {
                         Reset
                       </BoxFilterRightMid>
                       </> : <>
-                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => createFilterModal()}>
+                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => createFilterModal(true)}>
                         Rename
                       </BoxFilterRightMid>
                       <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>deleteFilterModal()}>
@@ -314,7 +332,7 @@ function FilterButton(props:any) {
           </Grid>
         </Grid>
       </Box>
-      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter}/>
+      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter} isEditModalOpen={isEditModalOpen} selectedFilterDetail={selectedFilterDetail} closeModal={closeModal}/>
       <DeleteFilterModal isModalOpen={isDeleteModalOpen} modalToggle={deleteModalToggle} deleteModalClose={deleteModalClose} deleteFilterDetail={deleteFilterDetail}/>
     </>
   );

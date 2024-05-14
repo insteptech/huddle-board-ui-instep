@@ -30,7 +30,7 @@ const SaveTransition = React.forwardRef(function Transition(
 });
 
 const SaveFilterModal = (props: any) => {
-  const { isModalOpen, modalToggle, filterName, setFilterName, createFilter } = props;
+  const { isModalOpen, modalToggle, filterName, setFilterName, createFilter, isEditModalOpen, selectedFilterDetail, closeModal } = props;
 
   return (
     <React.Fragment>
@@ -40,19 +40,18 @@ const SaveFilterModal = (props: any) => {
         open={isModalOpen}
         TransitionComponent={SaveTransition}
         keepMounted
-        onClose={modalToggle}
+        onClose={()=>closeModal()}
         aria-describedby="alert-dialog-slide-description"
       >
         <ModalHeader>
           <ModalHeaderIcon>
             <AssistantPhotoOutlinedIcon />
           </ModalHeaderIcon>
-          <CloseIcon sx={{ cursor: "pointer" }} onClick={modalToggle} />
+          <CloseIcon sx={{ cursor: "pointer" }} onClick={()=>closeModal()} />
         </ModalHeader>
 
         <DialogContent>
-          <DialogTitleInner>{"Save a filter"}</DialogTitleInner>
-
+          <DialogTitleInner>{isEditModalOpen ? "Rename filter" :"Save a filter"}</DialogTitleInner>
           <DialogContentTexts id="alert-dialog-slide-description">
             <DialogContentTextInner>
               Using a set of filters regularly, save it to reuse.
@@ -63,18 +62,18 @@ const SaveFilterModal = (props: any) => {
         <Container>
           <InputTitleInner>Filter name</InputTitleInner>
           <TextFieldInput
-            value={filterName}
+            value={filterName || selectedFilterDetail?.name}
             id="fullWidth"
             placeholder="AWV+PVD"
             onChange={setFilterName}
           />
           <DialogActionsMain>
-            <ButtonCancel onClick={modalToggle}>Cancel</ButtonCancel>
+            <ButtonCancel onClick={()=>closeModal()}>Cancel</ButtonCancel>
             <ButtonSave
-              onClick={()=>createFilter()}
+              onClick={()=>createFilter(isEditModalOpen)}
               disabled={filterName.length === 0}
             >
-              Save
+              {isEditModalOpen ? "Update" :"Save"}
             </ButtonSave>
           </DialogActionsMain>
         </Container>

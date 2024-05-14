@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { getAndSetAccessToken, isAuthenticated,isTokenExpired,sessionKeys } from "../../utils/auth";
 
-let API_URL = process.env.REACT_APP_API_URL;
+export let API_URL = process.env.REACT_APP_API_URL;
 API_URL = "https://dev-api.pdap.doctustech.com/api/"
 
 const { accessToken, slugKey, refreshToken} = sessionKeys;

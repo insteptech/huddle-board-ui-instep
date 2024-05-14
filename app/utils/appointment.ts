@@ -54,5 +54,5 @@ export const sortArraysInObject = (obj:any) => {
 }
 
 export const sortObjectsByName = (arr:any) => {
-    return arr.sort((a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name));
+    return arr?.sort((a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name));
 }

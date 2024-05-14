@@ -38,6 +38,12 @@ import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter 
 import { Box, Container, Input, InputAdornment } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
+import { API_URL } from '@/app/redux/config/axiosInstance';
+import { sessionKeys } from '@/app/utils/auth';
+
+const url = `${API_URL}download-appointments/?file_type=pdf`;
+const { accessToken } = sessionKeys;
+const access = sessionStorage.getItem(accessToken); 
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -130,12 +136,35 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const handlePrint=()=>{
-    console.log("print");
+    fetch(url, { method: 'get', headers:{"Authorization": `JWT ${access}`} })
+    .then(res => res.blob())
+    .then(res => {
+        const url = URL.createObjectURL(res);
+        const newTab = window.open(url, '_blank');
+        if (newTab) {
+          newTab.onload = () => {
+              newTab.print();
+          };
+      } else {
+          console.error('Failed to open new tab');
+      }
+    });
   }
 
-  const handlePdf=()=>{
-    console.log("PDF");
-  }
+  const handlePdf =() => {
+    fetch(url, { method: 'get', headers:{"Authorization": `JWT ${access}`} })
+      .then(res => res.blob())
+      .then(res => {
+        console.log(res,'resres')
+        const aElement = document.createElement('a');
+        aElement.setAttribute('download', "acc.pdf");
+        const href = URL.createObjectURL(res);
+        aElement.href = href;
+        aElement.setAttribute('target', '_blank');
+        aElement.click();
+        URL.revokeObjectURL(href);
+      });
+  };
 
   const getAppointmentFiltersData = () => {
     dispatch(getFiltersData());

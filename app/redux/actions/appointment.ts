@@ -29,6 +29,11 @@ export interface ICreateFilterPayload {
   provider: string[]
 }
 
+export interface IUpdateAppointmentFilter {
+  action : ICreateFilterPayload
+  uuid: string | undefined;
+}
+
 export const getAppointmentsList = createAsyncThunk('getAppointmentsList', async (payload: FiltersDataState) => {  
   return await axiosWrapper({method:"get", url:`appointment-details/?${urlParams(payload)}`,payload})
 });
@@ -59,4 +64,12 @@ export const getSelectedFilterDetail = createAsyncThunk('getSelectedFilterDetail
 
 export const deleteSelectedFilterDetail = createAsyncThunk('deleteSelectedFilterDetail', async (uuid: string) => {  
   return await axiosWrapper({method:"delete", url:`filters/${uuid}`})
+});
+
+export const updateAppointmentFilter = createAsyncThunk('updateAppointmentFilter', async (payload: IUpdateAppointmentFilter) => {
+  return await axiosWrapper({method:"put", url:`filters/${payload.uuid}`, payload: payload.action})
+});
+
+export const getAppointmentPdf = createAsyncThunk('getAppointmentPdf', async () => {  
+  return await axiosWrapper({method:"get", url:'download-appointments/?file_type=pdf', responseType: 'blob'})
 });

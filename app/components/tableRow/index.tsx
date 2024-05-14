@@ -37,13 +37,6 @@ import {
 import { getOutComeBtnState } from '@/app/utils/appointment';
 import { getTime } from '@/app/utils/helper';
 
-
-interface MyButtonProps {
-    buttonState: any;
-    onClick: () => void;
-    children: React.ReactNode;
-}
-
 const outComes = [{name:"Clinician Agrees", key:"clinician_agrees"},{name:"Clinician Disagrees",key:"clinician_disagrees"},{name:"Test Ordered",key:"test_ordered"}]
   
 function GetScreening({ screening }: { screening: string[] }) {
