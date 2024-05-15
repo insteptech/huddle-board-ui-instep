@@ -487,6 +487,13 @@ export const DialogContent = styled('div')(({ div }: any) => ({
 
 
 
+
+
+
+
+
+
+
 export const RadioMain = styled('div')(({ div }: any) => ({
 
   '.radio_sec_inner': {
@@ -642,7 +649,9 @@ export const DataRangeBox = styled('div')(({ div }: any) => ({
       fontSize: '14px',
       fontWeight: '400',
       lineHeight: '21px',
-      textWrap: 'nowrap'
+      textWrap: 'nowrap',
+      color:'#2D3748',
+      marginBottom: '0.6rem',
 
     }
   }
@@ -662,5 +671,22 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
 
   '.CustomCalenderhide': {
     display: 'none'
-  }
+  },
+  '.DateRangePickerComp': {
+    padding: '20px',
+  },
+
+
+  '.rdrMonth button span': {
+    borderRadius: '50%!important',
+    margin: 'auto',
+    width:'30px',
+    height:'30px',
+    fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '21px',
+  },
+
+ 
+
 }));
