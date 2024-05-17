@@ -2,7 +2,6 @@ import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, T
 import TableRow from "@mui/material/TableRow";
 import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
-// import '@iroomit/react-date-range/dist/styles.css'; // main css file
 
 interface StyledButtonProps {
   buttonState: string;
@@ -437,6 +436,17 @@ export const TableData = styled('tr')(({ div }: any) => ({
   justifyContent: 'space-between',
 }));
 
+export const TestButton = styled('div')(({ div }: any) => ({
+  display: 'flex',
+  alignItems: 'Center',
+  fontSize: '10px',
+  fontWeight: '400',
+  lineHeight: '16px',
+  color: '#5C6469',
+  marginRight: '10px',
+  marginBottom: '10px',
+}));
+
 export const ModalHeader = styled('div')(({ div }: any) => ({
   padding: '0 24px',
   margin: '15px 0',
@@ -469,8 +479,6 @@ export const DialogContentTextInner = styled(Typography)(({ div }: any) => ({
   color: '#8B8D97',
 }));
 
-
-
 export const InputTitleInner = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '600',
@@ -483,16 +491,6 @@ export const DialogContent = styled('div')(({ div }: any) => ({
   padding: '0 24px',
   margin: '0 0 15px 0',
 }));
-
-
-
-
-
-
-
-
-
-
 
 export const RadioMain = styled('div')(({ div }: any) => ({
 
@@ -645,14 +643,13 @@ export const DataRangeBox = styled('div')(({ div }: any) => ({
   },
   '.rdrDefinedRangesWrapper button': {
     borderBottom: 'none',
+    color:'#2D3748',
     'span': {
       fontSize: '14px',
       fontWeight: '400',
       lineHeight: '21px',
       textWrap: 'nowrap',
-      color:'#2D3748',
       marginBottom: '0.6rem',
-
     }
   }
 }));
@@ -666,16 +663,13 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
     boxShadow: '0px 3px 5px 0px #091E4233',
     background: '#FFFFFF',
     top: '40px'
-
   },
-
   '.CustomCalenderhide': {
     display: 'none'
   },
   '.DateRangePickerComp': {
     padding: '20px',
   },
-
 
   '.rdrMonth button span': {
     borderRadius: '50%!important',
@@ -686,7 +680,4 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
   fontWeight: '400',
   lineHeight: '21px',
   },
-
- 
-
 }));

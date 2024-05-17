@@ -84,6 +84,7 @@ const initialState: AppointmentsState = {
     filtersData: {
       page_size: 10,
       page: 1,
+      sort_by: 'appointment_timestamp'
     },
     selectedFilterList: [],
     selectedFilterDetail: null

@@ -59,3 +59,25 @@ export const getCurrentDateFormatted = () => {
   
   return `${day} ${month} ${year}`;
 }
+
+export const formatDates = (startDate: any, endDate: any) => {
+  // Helper function to format date
+  const formatDate = (date: any, isEndOfDay: any) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = isEndOfDay ? '23' : '00';
+    const minutes = isEndOfDay ? '59' : '00';
+    const seconds = isEndOfDay ? '59' : '00';
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  const startFormatted = formatDate(startDate, false);
+  const endFormatted = formatDate(endDate, true);
+
+  return {
+    start: startFormatted,
+    end: endFormatted
+  };
+}

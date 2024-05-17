@@ -7,19 +7,15 @@ import { getCurrentDateFormatted } from '@/app/utils/helper';
 import { DateRangePicker } from '@iroomit/react-date-range';
 import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
 
-const Calender = () => {
-
+const Calender = (props: any) => {
+  const {range, dateRangeHandleChange} = props;
   const [anchorEl, setAnchorEl] = useState(false);
 
   const handleClick = () => {
     setAnchorEl(!anchorEl);
   };
 
-  const [range, setRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection'
-  });
+
 
   return (
     <CalenderSection>
@@ -45,7 +41,7 @@ const Calender = () => {
               onChange={(newRange: { [x: string]: any }) => {
                 if (typeof newRange === 'object' && 'selection' in newRange) {
                   const { startDate, endDate } = newRange.selection;
-                  setRange({
+                  dateRangeHandleChange({
                     startDate,
                     endDate,
                     key: 'selection'

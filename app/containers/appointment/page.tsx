@@ -17,6 +17,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 
 import {
   HeadingTag,
@@ -40,6 +41,7 @@ import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
 import { API_URL } from '@/app/redux/config/axiosInstance';
 import { sessionKeys } from '@/app/utils/auth';
+import { formatDates } from '@/app/utils/helper';
 
 const url = `${API_URL}download-appointments/?file_type=pdf`;
 const { accessToken } = sessionKeys;
@@ -57,6 +59,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [isPatientNotFound, setIsPatientNotFound] = useState(true);
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [patientNameSearch , setPatientNameSearch] = React.useState('');
+  const [range, setRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection'
+  });
 
   const dispatch = useDispatch<AppDispatch>();
   const appointmentsList = useSelector((state: AppState) => state.appointment?.appointmentsData?.results) || [];
@@ -75,6 +82,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const [selectedSavedFilterUuid, setSelectedSavedFilterUuid] = useState<string>('');
+  const [isAppointmentTimeSortAscending, setIsAppointmentTimeSortAscending] = useState(false);
+  const [isPatientNameSortAscending, setIsPatientNameSortAscending] = useState(false);
+
   const { ref, inView } = useInView();
 
   const loadMoreAppointment = (filter?: FiltersDataState) => {    
@@ -178,7 +188,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       screening_uuids: [],
       page: 1,
       page_size: 10,
-      patient_name: ''
+      patient_name: '',
+      appointment_start_date: '',
+      appointment_end_date: '',
     };
     setSelectedVisitType([]);
     setSelectedScreening([]);
@@ -191,6 +203,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     if(!isFilterPopOpen) {
       setAnchorEl(null);
     }
+    setRange ({
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection'
+    })
   }
 
   const searchAppointmentPatientName = (e : any) => {    
@@ -233,6 +250,55 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       loadMoreAppointment(filters); 
     })
   }
+
+  const dateRangeHandleChange = (dates: any) => {
+    console.log('dates:-',dates);
+    
+    setRange(dates);
+    const formattedDates = formatDates(dates.startDate, dates.endDate);
+
+    const filters = {
+      appointment_start_date:formattedDates.start,
+      appointment_end_date: formattedDates.end,
+      page: 1,
+      page_size: 10,
+    };
+    dispatch(updateFilter(filters));
+    dispatch(emptyAppointmentList());
+    loadMoreAppointment(filters);
+  }
+
+  const handleAppointmentTimeSort = () => {
+    setIsAppointmentTimeSortAscending(!isAppointmentTimeSortAscending);
+    const filters = {
+      sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp' ,
+      page: 1,
+      page_size: 10,
+    };
+    dispatch(updateFilter(filters));
+    dispatch(emptyAppointmentList());
+    loadMoreAppointment(filters);
+  }
+
+  const handlePatientNameSort = () => {
+    setIsPatientNameSortAscending(!isPatientNameSortAscending);
+    const filters = {
+      sort_by: isPatientNameSortAscending ? 'patient__patient_first_name' : '-patient__patient_first_name' ,
+      page: 1,
+      page_size: 10,
+    };
+    dispatch(updateFilter(filters));
+    dispatch(emptyAppointmentList());
+    loadMoreAppointment(filters);
+  }
+
+  const leftCalenderArrowClickHandle = () => {
+    // dateRangeHandleChange();
+  }
+
+  const rightCalenderArrowClickHandle = () => {
+    
+  }
   
   return (
     <>
@@ -243,13 +309,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           </HeadingTag>
           <RightPrint>
             <RightBox>
-              <ArrowBackIosNewIcon style={{ fontSize: "15px" }} />
+              <ArrowBackIosNewIcon style={{ fontSize: "15px" }} onClick={() => leftCalenderArrowClickHandle()} />
             </RightBox>
             <Box>
-              <Calender />
+              <Calender range={range} dateRangeHandleChange={dateRangeHandleChange}/>
             </Box>
             <RightBox>
-              <ArrowForwardIosIcon style={{ fontSize: "15px" }} />
+              <ArrowForwardIosIcon style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()}/>
             </RightBox>
             <RightBox onClick={() => handlePdf()}>
               <SaveAltIcon sx={{ fontSize: "20px", marginRight: "5px" }} />
@@ -351,17 +417,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               <Table aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>
-                    <StyledTableCell>
+                    <StyledTableCell onClick={()=>handleAppointmentTimeSort()}>
                       Appt Time{" "}
-                      <ArrowDownwardIcon
-                        style={{ verticalAlign: "middle", fontSize: "18px" }}
-                      />
+                      {isAppointmentTimeSortAscending ? <ArrowDownwardIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> : <ArrowUpwardOutlinedIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> }                      
                     </StyledTableCell>
-                    <StyledTableCell>
+                    <StyledTableCell onClick={()=>handlePatientNameSort()}>
                       Patient Name{" "}
-                      <ArrowDownwardIcon
-                        style={{ verticalAlign: "middle", fontSize: "18px" }}
-                      />
+                      {isPatientNameSortAscending ? <ArrowDownwardIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> : <ArrowUpwardOutlinedIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> }                      
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>

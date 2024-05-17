@@ -15,6 +15,7 @@ import {
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { 
     FontBold, 
@@ -31,13 +32,12 @@ import {
     ActionBtn, 
     Text, 
     StyledMuiButton ,
-    StyledPatient
+    StyledPatient,
+    TestButton
 } from '@/app/styles/customStyle';
 
 import { getOutComeBtnState } from '@/app/utils/appointment';
 import { getTime } from '@/app/utils/helper';
-
-const outComes = [{name:"Clinician Agrees", key:"clinician_agrees"},{name:"Clinician Disagrees",key:"clinician_disagrees"},{name:"Test Ordered",key:"test_ordered"}]
   
 function GetScreening({ screening }: { screening: string[] }) {
     return (
@@ -125,12 +125,20 @@ return (
                         <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
                         <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                         <TableMidData><Text>{detail.description}</Text></TableMidData>
-                        <TableMidData  sx={{ width: '430px' }}>
-                        {outComes.map((item,index)=>(
-                            <StyledMuiButton key={index} buttonState={getOutComeBtnState(detail,item.key)} onClick={() => updateOutCome(item.key, getOutComeBtnState(detail,item.key), detail)}>
-                                {item.name}
+                        <TableMidData  sx={{ width: '430px',display: 'flex',alignItems: 'Center', }}>
+                            <StyledMuiButton  buttonState={getOutComeBtnState(detail,'clinician_agrees')} onClick={() => updateOutCome('clinician_agrees', getOutComeBtnState(detail,'clinician_agrees'), detail)}>
+                                Clinician Agrees
                             </StyledMuiButton>
-                        ))}
+                            <StyledMuiButton  buttonState={getOutComeBtnState(detail,'clinician_disagrees')} onClick={() => updateOutCome('clinician_disagrees', getOutComeBtnState(detail,'clinician_disagrees'), detail)}>
+                                Clinician Disagrees
+                            </StyledMuiButton>
+                            {detail.show_test_ordered ? <StyledMuiButton  buttonState={getOutComeBtnState(detail,'test_ordered')} onClick={() => updateOutCome('test_ordered', 
+                                getOutComeBtnState(detail,'test_ordered'), detail)}>
+                                    Test Ordered
+                                </StyledMuiButton> : 
+                                <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon  sx={{ marginRight: '5px', }} /></Tooltip>Test Not Needed</TestButton> 
+                            }
+                            
                         </TableMidData>
                     </TableRow>
                 ))}
