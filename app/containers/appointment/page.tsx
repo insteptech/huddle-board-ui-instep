@@ -14,7 +14,7 @@ import FilterButton from "@/app/components/filter";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
+// import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
@@ -322,10 +322,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               <TypoSpan variant="caption">PDF</TypoSpan>
             </RightBox>
     
-            <RightBox onClick={() => handlePrint()}>
+            {/* <RightBox onClick={() => handlePrint()}>
               <PrintOutlinedIcon style={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">Print</TypoSpan>
-            </RightBox>
+            </RightBox> */}
           </RightPrint>
         </MainBoxTop>
     
