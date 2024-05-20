@@ -681,3 +681,11 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
   lineHeight: '21px',
   },
 }));
+
+export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({
+  flexDirection: 'column',
+  display: 'flex',
+  alignItems: 'center',
+  marginTop: '85px',
+  height: '150px',
+}));

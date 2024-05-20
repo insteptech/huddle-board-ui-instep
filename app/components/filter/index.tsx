@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Menu from '@mui/material/Menu';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Box, CircularProgress } from '@mui/material';
@@ -14,7 +14,6 @@ import Radio from '@mui/material/Radio';
 import List from '@mui/material/List';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
 
 import {
     BoxFilter,
@@ -38,7 +37,7 @@ import { toast } from 'react-toastify';
 import DeleteFilterModal from '../deleteFilterModal';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid } = props;
+  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid, setIsFilterApplied } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
   
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -63,6 +62,7 @@ function FilterButton(props:any) {
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
+    setIsFilterApplied(true);
     getAppointmentFiltersData();
   };
 
@@ -111,7 +111,7 @@ function FilterButton(props:any) {
       page: 1,
       page_size: 10
     };
-        
+    setIsFilterApplied(true);
     dispatch(updateFilter(filters));
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filters);

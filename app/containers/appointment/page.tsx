@@ -33,10 +33,11 @@ import {
   RightBox,
   MainBoxTop,
   TypoSpan,
-  SearchClearIcon
+  SearchClearIcon,
+  AppointmentLoaderBox
 } from '../../styles/customStyle';
 import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
-import { Box, Container, Input, InputAdornment } from '@mui/material';
+import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import Calender from '@/app/components/calender';
 import { API_URL } from '@/app/redux/config/axiosInstance';
@@ -59,6 +60,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [isPatientNotFound, setIsPatientNotFound] = useState(true);
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [patientNameSearch , setPatientNameSearch] = React.useState('');
+  const [isFilterApplied, setIsFilterApplied] = useState<boolean>(false);
+
   const [range, setRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -74,8 +77,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const isFilterDataLoading = useSelector((state: AppState) => state.appointment.isFilterDataLoading);
   const selectedFilterList = useSelector((state: AppState) => state.appointment.selectedFilterList);
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
+  const isAppointmentLoading = useSelector((state: AppState) => state.appointment.isAppointmentLoading);
   const { page } = filters;
-
+  
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types||[]);
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
@@ -91,7 +95,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentsList(filter)).then(( response: any ) => {
       dispatch(updateFilter({ page: Number(page) + 1 }));
 
-      if(response?.payload?.results.length===0){
+      if(response?.payload?.results.length === 0){
         setIsClearFilter(true);
       } else {
         setIsClearFilter(false);
@@ -207,7 +211,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       startDate: new Date(),
       endDate: new Date(),
       key: 'selection'
-    })
+    });
+    setIsFilterApplied(false);
   }
 
   const searchAppointmentPatientName = (e : any) => {    
@@ -222,6 +227,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         page_size: 10,
         patient_name: e.target.value
       };
+      setIsFilterApplied(true);
       dispatch(updateFilter(filters));
       dispatch(emptyAppointmentList());
       loadMoreAppointment(filters);
@@ -370,6 +376,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 resetFilters={resetFilters}
                 getFilterDetail={getFilterDetail}
                 selectedSavedFilterUuid={selectedSavedFilterUuid}
+                setIsFilterApplied={setIsFilterApplied}
               />
             </FilterMenu>
             <TableTop>
@@ -426,7 +433,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   </TableRow>
                 </Table_Head>
                 <TableBody>
-                  <PatientNotFound icon={isClearFilter} resetFilters={resetFilters}/>
+                  <PatientNotFound icon={isFilterApplied} resetFilters={resetFilters}/>
                 </TableBody>
               </Table>
             </TableOtherContainer>
@@ -471,6 +478,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               <div ref={ref}></div>
             </TableMainContainer>
           )}
+
+          {/* {isAppointmentLoading && (
+            <AppointmentLoaderBox sx={{ display: "flex" }}>
+              <CircularProgress />
+              Loading Appointments
+            </AppointmentLoaderBox>
+          )} */}
         </TableDiv>
       </Container>
     </>

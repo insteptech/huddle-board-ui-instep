@@ -17,6 +17,7 @@ export type AppointmentsState = {
     filtersData: FiltersDataState;
     selectedFilterList: IFilterDataState[];
     selectedFilterDetail: SelectedFilterDetailState | null;
+    isAppointmentLoading: boolean;
 };
 
 export type SelectedFilterDetailState = {
@@ -87,7 +88,8 @@ const initialState: AppointmentsState = {
       sort_by: 'appointment_timestamp'
     },
     selectedFilterList: [],
-    selectedFilterDetail: null
+    selectedFilterDetail: null,
+    isAppointmentLoading: false
 };
 
 export const appointment = createSlice({
@@ -106,11 +108,14 @@ export const appointment = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAppointmentsList.pending, (state, action) => {
+      state.isAppointmentLoading = true;
     });
     builder.addCase(getAppointmentsList.rejected, (state, action) => {
       console.log(state, action, 'rejected');
+      state.isAppointmentLoading = false;
     });
     builder.addCase(getAppointmentsList.fulfilled, (state, { payload }) => {
+      state.isAppointmentLoading = false;
       state.appointmentsData = appointmentsList(current(state)?.appointmentsData?.results, payload);
     });
 
