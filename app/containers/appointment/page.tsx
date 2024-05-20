@@ -91,19 +91,18 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const { ref, inView } = useInView();
 
-  const loadMoreAppointment = (filter: FiltersDataState) => {    
-    dispatch(getAppointmentsList(filter)).then(( response: any ) => {
-      dispatch(updateFilter({ page: Number(page) + 1 }));
-
-      if(response?.payload?.results.length === 0){
+  const loadMoreAppointment = (filter: FiltersDataState) => {
+    dispatch(getAppointmentsList(filter)).then((response: any) => {
+      dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
+      console.log(filter)
+      if (response?.payload?.results.length === 0) {
         setIsClearFilter(true);
+
       } else {
         setIsClearFilter(false);
       }
-      
     })
   };
-
   useEffect(() => {
     dispatch(getAppointmentsList(filters)).then(() => {
       setIsPatientNotFound(false);
