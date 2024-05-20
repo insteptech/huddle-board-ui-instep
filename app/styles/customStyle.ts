@@ -45,6 +45,10 @@ export const TableMainContainer = styled(TableContainer)(({ theme }: any) => ({
   overflow: 'auto',
   height: '615px',
   margin: '10px 0 0 0 !important',
+
+  '@media(max-width: 1600px)' : {
+    height: '515px',
+   }
 }));
 
 export const TableOtherContainer = styled(TableContainer)(({ theme }: any) => ({
