@@ -87,8 +87,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const { ref, inView } = useInView();
 
-  const loadMoreAppointment = (filter?: FiltersDataState) => {    
-    dispatch(getAppointmentsList(filter || filters)).then(( response: any ) => {
+  const loadMoreAppointment = (filter: FiltersDataState) => {    
+    dispatch(getAppointmentsList(filter)).then(( response: any ) => {
+      dispatch(updateFilter({ page: Number(page) + 1 }));
+
       if(response?.payload?.results.length===0){
         setIsClearFilter(true);
       } else {
@@ -96,19 +98,18 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       }
       
     })
-    dispatch(updateFilter({ page: Number(page) + 1 }));
   };
 
   useEffect(() => {
     dispatch(getAppointmentsList(filters)).then(() => {
       setIsPatientNotFound(false);
+      dispatch(updateFilter({ page: Number(page) + 1 }));
     })
-    dispatch(updateFilter({ page: Number(page) + 1 }));
   }, []);
 
   useEffect(() => {
     if (inView && isNextAppointmentsList) {
-      loadMoreAppointment();
+      loadMoreAppointment(filters);
     }
   }, [inView]);
 
@@ -165,9 +166,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     fetch(url, { method: 'get', headers:{"Authorization": `JWT ${access}`} })
       .then(res => res.blob())
       .then(res => {
-        console.log(res,'resres')
         const aElement = document.createElement('a');
-        aElement.setAttribute('download', "acc.pdf");
+        aElement.setAttribute('download', "appointments.pdf");
         const href = URL.createObjectURL(res);
         aElement.href = href;
         aElement.setAttribute('target', '_blank');
@@ -252,7 +252,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const dateRangeHandleChange = (dates: any) => {
-    console.log('dates:-',dates);
     
     setRange(dates);
     const formattedDates = formatDates(dates.startDate, dates.endDate);
@@ -293,11 +292,32 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const leftCalenderArrowClickHandle = () => {
-    // dateRangeHandleChange();
+    const { startDate, endDate } = range;
+    let initialStartDate = new Date(startDate);
+    initialStartDate.setDate(initialStartDate.getDate() - 1);
+
+    const dates = {
+      startDate: initialStartDate.toString(),
+      endDate: initialStartDate.toString(),
+      key: "selection"
+    }
+    
+    dateRangeHandleChange(dates);
   }
 
   const rightCalenderArrowClickHandle = () => {
+    const { startDate, endDate } = range;
+    let initialStartDate = new Date(startDate);
+    initialStartDate.setDate(initialStartDate.getDate() + 1);
+
+    const dates = {
+      startDate: initialStartDate.toString(),
+      endDate: initialStartDate.toString(),
+      key: "selection"
+    }
     
+    dateRangeHandleChange(dates); 
+
   }
   
   return (
@@ -308,13 +328,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             My Schedule
           </HeadingTag>
           <RightPrint>
-            <RightBox>
-              <ArrowBackIosNewIcon style={{ fontSize: "15px" }} onClick={() => leftCalenderArrowClickHandle()} />
+            <RightBox onClick={() => leftCalenderArrowClickHandle()}>
+              <ArrowBackIosNewIcon style={{ fontSize: "15px" }}/>
             </RightBox>
             <Box>
               <Calender range={range} dateRangeHandleChange={dateRangeHandleChange}/>
             </Box>
-            <RightBox>
+            <RightBox onClick={() => rightCalenderArrowClickHandle()}>
               <ArrowForwardIosIcon style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()}/>
             </RightBox>
             <RightBox onClick={() => handlePdf()}>

@@ -50,9 +50,9 @@ export const urlParams = (params:any) =>{
     return query;
 }
 
-export const getCurrentDateFormatted = () => {
+export const getCurrentDateFormatted = (date?: any) => {  
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const currentDate = new Date();
+  const currentDate = new Date(date);
   const day = String(currentDate.getDate()).padStart(2, '0');
   const month = months[currentDate.getMonth()];
   const year = currentDate.getFullYear();
@@ -63,9 +63,10 @@ export const getCurrentDateFormatted = () => {
 export const formatDates = (startDate: any, endDate: any) => {
   // Helper function to format date
   const formatDate = (date: any, isEndOfDay: any) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const day = String(date.getDate()).padStart(2, '0');
+    let incomingDate = new Date(date);
+    const year = incomingDate?.getFullYear();
+    const month = String(incomingDate?.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(incomingDate?.getDate()).padStart(2, '0');
     const hours = isEndOfDay ? '23' : '00';
     const minutes = isEndOfDay ? '59' : '00';
     const seconds = isEndOfDay ? '59' : '00';

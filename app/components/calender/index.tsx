@@ -15,8 +15,6 @@ const Calender = (props: any) => {
     setAnchorEl(!anchorEl);
   };
 
-
-
   return (
     <CalenderSection>
       <Button
@@ -26,7 +24,7 @@ const Calender = (props: any) => {
         onClick={handleClick}
         variant="contained"
       >
-        <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted()}
+        <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted(range.startDate)}
       </Button>
       <Box
         className={anchorEl ? 'CustomCalender' : 'CustomCalenderhide'}
