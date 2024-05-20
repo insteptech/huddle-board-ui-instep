@@ -39,10 +39,10 @@ import {
 import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
 import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
-import Calender from '@/app/components/calender';
 import { API_URL } from '@/app/redux/config/axiosInstance';
 import { sessionKeys } from '@/app/utils/auth';
 import { formatDates } from '@/app/utils/helper';
+import DatePicker from '@/app/components/datePicker';
 
 const url = `${API_URL}download-appointments/?file_type=pdf`;
 const { accessToken } = sessionKeys;
@@ -337,7 +337,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               <ArrowBackIosNewIcon style={{ fontSize: "15px" }}/>
             </RightBox>
             <Box>
-              <Calender range={range} dateRangeHandleChange={dateRangeHandleChange}/>
+              <DatePicker range={range} dateRangeHandleChange={dateRangeHandleChange} />
             </Box>
             <RightBox onClick={() => rightCalenderArrowClickHandle()}>
               <ArrowForwardIosIcon style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()}/>
