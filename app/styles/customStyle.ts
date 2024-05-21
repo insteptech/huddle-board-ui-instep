@@ -638,8 +638,8 @@ export const DataRangeBox = styled('div')(({ div }: any) => ({
   '.rdrDayNumber': {
     top: '0',
     display: 'inline',
-    'span::after': {
-      display: 'none'
+    '::after': {
+      border: 'none!important',
     },
   },
   '.rdrDateDisplayWrapper,.rdrInputRanges ': {
@@ -681,9 +681,12 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
     width:'30px',
     height:'30px',
     fontSize: '14px',
-  fontWeight: '400',
-  lineHeight: '21px',
-  },
+    fontWeight: '400',
+    lineHeight: '21px',
+    '::after': {
+      display: 'none!important',  
+    },
+  }
 }));
 
 export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({
