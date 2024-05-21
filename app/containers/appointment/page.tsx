@@ -46,7 +46,7 @@ import DatePicker from '@/app/components/datePicker';
 
 const url = `${API_URL}download-appointments/?file_type=pdf`;
 const { accessToken } = sessionKeys;
-const access = sessionStorage.getItem(accessToken); 
+const access = sessionStorage.getItem(accessToken);
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -59,7 +59,7 @@ type AppointmentListProps = {
 const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments }) => {
   const [isPatientNotFound, setIsPatientNotFound] = useState(true);
   const [isClearFilter, setIsClearFilter] = useState(false);
-  const [patientNameSearch , setPatientNameSearch] = React.useState('');
+  const [patientNameSearch, setPatientNameSearch] = React.useState('');
   const [isFilterApplied, setIsFilterApplied] = useState<boolean>(false);
 
   const [range, setRange] = useState({
@@ -79,11 +79,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const isAppointmentLoading = useSelector((state: AppState) => state.appointment.isAppointmentLoading);
   const { page } = filters;
-  
+
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types||[]);
-  const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids||[]);
-  const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids||[]);
+  const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
+  const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids || []);
+  const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids || []);
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const [selectedSavedFilterUuid, setSelectedSavedFilterUuid] = useState<string>('');
   const [isAppointmentTimeSortAscending, setIsAppointmentTimeSortAscending] = useState(false);
@@ -93,6 +93,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const loadMoreAppointment = (filter: FiltersDataState) => {
     dispatch(getAppointmentsList(filter)).then((response: any) => {
+      console.log(response)
       dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
       console.log(filter)
       if (response?.payload?.results.length === 0) {
@@ -120,7 +121,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentDetail({ appointment_id: id }));
   };
 
-  const getAction = (value:string) => {
+  const getAction = (value: string) => {
     switch (value) {
       case 'clinician_agrees':
         return { clinician_agrees: true };
@@ -133,14 +134,14 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
   };
 
-  const updateOutCome=(value:any,data:any,detail:any)=>{
-    const {appointment_id, uuid} = detail;    
+  const updateOutCome = (value: any, data: any, detail: any) => {
+    const { appointment_id, uuid } = detail;
     const payload = {
       appointment_id: appointment_id,
       screening_id: uuid,
-      action : getAction(value)
+      action: getAction(value)
     }
-    
+
     dispatch(updateAppointmentDetail(payload)).then(() => {
       toast.success("Successfully Updated");
       appointmentDetails(appointment_id);
@@ -149,24 +150,24 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     })
   }
 
-  const handlePrint=()=>{
-    fetch(url, { method: 'get', headers:{"Authorization": `JWT ${access}`} })
-    .then(res => res.blob())
-    .then(res => {
+  const handlePrint = () => {
+    fetch(url, { method: 'get', headers: { "Authorization": `JWT ${access}` } })
+      .then(res => res.blob())
+      .then(res => {
         const url = URL.createObjectURL(res);
         const newTab = window.open(url, '_blank');
         if (newTab) {
           newTab.onload = () => {
-              newTab.print();
+            newTab.print();
           };
-      } else {
+        } else {
           console.error('Failed to open new tab');
-      }
-    });
+        }
+      });
   }
 
-  const handlePdf =() => {
-    fetch(url, { method: 'get', headers:{"Authorization": `JWT ${access}`} })
+  const handlePdf = () => {
+    fetch(url, { method: 'get', headers: { "Authorization": `JWT ${access}` } })
       .then(res => res.blob())
       .then(res => {
         const aElement = document.createElement('a');
@@ -194,6 +195,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       patient_name: '',
       appointment_start_date: '',
       appointment_end_date: '',
+      sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
     };
     setSelectedVisitType([]);
     setSelectedScreening([]);
@@ -203,10 +205,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     loadMoreAppointment(filters);
     setPatientNameSearch('');
     setSelectedSavedFilterUuid('');
-    if(!isFilterPopOpen) {
+    if (!isFilterPopOpen) {
       setAnchorEl(null);
     }
-    setRange ({
+    setRange({
       startDate: new Date(),
       endDate: new Date(),
       key: 'selection'
@@ -214,10 +216,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setIsFilterApplied(false);
   }
 
-  const searchAppointmentPatientName = (e : any) => {    
+  const searchAppointmentPatientName = (e: any) => {
     setPatientNameSearch(e.target.value);
-  
-    if(e?.target?.value?.length > 3) {
+
+    if (e?.target?.value?.length > 3) {
       const filters = {
         visit_types: [],
         providers_uuids: [],
@@ -235,10 +237,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const getFilterDetail = (filter: any) => {
     setSelectedSavedFilterUuid(filter.uuid);
-    dispatch(getSelectedFilterDetail(filter.uuid)).then((response:any) => {
+    dispatch(getSelectedFilterDetail(filter.uuid)).then((response: any) => {
       const { payload } = response || {};
-      if(!payload) return;
-      
+      if (!payload) return;
+
       const filters = {
         visit_types: payload.visit_type,
         providers_uuids: payload.providers,
@@ -252,17 +254,17 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setSelectedProviders(payload.providers);
       dispatch(updateFilter(filters));
       dispatch(emptyAppointmentList());
-      loadMoreAppointment(filters); 
+      loadMoreAppointment(filters);
     })
   }
 
   const dateRangeHandleChange = (dates: any) => {
-    
+
     setRange(dates);
     const formattedDates = formatDates(dates.startDate, dates.endDate);
 
     const filters = {
-      appointment_start_date:formattedDates.start,
+      appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,
       page: 1,
       page_size: 10,
@@ -275,7 +277,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const handleAppointmentTimeSort = () => {
     setIsAppointmentTimeSortAscending(!isAppointmentTimeSortAscending);
     const filters = {
-      sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp' ,
+      sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp',
       page: 1,
       page_size: 10,
     };
@@ -287,7 +289,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const handlePatientNameSort = () => {
     setIsPatientNameSortAscending(!isPatientNameSortAscending);
     const filters = {
-      sort_by: isPatientNameSortAscending ? 'patient__patient_first_name' : '-patient__patient_first_name' ,
+      sort_by: isPatientNameSortAscending ? 'patient__patient_first_name' : '-patient__patient_first_name',
       page: 1,
       page_size: 10,
     };
@@ -306,7 +308,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       endDate: initialStartDate.toString(),
       key: "selection"
     }
-    
+
     dateRangeHandleChange(dates);
   }
 
@@ -320,11 +322,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       endDate: initialStartDate.toString(),
       key: "selection"
     }
-    
-    dateRangeHandleChange(dates); 
+
+    dateRangeHandleChange(dates);
 
   }
-  
+
   return (
     <>
       <Container maxWidth='xl'>
@@ -334,36 +336,36 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           </HeadingTag>
           <RightPrint>
             <RightBox onClick={() => leftCalenderArrowClickHandle()}>
-              <ArrowBackIosNewIcon style={{ fontSize: "15px" }}/>
+              <ArrowBackIosNewIcon style={{ fontSize: "15px" }} />
             </RightBox>
             <Box>
               <DatePicker range={range} dateRangeHandleChange={dateRangeHandleChange} />
             </Box>
             <RightBox onClick={() => rightCalenderArrowClickHandle()}>
-              <ArrowForwardIosIcon style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()}/>
+              <ArrowForwardIosIcon style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
             </RightBox>
             <RightBox onClick={() => handlePdf()}>
               <SaveAltIcon sx={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">PDF</TypoSpan>
             </RightBox>
-    
+
             {/* <RightBox onClick={() => handlePrint()}>
               <PrintOutlinedIcon style={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">Print</TypoSpan>
             </RightBox> */}
           </RightPrint>
         </MainBoxTop>
-    
+
         <TableDiv>
           <TableTopMain>
             <FilterMenu>
-              <FilterButton 
-                getAppointmentFiltersData={getAppointmentFiltersData} 
-                appointmentFiltersData={appointmentFiltersData} 
-                isFilterDataLoading={isFilterDataLoading} 
-                loadMoreAppointment={loadMoreAppointment} 
-                filters={filters} 
-                selectedFilterList={selectedFilterList} 
+              <FilterButton
+                getAppointmentFiltersData={getAppointmentFiltersData}
+                appointmentFiltersData={appointmentFiltersData}
+                isFilterDataLoading={isFilterDataLoading}
+                loadMoreAppointment={loadMoreAppointment}
+                filters={filters}
+                selectedFilterList={selectedFilterList}
                 setSelectedVisitType={setSelectedVisitType}
                 setSelectedScreening={setSelectedScreening}
                 setSelectedProviders={setSelectedProviders}
@@ -393,7 +395,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 id="input-with-icon-adornment"
                 placeholder="Search by patient name or MRN"
                 value={patientNameSearch}
-                onChange={(e)=>searchAppointmentPatientName(e)}
+                onChange={(e) => searchAppointmentPatientName(e)}
                 startAdornment={
                   <>
                     <InputAdornment position="start">
@@ -432,24 +434,24 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   </TableRow>
                 </Table_Head>
                 <TableBody>
-                  <PatientNotFound icon={isFilterApplied} resetFilters={resetFilters}/>
+                  <PatientNotFound icon={isFilterApplied} resetFilters={resetFilters} />
                 </TableBody>
               </Table>
             </TableOtherContainer>
           )}
-    
+
           {!isPatientNotFound && !isClearFilter && (
             <TableMainContainer sx={{ m: "30px 0" }}>
               <Table aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>
-                    <StyledTableCell onClick={()=>handleAppointmentTimeSort()}>
+                    <StyledTableCell onClick={() => handleAppointmentTimeSort()}>
                       Appt Time{" "}
-                      {isAppointmentTimeSortAscending ? <ArrowDownwardIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> : <ArrowUpwardOutlinedIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> }                      
+                      {isAppointmentTimeSortAscending ? <ArrowDownwardIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> : <ArrowUpwardOutlinedIcon style={{ verticalAlign: "middle", fontSize: "18px" }} />}
                     </StyledTableCell>
-                    <StyledTableCell onClick={()=>handlePatientNameSort()}>
+                    <StyledTableCell onClick={() => handlePatientNameSort()}>
                       Patient Name{" "}
-                      {isPatientNameSortAscending ? <ArrowDownwardIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> : <ArrowUpwardOutlinedIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> }                      
+                      {isPatientNameSortAscending ? <ArrowDownwardIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> : <ArrowUpwardOutlinedIcon style={{ verticalAlign: "middle", fontSize: "18px" }} />}
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>
@@ -488,7 +490,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       </Container>
     </>
   );
-  
+
 };
 
 export default CollapsibleTable;
