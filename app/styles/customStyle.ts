@@ -4,7 +4,7 @@ import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
 
 interface StyledButtonProps {
-  buttonState: string;
+  buttonstate: string;
   onClick: () => void;
   children: React.ReactNode;
 }
@@ -171,19 +171,19 @@ export const Text = styled(Typography)(({ div }: any) => ({
 
 export const StyledMuiButton = styled(Button) <StyledButtonProps>`
     background-color: ${(props) =>
-    props.buttonState == 'active' ? '#0D426A' :
-      props.buttonState == 'enable' ? 'transparent' :
-        props.buttonState == 'disable' ? 'transparent' : 'transparent'};
+    props.buttonstate == 'active' ? '#0D426A' :
+      props.buttonstate == 'enable' ? 'transparent' :
+        props.buttonstate == 'disable' ? 'transparent' : 'transparent'};
     color: ${(props) =>
-    props.buttonState == 'active' ? '#fff' :
-      props.buttonState == 'enable' ? '#5C6469' :
-        props.buttonState == 'disable' ? '#C8CED2' : '#5C6469'};
+    props.buttonstate == 'active' ? '#fff' :
+      props.buttonstate == 'enable' ? '#5C6469' :
+        props.buttonstate == 'disable' ? '#C8CED2' : '#5C6469'};
     border: ${props =>
-    props.buttonState == 'active' ? '1px solid #5C6469' :
-      props.buttonState == 'enable' ? '1px solid #5C6469' :
-        props.buttonState == 'disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
+    props.buttonstate == 'active' ? '1px solid #5C6469' :
+      props.buttonstate == 'enable' ? '1px solid #5C6469' :
+        props.buttonstate == 'disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
     cursor: ${props =>
-    props.buttonState == 'disable' ? 'not-allowed' : 'pointer'};
+    props.buttonstate == 'disable' ? 'not-allowed' : 'pointer'};
     font-size: 10px;
     font-weight: 600;
     line-height: 16px;
@@ -195,17 +195,17 @@ export const StyledMuiButton = styled(Button) <StyledButtonProps>`
     margin-bottom: 10px;
     &:hover{
       background-color: ${(props) =>
-    props.buttonState == 'active' ? '#0D426A' :
-      props.buttonState == 'enable' ? 'transparent' :
-        props.buttonState == 'disable' ? 'transparent' : 'transparent'};
+    props.buttonstate == 'active' ? '#0D426A' :
+      props.buttonstate == 'enable' ? 'transparent' :
+        props.buttonstate == 'disable' ? 'transparent' : 'transparent'};
       color: ${(props) =>
-    props.buttonState == 'active' ? '#fff' :
-      props.buttonState == 'enable' ? '#5C6469' :
-        props.buttonState == 'disable' ? '#C8CED2' : '#5C6469'};
+    props.buttonstate == 'active' ? '#fff' :
+      props.buttonstate == 'enable' ? '#5C6469' :
+        props.buttonstate == 'disable' ? '#C8CED2' : '#5C6469'};
         border: ${props =>
-    props.buttonState == 'active' ? '1px solid #5C6469' :
-      props.buttonState == 'enable' ? '1px solid #5C6469' :
-        props.buttonState == 'disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
+    props.buttonstate == 'active' ? '1px solid #5C6469' :
+      props.buttonstate == 'enable' ? '1px solid #5C6469' :
+        props.buttonstate == 'disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
     }
 `;
 

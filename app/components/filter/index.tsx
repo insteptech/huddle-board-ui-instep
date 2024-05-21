@@ -14,6 +14,8 @@ import Radio from '@mui/material/Radio';
 import List from '@mui/material/List';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import TuneIconimage from "../../images/filterIcon.png"
+
 
 import {
     BoxFilter,
@@ -37,7 +39,7 @@ import { toast } from 'react-toastify';
 import DeleteFilterModal from '../deleteFilterModal';
 
 function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid, setIsFilterApplied } = props;
+  const { getAppointmentFiltersData, appointmentFiltersData,setMainLoader, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid, setIsFilterApplied } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
   
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -111,6 +113,7 @@ function FilterButton(props:any) {
       page: 1,
       page_size: 10
     };
+    setMainLoader(true);
     setIsFilterApplied(true);
     dispatch(updateFilter(filters));
     dispatch(emptyAppointmentList());
@@ -195,9 +198,7 @@ function FilterButton(props:any) {
               onClick={handleClick}
               color="inherit"
             >
-              <TuneIcon
-                sx={{ fontSize: "16px", marginRight: "5px", color: "#344054" }}
-              />
+             <img src={TuneIconimage.src} style={{ fontSize: "16px", marginRight: "5px", color: "#344054" }}/>
               <span style={{ fontSize: "16px", color: "#344054" }}>Filter</span>
             </FilterButtons>
             <Menu

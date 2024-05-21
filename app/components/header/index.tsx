@@ -14,7 +14,7 @@ const Header = ( ) => {
   return (
     <Box sx={{ display: 'flex'    }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{  p: 2,position: 'relative',flexDirection: 'row',    justifyContent:' space-between', backgroundColor: theme.customArgs.hearderBgColor  }}>
+      <AppBar className='headerMain' component="nav" sx={{ p:'15px 20px',boxShadow:'0px 4px 4px 0px rgba(0, 0, 0, 0.03)' ,position: 'relative',flexDirection: 'row',    justifyContent:' space-between', backgroundColor: theme.customArgs.hearderBgColor  }}>
       <LogoIcon /> 
 
 
@@ -22,7 +22,7 @@ const Header = ( ) => {
       <StaticTypo variant="caption" display="block" gutterBottom>
         Adam Steele
       </StaticTypo>
-       <LinkText> Logout</LinkText>
+      <LinkText sx={{textDecoration:'none', borderLeft:'2px solid #C8CED2', paddingLeft: '10px',}} > Logout</LinkText>
       </Typography_Grid>
 
 
