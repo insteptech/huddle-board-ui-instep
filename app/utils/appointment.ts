@@ -24,19 +24,19 @@ export const getOutComeBtnState = (detail: any, key: any) => {
   }
 
   if (key == 'test_ordered') {
-      if (test_ordered) {
-          buttonState = "active";
-      }
-      if (clinician_agrees) {
-          buttonState = "enable";
-      }
-      if (clinician_disagrees) {
-          buttonState = "disable";
-      }
-      if (test_ordered && clinician_agrees) {
-          buttonState = "active";
-      }
-  }
+    if (test_ordered==false) {
+        buttonState = "disable";
+    }
+    if (clinician_agrees) {
+        buttonState = "enable";
+    }
+    if (clinician_disagrees) {
+        buttonState = "disable";
+    }
+    if (test_ordered && clinician_agrees) {
+        buttonState = "active";
+    }
+}
   return buttonState;
 }
 

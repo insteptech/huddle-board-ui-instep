@@ -11,14 +11,15 @@ import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
 import FilterButton from "@/app/components/filter";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 // import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
+import arrowLeft from "../../images/leftarrow.svg"
+import arrowRight from "../../images/rightarrow.svg"
 import { LoaderBox } from '../../styles/customStyle';
+import pdfIcon from "../../images/pdficon.svg"
 import {
   HeadingTag,
   TableMainContainer,
@@ -356,16 +357,16 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           </HeadingTag>
           <RightPrint>
             <RightBox onClick={() => leftCalenderArrowClickHandle()}>
-              <ArrowBackIosNewIcon style={{ fontSize: "15px" }} />
+            <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
             </RightBox>
             <Box>
               <DatePicker  dateRangeHandleChange={dateRangeHandleChange} />
             </Box>
             <RightBox onClick={() => rightCalenderArrowClickHandle()}>
-              <ArrowForwardIosIcon style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
+            <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
             </RightBox>
             <RightBox onClick={() => handlePdf()}>
-              <SaveAltIcon sx={{ fontSize: "20px", marginRight: "5px" }} />
+            <img src={pdfIcon.src} style={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">PDF</TypoSpan>
             </RightBox>
 

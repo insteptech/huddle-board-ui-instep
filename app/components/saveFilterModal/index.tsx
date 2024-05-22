@@ -4,7 +4,7 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { Container } from "@mui/material";
-import AssistantPhotoOutlinedIcon from "@mui/icons-material/AssistantPhotoOutlined";
+import renameFilter from "../../images/renameFilter.svg"
 
 import {
   ModalHeader,
@@ -45,7 +45,7 @@ const SaveFilterModal = (props: any) => {
       >
         <ModalHeader>
           <ModalHeaderIcon>
-            <AssistantPhotoOutlinedIcon />
+          <img src={renameFilter.src}/>
           </ModalHeaderIcon>
           <CloseIcon sx={{ cursor: "pointer" }} onClick={()=>closeModal()} />
         </ModalHeader>

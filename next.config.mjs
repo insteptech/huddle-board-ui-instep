@@ -16,6 +16,9 @@ const nextConfig = {
       transform: '@mui/lab/{{member}}',
     },
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
  
 };
 

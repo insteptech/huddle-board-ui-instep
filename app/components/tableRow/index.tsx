@@ -116,7 +116,14 @@ const Row = (props: any) => {
                     <Collapse in={open && selectedAppointmentUuid === appointment.uuid} timeout="auto" unmountOnExit>
                         <Box>
                             {
-                                appointment.gap_count === 0 ? null
+                                appointment.gap_count === 0 ? <Table>
+                                <TableHead>
+                                         <TableRow>
+                                             <TableMidData sx={{textAlign:"center" , fontWeight:"600", padding:"25px 0"}}>No Screening Data Available</TableMidData>
+                                           
+                                         </TableRow>
+                                     </TableHead>
+                                     </Table>
                                     :
                                     <Table size="small" aria-label="purchases">
                                         <TableHead>

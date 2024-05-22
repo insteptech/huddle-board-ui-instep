@@ -5,6 +5,7 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import featuredIcon from "../../images/featuredicon.svg"
 import { Container } from "@mui/material";
 import {
   ButtonCancel,
@@ -40,7 +41,7 @@ const DeleteFilterModal = (props: any) => {
         aria-describedby="alert-dialog-slide-description"
       >
         <ModalHeader>
-          <DeleteOutlineOutlinedIcon color="warning" />          
+        <img src={featuredIcon.src}/>       
           <CloseIcon sx={{ cursor: "pointer" }} onClick={()=>deleteModalClose()} />
         </ModalHeader>
         <DialogContent sx={{ paddingBottom: "0" }}>

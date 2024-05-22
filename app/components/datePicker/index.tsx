@@ -1,11 +1,12 @@
 'use client'
 import React from 'react'
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+
 import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { getCurrentDateFormatted } from '@/app/utils/helper';
 import { Calendar } from '@iroomit/react-date-range';
 import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
+import calenderIcon from "../../images/calender.svg"
 
 const DatePicker = (props: any) => {
 
@@ -34,7 +35,7 @@ const DatePicker = (props: any) => {
                 onClick={handleClick}
                 variant="contained"
             >
-                <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted(date)}
+               <img src={calenderIcon.src} style={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted(date)}
             </Button>
             <Box
                 className={anchorEl ? 'CustomCalender' : 'CustomCalenderhide'}
