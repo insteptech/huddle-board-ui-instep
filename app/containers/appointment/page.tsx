@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,7 +18,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
-
+import { LoaderBox } from '../../styles/customStyle';
 import {
   HeadingTag,
   TableMainContainer,
@@ -34,10 +34,11 @@ import {
   MainBoxTop,
   TypoSpan,
   SearchClearIcon,
-  AppointmentLoaderBox
+  AppointmentLoaderBox,
+  TableMidData
 } from '../../styles/customStyle';
 import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
-import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
+import { Box, Container, Input, InputAdornment, CircularProgress, Tab } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
 import { sessionKeys } from '@/app/utils/auth';
@@ -80,6 +81,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const isAppointmentLoading = useSelector((state: AppState) => state.appointment.isAppointmentLoading);
   const { page } = filters;
 
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids || []);
@@ -88,28 +90,40 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [selectedSavedFilterUuid, setSelectedSavedFilterUuid] = useState<string>('');
   const [isAppointmentTimeSortAscending, setIsAppointmentTimeSortAscending] = useState(false);
   const [isPatientNameSortAscending, setIsPatientNameSortAscending] = useState(false);
+  const [loaderAppoint, setLoaderAppoint] = useState<any>(false);
+  const [mainLoader, setMainLoader] = useState<any>(true);
+
 
   const { ref, inView } = useInView();
 
   const loadMoreAppointment = (filter: FiltersDataState) => {
+
     dispatch(getAppointmentsList(filter)).then((response: any) => {
-      console.log(response)
+      setMainLoader(false);
       dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
-      console.log(filter)
       if (response?.payload?.results.length === 0) {
         setIsClearFilter(true);
 
       } else {
         setIsClearFilter(false);
+
       }
     })
   };
+
   useEffect(() => {
-    dispatch(getAppointmentsList(filters)).then(() => {
-      setIsPatientNotFound(false);
-      dispatch(updateFilter({ page: Number(page) + 1 }));
-    })
+    dispatch(getAppointmentsList(filters))
+      .then(() => {
+        setIsPatientNotFound(false);
+        dispatch(updateFilter({ page: Number(page) + 1 }));
+        setMainLoader(false);
+      })
+      .catch((error) => {
+        setMainLoader(false);
+        console.error("An error occurred while fetching appointments:", error);
+      });
   }, []);
+
 
   useEffect(() => {
     if (inView && isNextAppointmentsList) {
@@ -118,7 +132,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }, [inView]);
 
   const appointmentDetails = (id: any) => {
-    dispatch(getAppointmentDetail({ appointment_id: id }));
+    dispatch(getAppointmentDetail({ appointment_id: id })).then(() => {
+      setLoaderAppoint(false);
+    })
+
   };
 
   const getAction = (value: string) => {
@@ -197,6 +214,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       appointment_end_date: '',
       sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
     };
+    setMainLoader(true);
     setSelectedVisitType([]);
     setSelectedScreening([]);
     setSelectedProviders([]);
@@ -249,6 +267,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         page_size: 10,
         patient_name: ''
       };
+
       setSelectedVisitType(payload.visit_type);
       setSelectedScreening(payload.screening);
       setSelectedProviders(payload.providers);
@@ -260,9 +279,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const dateRangeHandleChange = (dates: any) => {
 
-    setRange(dates);
-    const formattedDates = formatDates(dates.startDate, dates.endDate);
+    const formattedDates = formatDates(dates, dates);
 
+
+    console.log("Formatted Dates", formattedDates)
     const filters = {
       appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,
@@ -339,7 +359,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               <ArrowBackIosNewIcon style={{ fontSize: "15px" }} />
             </RightBox>
             <Box>
-              <DatePicker range={range} dateRangeHandleChange={dateRangeHandleChange} />
+              <DatePicker  dateRangeHandleChange={dateRangeHandleChange} />
             </Box>
             <RightBox onClick={() => rightCalenderArrowClickHandle()}>
               <ArrowForwardIosIcon style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
@@ -378,6 +398,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 getFilterDetail={getFilterDetail}
                 selectedSavedFilterUuid={selectedSavedFilterUuid}
                 setIsFilterApplied={setIsFilterApplied}
+                setMainLoader={setMainLoader}
               />
             </FilterMenu>
             <TableTop>
@@ -410,6 +431,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               />
             </TableTop>
           </TableTopMain>
+
+
           {(isPatientNotFound || isClearFilter) && (
             <TableOtherContainer sx={{ m: "30px 0" }}>
               <Table aria-label="collapsible table">
@@ -434,7 +457,19 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   </TableRow>
                 </Table_Head>
                 <TableBody>
-                  <PatientNotFound icon={isFilterApplied} resetFilters={resetFilters} />
+                  {
+                    mainLoader 
+                      ?
+                      <TableRow>
+                        <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
+                          <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px" , justifyContent:"center" }}>
+                            <CircularProgress />
+                            Loading Appointments
+                          </LoaderBox>
+                        </TableMidData>
+                      </TableRow>
+                      : <PatientNotFound icon={isFilterApplied} resetFilters={resetFilters} />
+                  }
                 </TableBody>
               </Table>
             </TableOtherContainer>
@@ -459,26 +494,40 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </Table_Head>
-                <TableBody>
-                  {appointmentsList.map(
-                    (appointment: AppointmentState, index: number) => (
-                      <Row
-                        key={index}
-                        appointment={appointment}
-                        selectedAppointmentUuid={selectedAppointmentUuid}
-                        setSelectedAppointmentUuid={setSelectedAppointmentUuid}
-                        appointmentDetail={appointmentDetail}
-                        appointmentDetails={appointmentDetails}
-                        updateOutCome={updateOutCome}
-                        isDetailLoading={isDetailLoading}
-                      />
-                    )
-                  )}
-                </TableBody>
+                {
+                  mainLoader ? <TableBody>
+                    <TableRow>
+                      <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
+                        <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px" , justifyContent:"center" }}>
+                          <CircularProgress />
+                          Loading Appointments
+                        </LoaderBox>
+                      </TableMidData>
+                    </TableRow>
+                  </TableBody> : <TableBody>
+                    {appointmentsList.map(
+                      (appointment: AppointmentState, index: number) => (
+                        <Row
+                          key={index}
+                          appointment={appointment}
+                          selectedAppointmentUuid={selectedAppointmentUuid}
+                          setSelectedAppointmentUuid={setSelectedAppointmentUuid}
+                          appointmentDetail={appointmentDetail}
+                          appointmentDetails={appointmentDetails}
+                          updateOutCome={updateOutCome}
+                          isDetailLoading={isDetailLoading}
+                          setLoaderAppoint={setLoaderAppoint}
+                          loaderAppoint={loaderAppoint}
+                        />
+                      )
+                    )}
+                  </TableBody>
+                }
               </Table>
               <div ref={ref}></div>
             </TableMainContainer>
-          )}
+          )
+          }
 
           {/* {isAppointmentLoading && (
             <AppointmentLoaderBox sx={{ display: "flex" }}>

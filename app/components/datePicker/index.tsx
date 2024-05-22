@@ -5,16 +5,21 @@ import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { getCurrentDateFormatted } from '@/app/utils/helper';
 import { Calendar } from '@iroomit/react-date-range';
-import { CalenderSection, DataRangeBox  } from '@/app/styles/customStyle';
+import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
 
 const DatePicker = (props: any) => {
-    
-    const { range, dateRangeHandleChange } = props;
+
+    const { dateRangeHandleChange } = props;
     const [anchorEl, setAnchorEl] = useState(false);
 
 
     const [date, setDate] = React.useState(new Date());
 
+    const handleDateChange = (newDate: Date) => {
+        console.log("New date selected:", newDate);
+        dateRangeHandleChange(newDate)
+        setDate(newDate);
+    };
 
     const handleClick = () => {
         setAnchorEl(!anchorEl);
@@ -29,7 +34,7 @@ const DatePicker = (props: any) => {
                 onClick={handleClick}
                 variant="contained"
             >
-                <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted(range.startDate)}
+                <CalendarMonthOutlinedIcon sx={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted(date)}
             </Button>
             <Box
                 className={anchorEl ? 'CustomCalender' : 'CustomCalenderhide'}
@@ -38,8 +43,14 @@ const DatePicker = (props: any) => {
                     padding: '0'
                 }}>
 
-                    <DataRangeBox>
-                        <Calendar date={date} onChange={date => setDate(date)} />
+                    <DataRangeBox
+                        sx={{
+                            '.rdrDayHovered .rdrDayNumber::after': {
+                                display: 'none'
+                            }
+                        }}
+                    >
+                        <Calendar date={date} onChange={handleDateChange} />
 
                     </DataRangeBox>
                 </Box>
