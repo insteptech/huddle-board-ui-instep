@@ -693,3 +693,43 @@ export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({
   marginTop: '85px',
   height: '150px',
 }));
+
+// 404 - Page not found
+
+export const BoxSec = styled('div')(({ div }: any) => ({
+  display: 'flex',
+  alignItems: 'center',
+  background:'#fff',
+  justifyContent: 'center',
+  position: 'absolute',
+  left: '0',
+  right: '0',
+  bottom: '0',
+  top: '0',
+  margin: '10rem'
+}));
+
+export const BoxContent = styled('div')(({ div }: any) => ({
+  fontSize: '50px',
+  fontWeight: '400',
+  lineHeight: '36px',
+  color: '#101828',
+  textAlign: 'center',
+}));
+
+export const BoldContent = styled('div')(({ div }: any) => ({
+  fontSize: '100px',
+  fontWeight: '800',
+  lineHeight: '80px',
+  color: '#101828',
+  marginBottom:'30px',
+
+}));
+
+export const BoxMid = styled('div')(({ div }: any) => ({  
+  fontSize: '100px',
+  fontWeight: '800',
+  lineHeight: '80px',
+  color: '#101828',
+  marginBottom:'30px',
+}));

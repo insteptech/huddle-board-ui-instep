@@ -1,13 +1,21 @@
 'use client'
 import React from 'react';
 
+import {
+  BoxSec,
+  BoxContent,
+  BoldContent
+} from '../../styles/customStyle';
+
 const PageNotFound = () => {
 
   return (
-      <div className='page-not-found'>
-        404
-        Page Not Found
-      </div>
+    <BoxSec className='page-not-found'>
+        <BoxContent>
+            <BoldContent>404</BoldContent>
+            Page Not Found
+          </BoxContent>
+      </BoxSec>  
   );
 };
 
