@@ -99,15 +99,28 @@ const Row = (props: any) => {
                 <TdTableCell><GetScreening screening={appointment.screening} /></TdTableCell>
                 <TdTableCell>{renderCellContent(appointment.provider, appointment.selected_gap_count === 0)}</TdTableCell>
                 <TdTableCell>
-                    <IconProgress>
-                        <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                            <BorderLinearProgress variant="determinate" value={(appointment.selected_gap_count / appointment.gap_count) * 100} />
-                        </Stack>
-                        <ProviderCell>{`${appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
-                        <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid)}>
-                            {open && selectedAppointmentUuid === appointment.uuid ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
-                        </IconButton>
-                    </IconProgress>
+                {
+                    appointment.selected_gap_count === 0 ?
+                            <IconProgress>
+                                <Stack spacing={2} sx={{ flexGrow: 1 }}>
+                                    <BorderLinearProgress variant="determinate" value={0} />
+                                </Stack>
+                                <ProviderCell>{`${appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
+                                <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid)}>
+                                    {open && selectedAppointmentUuid === appointment.uuid ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
+                                </IconButton>
+                            </IconProgress>
+                            :
+                            <IconProgress>
+                                <Stack spacing={2} sx={{ flexGrow: 1 }}>
+                                    <BorderLinearProgress variant="determinate" value={(appointment.selected_gap_count / appointment.gap_count) * 100} />
+                                </Stack>
+                                <ProviderCell>{`${appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
+                                <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid)}>
+                                    {open && selectedAppointmentUuid === appointment.uuid ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
+                                </IconButton>
+                            </IconProgress>
+                    }
                 </TdTableCell>
             </StyledTableRow>
 

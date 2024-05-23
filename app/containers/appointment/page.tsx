@@ -60,6 +60,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [patientNameSearch, setPatientNameSearch] = React.useState('');
   const [isFilterApplied, setIsFilterApplied] = useState<boolean>(false);
+  const [arrowDisabledRight, setArrowDisabledRight] = useState<boolean>(false);
+  const [arrowDisabledLeft, setArrowDisabledLeft] = useState<boolean>(false);
 
   const [range, setRange] = useState({
     startDate: new Date(),
@@ -349,15 +351,27 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             My Schedule
           </HeadingTag>
           <RightPrint>
-            <RightBox onClick={() => leftCalenderArrowClickHandle()}>
-            <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
-            </RightBox>
+             {
+              arrowDisabledLeft ?
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => leftCalenderArrowClickHandle()}>
+                  <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
+                </RightBox> :
+                <RightBox onClick={() => leftCalenderArrowClickHandle()}>
+                  <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
+                </RightBox>
+            }
             <Box>
-              <DatePicker  dateRangeHandleChange={dateRangeHandleChange} />
+              <DatePicker setArrowDisabledRight={setArrowDisabledRight} setArrowDisabledLeft={setArrowDisabledLeft} dateRangeHandleChange={dateRangeHandleChange} />
             </Box>
-            <RightBox onClick={() => rightCalenderArrowClickHandle()}>
-            <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
-            </RightBox>
+            {
+              arrowDisabledRight ?
+                <RightBox sx={{ visibility: "hidden"  }} onClick={() => rightCalenderArrowClickHandle()}>
+                  <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
+                </RightBox> :
+                <RightBox onClick={() => rightCalenderArrowClickHandle()}>
+                  <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
+                </RightBox>
+            }
             <RightBox onClick={() => handlePdf()}>
             <img src={pdfIcon.src} style={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">PDF</TypoSpan>

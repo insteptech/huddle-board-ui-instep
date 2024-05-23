@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Box, Button } from '@mui/material';
 import { useState } from 'react';
@@ -10,16 +10,53 @@ import calenderIcon from "../../images/calender.svg"
 
 const DatePicker = (props: any) => {
 
-    const { dateRangeHandleChange } = props;
+    const { dateRangeHandleChange, setArrowDisabledRight, setArrowDisabledLeft } = props;
     const [anchorEl, setAnchorEl] = useState(false);
+    const [minDate, setMinDate] = useState(new Date());
+    const [maxDate, setMaxDate] = useState(new Date());
 
 
     const [date, setDate] = React.useState(new Date());
 
     const handleDateChange = (newDate: Date) => {
-        dateRangeHandleChange(newDate)
+        const currentDate = new Date()
+        
+        dateRangeHandleChange(newDate);
         setDate(newDate);
-    };
+
+        const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
+        const newDate1Only = newDate1.toISOString().split('T')[0];
+
+        const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
+        const minDateOnly = minDate.toISOString().split('T')[0];
+
+        const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+        const maxDateOnly = maxDate.toISOString().split('T')[0];
+
+        
+
+        if (newDate1Only == minDateOnly) {
+            setArrowDisabledLeft(true)
+            setArrowDisabledRight(false)
+        }
+
+        else if (newDate1Only == maxDateOnly) {
+            setArrowDisabledRight(true)
+            setArrowDisabledLeft(false)
+        }
+        else {
+            setArrowDisabledLeft(false)
+            setArrowDisabledRight(false)
+        }
+    }
+
+    useEffect(() => {
+        const currentDate = new Date();
+        const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);;
+        const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+        setMinDate(minDate);
+        setMaxDate(maxDate);
+    }, []);
 
     const handleClick = () => {
         setAnchorEl(!anchorEl);
@@ -34,7 +71,7 @@ const DatePicker = (props: any) => {
                 onClick={handleClick}
                 variant="contained"
             >
-               <img src={calenderIcon.src} style={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted(date)}
+                <img src={calenderIcon.src} style={{ marginRight: '10px' }} />{ }{getCurrentDateFormatted(date)}
             </Button>
             <Box
                 className={anchorEl ? 'CustomCalender' : 'CustomCalenderhide'}
@@ -50,7 +87,7 @@ const DatePicker = (props: any) => {
                             }
                         }}
                     >
-                        <Calendar date={date} onChange={handleDateChange} />
+                        <Calendar date={date} onChange={handleDateChange} minDate={minDate} maxDate={maxDate} />
 
                     </DataRangeBox>
                 </Box>
@@ -59,4 +96,4 @@ const DatePicker = (props: any) => {
     )
 }
 
-export default DatePicker
+export default DatePicker;
