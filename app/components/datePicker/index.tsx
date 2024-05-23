@@ -17,7 +17,6 @@ const DatePicker = (props: any) => {
     const [date, setDate] = React.useState(new Date());
 
     const handleDateChange = (newDate: Date) => {
-        console.log("New date selected:", newDate);
         dateRangeHandleChange(newDate)
         setDate(newDate);
     };

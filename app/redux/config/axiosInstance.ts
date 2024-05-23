@@ -4,11 +4,12 @@ import { toast } from 'react-toastify';
 
 import { API_URL, getAndSetAccessToken, sessionKeys } from "../../utils/auth";
 
-const { accessToken, refreshToken} = sessionKeys;
+const { accessToken, refreshToken, slugKey} = sessionKeys;
 
 const onRequest = async (config:any) => {
   const access = localStorage.getItem(accessToken);
-  getAndSetAccessToken();
+  const userSlug = localStorage.getItem(slugKey);
+  getAndSetAccessToken(userSlug);
   config.headers["Authorization"] = `JWT ${access}`;
   return config;
 };

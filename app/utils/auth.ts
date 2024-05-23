@@ -2,7 +2,6 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
 export const API_URL = process.env.REACT_APP_API_URL;
-export const slug = process.env.REACT_APP_STATIC_SLUG;
 
 export const decodeToken = function (token: any) {
   if (!token) {
@@ -64,16 +63,20 @@ export function isTokenExpired(token?:string|null) {
 
 export const sessionKeys = {accessToken:"access_token", slugKey:"slug", refreshToken:"refresh_token"};
 
-export const getAndSetAccessToken = async () => {
+export const getAndSetAccessToken = async (slug: any) => {
   const { accessToken, slugKey, refreshToken } = sessionKeys;
   const refresh = localStorage.getItem(refreshToken);
   const access = localStorage.getItem(accessToken);
+  const userSlug = localStorage.getItem(slugKey);
   const isExpired = isTokenExpired(access);
 
   if (refresh && access && !isExpired) return;
+  if (slug) {
+    localStorage.setItem(slugKey, slug);
+  }
 
   const fetchNewTokens = async () => {
-    const response = await axios.post(`${API_URL}slug-token/`, { slug });
+    const response = await axios.post(`${API_URL}slug-token/`, { slug: slug || userSlug });
     if (response && response.data) {
       const { access: newAccessToken, refresh: newRefreshToken } = response.data;
       localStorage.setItem(accessToken, newAccessToken);

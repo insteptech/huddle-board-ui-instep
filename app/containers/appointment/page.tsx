@@ -276,11 +276,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const dateRangeHandleChange = (dates: any) => {
-
     const formattedDates = formatDates(dates, dates);
-
-
-    console.log("Formatted Dates", formattedDates)
     const filters = {
       appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,

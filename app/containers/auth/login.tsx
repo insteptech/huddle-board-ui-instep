@@ -1,19 +1,21 @@
 'use client'
-import { AppDispatch } from '@/app/redux/store';
 import { getAndSetAccessToken } from '@/app/utils/auth';
-import { redirect } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
+import {  useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 const Login = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const searchParam   = useSearchParams();
 
   useEffect(() => {
-    getAndSetAccessToken().then((response:any) => {
-      window.location.href= '/appointment';
-    })
-  }, []);
+    let slug = searchParam.get("slug");
+    if(slug){
+      getAndSetAccessToken(slug).then((response:any) => {
+        window.location.href= '/appointment';
+      })
+    }else{
+      window.location.href= '/pageNotFound';
+    }
+  }, [searchParam]);
 
   return (
       <div className='main_sec'></div>

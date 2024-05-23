@@ -18,12 +18,12 @@ const Header = ( ) => {
       <LogoIcon /> 
 
 
-      <Typography_Grid>
+      {/* <Typography_Grid>
       <StaticTypo variant="caption" display="block" gutterBottom>
         Adam Steele
       </StaticTypo>
       <LinkText sx={{textDecoration:'none', borderLeft:'2px solid #C8CED2', paddingLeft: '10px',}} > Logout</LinkText>
-      </Typography_Grid>
+      </Typography_Grid> */}
 
 
       </AppBar>
