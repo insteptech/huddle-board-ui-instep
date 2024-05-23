@@ -68,8 +68,8 @@ export const sessionKeys = {accessToken:"access_token", slugKey:"slug", refreshT
 
 export const getAndSetAccessToken = async () => {
   const { accessToken, slugKey, refreshToken } = sessionKeys;
-  const refresh = sessionStorage.getItem(refreshToken);
-  const access = sessionStorage.getItem(accessToken);
+  const refresh = localStorage.getItem(refreshToken);
+  const access = localStorage.getItem(accessToken);
   const isExpired = isTokenExpired(access);
 
   if (refresh && access && !isExpired) return;
@@ -78,8 +78,8 @@ export const getAndSetAccessToken = async () => {
     const response = await axios.post(`${API_URL}slug-token/`, { slug });
     if (response && response.data) {
       const { access: newAccessToken, refresh: newRefreshToken } = response.data;
-      sessionStorage.setItem(accessToken, newAccessToken);
-      sessionStorage.setItem(refreshToken, newRefreshToken);
+      localStorage.setItem(accessToken, newAccessToken);
+      localStorage.setItem(refreshToken, newRefreshToken);
       return;
     }
   };
@@ -88,8 +88,8 @@ export const getAndSetAccessToken = async () => {
     const response = await axios.post(`${API_URL}token/refresh/`, { "refresh": refresh });
     if (response && response.data) {
       const { access: newAccessToken, refresh: newRefreshToken } = response.data;
-      sessionStorage.setItem(accessToken, newAccessToken);
-      sessionStorage.setItem(refreshToken, newRefreshToken);
+      localStorage.setItem(accessToken, newAccessToken);
+      localStorage.setItem(refreshToken, newRefreshToken);
       return;
     }
   };
@@ -100,3 +100,5 @@ export const getAndSetAccessToken = async () => {
     await refreshTokens();
   }
 };
+
+export const accessToken = () => { return localStorage.getItem(sessionKeys.accessToken); }

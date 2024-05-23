@@ -2,16 +2,15 @@
 import axios from "axios";
 import { toast } from 'react-toastify';
 
-import { getAndSetAccessToken, isAuthenticated,isTokenExpired,sessionKeys } from "../../utils/auth";
+import { getAndSetAccessToken,sessionKeys } from "../../utils/auth";
 
 export let API_URL = process.env.REACT_APP_API_URL;
 API_URL = "https://dev-api.pdap.doctustech.com/api/"
 
-const { accessToken, slugKey, refreshToken} = sessionKeys;
+const { accessToken, refreshToken} = sessionKeys;
 
 const onRequest = async (config:any) => {
-  const refresh = sessionStorage.getItem(refreshToken)
-  const access = sessionStorage.getItem(accessToken);
+  const access = localStorage.getItem(accessToken);
   getAndSetAccessToken();
   config.headers["Authorization"] = `JWT ${access}`;
   return config;
@@ -31,7 +30,7 @@ const onResponseError = async (error:any) => {
       error.response.status === 401 &&
       error.response.data.message === "jwt expired"
     ) {
-      let refresh =sessionStorage.getItem(refreshToken)
+      let refresh =localStorage.getItem(refreshToken)
       try {
         const rs = await axios.post(`${API_URL}token/refresh`, {
           refresh
@@ -40,8 +39,8 @@ const onResponseError = async (error:any) => {
           let finalResponse = rs.data.data;
           const token = finalResponse.data.access; 
           const refresh = finalResponse.data.refresh; 
-          sessionStorage.setItem(accessToken, token);
-          sessionStorage.setItem(refreshToken, refresh);
+          localStorage.setItem(accessToken, token);
+          localStorage.setItem(refreshToken, refresh);
         }
         return;
       } catch (_error) {

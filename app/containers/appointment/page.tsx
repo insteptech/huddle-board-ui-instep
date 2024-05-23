@@ -35,20 +35,17 @@ import {
   MainBoxTop,
   TypoSpan,
   SearchClearIcon,
-  AppointmentLoaderBox,
   TableMidData
 } from '../../styles/customStyle';
 import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
-import { Box, Container, Input, InputAdornment, CircularProgress, Tab } from '@mui/material';
+import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
-import { sessionKeys } from '@/app/utils/auth';
 import { formatDates } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
+import { accessToken } from '@/app/utils/auth';
 
 const url = `${API_URL}download-appointments/?file_type=pdf`;
-const { accessToken } = sessionKeys;
-const access = sessionStorage.getItem(accessToken);
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -168,24 +165,24 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     })
   }
 
-  const handlePrint = () => {
-    fetch(url, { method: 'get', headers: { "Authorization": `JWT ${access}` } })
-      .then(res => res.blob())
-      .then(res => {
-        const url = URL.createObjectURL(res);
-        const newTab = window.open(url, '_blank');
-        if (newTab) {
-          newTab.onload = () => {
-            newTab.print();
-          };
-        } else {
-          console.error('Failed to open new tab');
-        }
-      });
-  }
+  // const handlePrint = () => {
+  //   fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken}` } })
+  //     .then(res => res.blob())
+  //     .then(res => {
+  //       const url = URL.createObjectURL(res);
+  //       const newTab = window.open(url, '_blank');
+  //       if (newTab) {
+  //         newTab.onload = () => {
+  //           newTab.print();
+  //         };
+  //       } else {
+  //         console.error('Failed to open new tab');
+  //       }
+  //     });
+  // }
 
   const handlePdf = () => {
-    fetch(url, { method: 'get', headers: { "Authorization": `JWT ${access}` } })
+    fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken()}` } })
       .then(res => res.blob())
       .then(res => {
         const aElement = document.createElement('a');
