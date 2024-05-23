@@ -10,13 +10,13 @@ import calenderIcon from "../../images/calender.svg"
 
 const DatePicker = (props: any) => {
 
-    const { dateRangeHandleChange, setArrowDisabledRight, setArrowDisabledLeft } = props;
+    const { dateRangeHandleChange,date, setArrowDisabledRight,setDate, setArrowDisabledLeft } = props;
     const [anchorEl, setAnchorEl] = useState(false);
     const [minDate, setMinDate] = useState(new Date());
     const [maxDate, setMaxDate] = useState(new Date());
 
 
-    const [date, setDate] = React.useState(new Date());
+    
 
     const handleDateChange = (newDate: Date) => {
         const currentDate = new Date()

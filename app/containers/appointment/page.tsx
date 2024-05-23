@@ -80,7 +80,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const isAppointmentLoading = useSelector((state: AppState) => state.appointment.isAppointmentLoading);
   const { page } = filters;
-
+  const [date, setDate] = React.useState(new Date());
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
@@ -278,6 +278,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const dateRangeHandleChange = (dates: any) => {
+
+    console.log(dates)
     const formattedDates = formatDates(dates, dates);
     const filters = {
       appointment_start_date: formattedDates.start,
@@ -315,31 +317,69 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const leftCalenderArrowClickHandle = () => {
-    const { startDate, endDate } = range;
-    let initialStartDate = new Date(startDate);
-    initialStartDate.setDate(initialStartDate.getDate() - 1);
 
-    const dates = {
-      startDate: initialStartDate.toString(),
-      endDate: initialStartDate.toString(),
-      key: "selection"
+    let newDate = new Date(date);
+    newDate.setDate(date.getDate() - 1);
+    setDate(newDate);
+
+    const currentDate = new Date()
+    const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
+    const newDate1Only = newDate1.toISOString().split('T')[0];
+
+    const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
+    const minDateOnly = minDate.toISOString().split('T')[0];
+
+    const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+    const maxDateOnly = maxDate.toISOString().split('T')[0];
+
+    if (newDate1Only == minDateOnly) {
+        setArrowDisabledLeft(true)
+        setArrowDisabledRight(false)
     }
 
-    dateRangeHandleChange(dates);
+    else if (newDate1Only == maxDateOnly) {
+        setArrowDisabledRight(true)
+        setArrowDisabledLeft(false)
+    }
+    else {
+        setArrowDisabledLeft(false)
+        setArrowDisabledRight(false)
+    }
+
+    dateRangeHandleChange(newDate);
+
   }
 
   const rightCalenderArrowClickHandle = () => {
-    const { startDate, endDate } = range;
-    let initialStartDate = new Date(startDate);
-    initialStartDate.setDate(initialStartDate.getDate() + 1);
+    let newDate = new Date(date);
+    newDate.setDate(date.getDate() + 1);
+    setDate(newDate);
 
-    const dates = {
-      startDate: initialStartDate.toString(),
-      endDate: initialStartDate.toString(),
-      key: "selection"
+    const currentDate = new Date()
+    const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);
+    const newDate1Only = newDate1.toISOString().split('T')[0];
+
+    const minDate = new Date(currentDate.getTime() - 14 * 24 * 60 * 60 * 1000);
+    const minDateOnly = minDate.toISOString().split('T')[0];
+
+    const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+    const maxDateOnly = maxDate.toISOString().split('T')[0];
+
+    if (newDate1Only == minDateOnly) {
+        setArrowDisabledLeft(true)
+        setArrowDisabledRight(false)
     }
 
-    dateRangeHandleChange(dates);
+    else if (newDate1Only == maxDateOnly) {
+        setArrowDisabledRight(true)
+        setArrowDisabledLeft(false)
+    }
+    else {
+        setArrowDisabledLeft(false)
+        setArrowDisabledRight(false)
+    }
+
+    dateRangeHandleChange(newDate);
 
   }
 
@@ -351,7 +391,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             My Schedule
           </HeadingTag>
           <RightPrint>
-             {
+            {
               arrowDisabledLeft ?
                 <RightBox sx={{ visibility: "hidden" }} onClick={() => leftCalenderArrowClickHandle()}>
                   <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
@@ -361,11 +401,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 </RightBox>
             }
             <Box>
-              <DatePicker setArrowDisabledRight={setArrowDisabledRight} setArrowDisabledLeft={setArrowDisabledLeft} dateRangeHandleChange={dateRangeHandleChange} />
+              <DatePicker date={date} setDate={setDate} setArrowDisabledRight={setArrowDisabledRight} setArrowDisabledLeft={setArrowDisabledLeft} dateRangeHandleChange={dateRangeHandleChange} />
             </Box>
             {
               arrowDisabledRight ?
-                <RightBox sx={{ visibility: "hidden"  }} onClick={() => rightCalenderArrowClickHandle()}>
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => rightCalenderArrowClickHandle()}>
                   <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
                 </RightBox> :
                 <RightBox onClick={() => rightCalenderArrowClickHandle()}>
@@ -373,7 +413,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 </RightBox>
             }
             <RightBox onClick={() => handlePdf()}>
-            <img src={pdfIcon.src} style={{ fontSize: "20px", marginRight: "5px" }} />
+              <img src={pdfIcon.src} style={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">PDF</TypoSpan>
             </RightBox>
 
@@ -466,11 +506,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 </Table_Head>
                 <TableBody>
                   {
-                    mainLoader 
+                    mainLoader
                       ?
                       <TableRow>
                         <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
-                          <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px" , justifyContent:"center" }}>
+                          <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px", justifyContent: "center" }}>
                             <CircularProgress />
                             Loading Appointments
                           </LoaderBox>
@@ -506,7 +546,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   mainLoader ? <TableBody>
                     <TableRow>
                       <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
-                        <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px" , justifyContent:"center" }}>
+                        <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px", justifyContent: "center" }}>
                           <CircularProgress />
                           Loading Appointments
                         </LoaderBox>
