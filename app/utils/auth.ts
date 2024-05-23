@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { access } from 'fs';
 import jwt from 'jsonwebtoken';
 
-let API_URL = process.env.REACT_APP_API_URL;
-API_URL = "https://dev-api.pdap.doctustech.com/api/";
-export const slug = "c5c16a0b-f012-4ef5-b6d7-22cf8a588868";
+export const API_URL = process.env.REACT_APP_API_URL;
+export const slug = process.env.REACT_APP_STATIC_SLUG;
 
 export const decodeToken = function (token: any) {
   if (!token) {

@@ -82,7 +82,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
-  const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening_uuids || []);
+  const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening || []);
   const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids || []);
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
   const [selectedSavedFilterUuid, setSelectedSavedFilterUuid] = useState<string>('');
@@ -204,7 +204,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const filters = {
       visit_types: [],
       providers_uuids: [],
-      screening_uuids: [],
+      screening: [],
       page: 1,
       page_size: 10,
       patient_name: '',
@@ -239,7 +239,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       const filters = {
         visit_types: [],
         providers_uuids: [],
-        screening_uuids: [],
+        screening: [],
         page: 1,
         page_size: 10,
         patient_name: e.target.value
@@ -260,7 +260,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       const filters = {
         visit_types: payload.visit_type,
         providers_uuids: payload.providers,
-        screening_uuids: payload.screening,
+        screening: payload.screening,
         page: 1,
         page_size: 10,
         patient_name: ''

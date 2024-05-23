@@ -35,7 +35,7 @@ export type FiltersDataState = {
   appointment_end_date?: string | number,
   visit_types?: string[],
   providers_uuids?: string[],
-  screening_uuids?: string[],
+  screening?: string[],
   patient_name?: string,
   sort_by?: string
 }

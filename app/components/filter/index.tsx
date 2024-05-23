@@ -109,7 +109,7 @@ function FilterButton(props:any) {
     const filters = {
       visit_types: selectedVisitType,
       providers_uuids: selectedProviders,
-      screening_uuids: selectedScreening,
+      screening: selectedScreening,
       page: 1,
       page_size: 10
     };
@@ -299,7 +299,7 @@ function FilterButton(props:any) {
                                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                   {...label}
                                   onClick={()=>handleScreeningFilterClick(patient)}
-                                  checked={filters?.screening_uuids?.includes(patient)|| selectedScreening?.includes(patient)||false} 
+                                  checked={filters?.screening?.includes(patient)|| selectedScreening?.includes(patient)||false} 
                                 />
                                 {patient}
                               </TableCellTd>

@@ -2,10 +2,7 @@
 import axios from "axios";
 import { toast } from 'react-toastify';
 
-import { getAndSetAccessToken,sessionKeys } from "../../utils/auth";
-
-export let API_URL = process.env.REACT_APP_API_URL;
-API_URL = "https://dev-api.pdap.doctustech.com/api/"
+import { API_URL, getAndSetAccessToken, sessionKeys } from "../../utils/auth";
 
 const { accessToken, refreshToken} = sessionKeys;
 
@@ -73,3 +70,5 @@ export const axiosWrapper = async (config:any) => {
       } else throw error;
   }
 };
+
+export { API_URL };
