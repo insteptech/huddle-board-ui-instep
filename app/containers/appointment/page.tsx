@@ -101,7 +101,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentsList(filter)).then((response: any) => {
       setMainLoader(false);
       dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
-     
+
       if (response?.payload?.results.length === 0) {
         setIsClearFilter(true);
 
@@ -153,6 +153,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   };
 
   const updateOutCome = (value: any, data: any, detail: any) => {
+
+    if (data == "disable") {
+      toast.error("This Option cannot be selected");
+      return
+    }
+
+    console.log(value, data, detail)
     const { appointment_id, uuid } = detail;
     const payload = {
       appointment_id: appointment_id,
@@ -288,7 +295,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setSelectedScreening(payload.screening);
       setSelectedProviders(payload.providers);
       dispatch(updateFilter(filters));
-      dispatch(emptyAppointmentList()); 
+      dispatch(emptyAppointmentList());
       loadMoreAppointment(filters);
     })
   }
@@ -338,23 +345,23 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     loadMoreAppointment(filters);
   }
 
-  const calenderArrowClick = (direction:string) => {
+  const calenderArrowClick = (direction: string) => {
 
     const temp = direction;
     let newDate = new Date(date);
 
-    if(temp=="left" || temp=="Left" || temp=="LEFT"){
+    if (temp == "left" || temp == "Left" || temp == "LEFT") {
       newDate.setDate(date.getDate() - 1);
-    
+
     }
 
-    else{
-    newDate.setDate(date.getDate() + 1);
+    else {
+      newDate.setDate(date.getDate() + 1);
     }
 
     setDate(newDate);
-    
-  
+
+
     const currentDate = new Date()
     const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);
     const newDate1Only = newDate1.toISOString().split('T')[0];
@@ -409,7 +416,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox> :
                 <RightBox onClick={() => calenderArrowClick("right")}>
-                  <img src={arrowRight.src} style={{ fontSize: "15px" }}/>
+                  <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox>
             }
             <RightBox onClick={() => handlePdf()}>
