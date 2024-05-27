@@ -76,13 +76,17 @@ export const getAndSetAccessToken = async (slug: any) => {
   }
 
   const fetchNewTokens = async () => {
-    const response = await axios.post(`${API_URL}slug-token/`, { slug: slug || userSlug });
-    if (response && response.data) {
-      const { access: newAccessToken, refresh: newRefreshToken } = response.data;
-      localStorage.setItem(accessToken, newAccessToken);
-      localStorage.setItem(refreshToken, newRefreshToken);
-      return;
-    }
+    await axios.post(`${API_URL}slug-token/`, { slug: slug || userSlug }).then((response) => {
+      if (response && response.data) {
+        const { access: newAccessToken, refresh: newRefreshToken } = response.data;
+        localStorage.setItem(accessToken, newAccessToken);
+        localStorage.setItem(refreshToken, newRefreshToken);
+        return;
+      }
+    }).catch((err) => {
+      window.location.href= '/pageNotFound';
+    })
+  
   };
 
   const refreshTokens = async () => {

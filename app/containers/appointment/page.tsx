@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -278,8 +278,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const dateRangeHandleChange = (dates: any) => {
-
-    console.log(dates)
     const formattedDates = formatDates(dates, dates);
     const filters = {
       appointment_start_date: formattedDates.start,

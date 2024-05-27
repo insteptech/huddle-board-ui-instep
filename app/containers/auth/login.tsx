@@ -9,7 +9,7 @@ const Login = () => {
   useEffect(() => {
     let slug = searchParam.get("slug");
     if(slug){
-      getAndSetAccessToken(slug).then((response:any) => {
+      getAndSetAccessToken(slug).then((response:any) => {        
         window.location.href= '/appointment';
       })
     }else{

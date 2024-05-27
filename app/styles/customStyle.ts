@@ -164,9 +164,10 @@ export const Text = styled(Typography)(({ div }: any) => ({
   textAlign: 'left',
   color: '#242629',
   whiteSpace: 'nowrap',
-  width: '120px',
+  width: '200px',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  cursor: 'pointer'
 }));
 
 export const StyledMuiButton = styled(Button) <StyledButtonProps>`

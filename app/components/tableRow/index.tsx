@@ -167,7 +167,7 @@ const Row = (props: any) => {
                                                             <TableRow key={detail.uuid}>
                                                                 <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
                                                                 <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
-                                                                <TableMidData><Text>{detail.description}</Text></TableMidData>
+                                                                <TableMidData><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
                                                                 <TableMidData sx={{ width: '430px', display: 'flex', alignItems: 'Center', }}>
                                                                     <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateOutCome('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
                                                                         Clinician Agrees
