@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, auditLog } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -101,6 +101,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentsList(filter)).then((response: any) => {
       setMainLoader(false);
       dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
+     
       if (response?.payload?.results.length === 0) {
         setIsClearFilter(true);
 
@@ -237,6 +238,19 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const searchAppointmentPatientName = (e: any) => {
     setPatientNameSearch(e.target.value);
 
+    if (!e?.target?.value) {
+      const filters = {
+        page: 1,
+        page_size: 10,
+        patient_name: '',
+        sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
+      };
+      setIsFilterApplied(false);
+      dispatch(updateFilter(filters));
+      dispatch(emptyAppointmentList());
+      loadMoreAppointment(filters);
+    }
+
     if (e?.target?.value?.length > 3) {
       const filters = {
         visit_types: [],
@@ -251,6 +265,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       dispatch(emptyAppointmentList());
       loadMoreAppointment(filters);
     }
+
+
   }
 
   const getFilterDetail = (filter: any) => {
@@ -272,7 +288,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setSelectedScreening(payload.screening);
       setSelectedProviders(payload.providers);
       dispatch(updateFilter(filters));
-      dispatch(emptyAppointmentList());
+      dispatch(emptyAppointmentList()); 
       loadMoreAppointment(filters);
     })
   }
@@ -296,7 +312,12 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp',
       page: 1,
       page_size: 10,
+      visit_types: selectedVisitType,
+      providers_uuids: selectedProviders,
+      screening: selectedScreening,
     };
+
+
     dispatch(updateFilter(filters));
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filters);
@@ -308,20 +329,34 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       sort_by: isPatientNameSortAscending ? 'patient__patient_first_name' : '-patient__patient_first_name',
       page: 1,
       page_size: 10,
+      visit_types: selectedVisitType,
+      providers_uuids: selectedProviders,
+      screening: selectedScreening,
     };
     dispatch(updateFilter(filters));
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filters);
   }
 
-  const leftCalenderArrowClickHandle = () => {
+  const calenderArrowClick = (direction:string) => {
 
+    const temp = direction;
     let newDate = new Date(date);
-    newDate.setDate(date.getDate() - 1);
-    setDate(newDate);
 
+    if(temp=="left" || temp=="Left" || temp=="LEFT"){
+      newDate.setDate(date.getDate() - 1);
+    
+    }
+
+    else{
+    newDate.setDate(date.getDate() + 1);
+    }
+
+    setDate(newDate);
+    
+  
     const currentDate = new Date()
-    const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
+    const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);
     const newDate1Only = newDate1.toISOString().split('T')[0];
 
     const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
@@ -331,50 +366,17 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const maxDateOnly = maxDate.toISOString().split('T')[0];
 
     if (newDate1Only == minDateOnly) {
-        setArrowDisabledLeft(true)
-        setArrowDisabledRight(false)
+      setArrowDisabledLeft(true)
+      setArrowDisabledRight(false)
     }
 
     else if (newDate1Only == maxDateOnly) {
-        setArrowDisabledRight(true)
-        setArrowDisabledLeft(false)
+      setArrowDisabledRight(true)
+      setArrowDisabledLeft(false)
     }
     else {
-        setArrowDisabledLeft(false)
-        setArrowDisabledRight(false)
-    }
-
-    dateRangeHandleChange(newDate);
-
-  }
-
-  const rightCalenderArrowClickHandle = () => {
-    let newDate = new Date(date);
-    newDate.setDate(date.getDate() + 1);
-    setDate(newDate);
-
-    const currentDate = new Date()
-    const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);
-    const newDate1Only = newDate1.toISOString().split('T')[0];
-
-    const minDate = new Date(currentDate.getTime() - 14 * 24 * 60 * 60 * 1000);
-    const minDateOnly = minDate.toISOString().split('T')[0];
-
-    const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
-    const maxDateOnly = maxDate.toISOString().split('T')[0];
-
-    if (newDate1Only == minDateOnly) {
-        setArrowDisabledLeft(true)
-        setArrowDisabledRight(false)
-    }
-
-    else if (newDate1Only == maxDateOnly) {
-        setArrowDisabledRight(true)
-        setArrowDisabledLeft(false)
-    }
-    else {
-        setArrowDisabledLeft(false)
-        setArrowDisabledRight(false)
+      setArrowDisabledLeft(false)
+      setArrowDisabledRight(false)
     }
 
     dateRangeHandleChange(newDate);
@@ -391,10 +393,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           <RightPrint>
             {
               arrowDisabledLeft ?
-                <RightBox sx={{ visibility: "hidden" }} onClick={() => leftCalenderArrowClickHandle()}>
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => calenderArrowClick("left")}>
                   <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
                 </RightBox> :
-                <RightBox onClick={() => leftCalenderArrowClickHandle()}>
+                <RightBox onClick={() => calenderArrowClick("left")}>
                   <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
                 </RightBox>
             }
@@ -403,11 +405,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             </Box>
             {
               arrowDisabledRight ?
-                <RightBox sx={{ visibility: "hidden" }} onClick={() => rightCalenderArrowClickHandle()}>
-                  <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => calenderArrowClick("right")}>
+                  <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox> :
-                <RightBox onClick={() => rightCalenderArrowClickHandle()}>
-                  <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
+                <RightBox onClick={() => calenderArrowClick("right")}>
+                  <img src={arrowRight.src} style={{ fontSize: "15px" }}/>
                 </RightBox>
             }
             <RightBox onClick={() => handlePdf()}>
