@@ -42,6 +42,8 @@ import {
 
 import { getOutComeBtnState } from '@/app/utils/appointment';
 import { getTime } from '@/app/utils/helper';
+import ActionConfirmation from '../actionConfirmationModal';
+import ActionReverse from '../actionReverseModal';
 
 function GetScreening({ screening }: { screening: string[] }) {
     return (
@@ -55,7 +57,7 @@ function GetScreening({ screening }: { screening: string[] }) {
 }
 
 const Row = (props: any) => {
-    const { appointment, selectedAppointmentUuid, loaderAppoint, setSelectedAppointmentUuid, setLoaderAppoint, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading } = props;
+    const { appointment, selectedAppointmentUuid, selectedAppointmentGap, setSelectedAppointmentGap , loaderAppoint,  setSelectedAppointmentUuid, reverseModal, updateButtonState, setReverseModal, setLoaderAppoint, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading, confirmationModal, setConfirmationModal , actionValue } = props;
     const [open, setOpen] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
 
@@ -63,6 +65,7 @@ const Row = (props: any) => {
         setLoaderAppoint(true);
         setSelectedAppointmentUuid(id);
         appointmentDetails(id);
+        setSelectedAppointmentGap();
         setOpen(!open);
     };
 
@@ -74,6 +77,8 @@ const Row = (props: any) => {
     const renderCellContent = (content: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<React.AwaitedReactNode> | null | undefined, isBold: boolean) => (
         isBold ? <FontBold>{content}</FontBold> : <StyledText>{content}</StyledText>
     );
+
+    console.log(appointment, "dgdsgdsghdsgdfghdf")
 
     return (
         <>
@@ -99,8 +104,8 @@ const Row = (props: any) => {
                 <TdTableCell><GetScreening screening={appointment.screening} /></TdTableCell>
                 <TdTableCell>{renderCellContent(appointment.provider, appointment.selected_gap_count === 0)}</TdTableCell>
                 <TdTableCell>
-                {
-                    appointment.selected_gap_count === 0 ?
+                    {
+                        appointment.selected_gap_count === 0 ?
                             <IconProgress>
                                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
                                     <BorderLinearProgress variant="determinate" value={0} />
@@ -130,13 +135,13 @@ const Row = (props: any) => {
                         <Box>
                             {
                                 appointment.gap_count === 0 ? <Table>
-                                <TableHead>
-                                         <TableRow>
-                                             <TableMidData sx={{textAlign:"center" , fontWeight:"600", padding:"25px 0"}}>No Screening Data Available</TableMidData>
-                                           
-                                         </TableRow>
-                                     </TableHead>
-                                     </Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableMidData sx={{ textAlign: "center", fontWeight: "600", padding: "25px 0" }}>No Screening Data Available</TableMidData>
+
+                                        </TableRow>
+                                    </TableHead>
+                                </Table>
                                     :
                                     <Table size="small" aria-label="purchases">
                                         <TableHead>
@@ -169,14 +174,13 @@ const Row = (props: any) => {
                                                                 <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                                                                 <TableMidData><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
                                                                 <TableMidData sx={{ width: '430px', display: 'flex', alignItems: 'Center', }}>
-                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateOutCome('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
+                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
                                                                         Clinician Agrees
                                                                     </StyledMuiButton>
-                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_disagrees')} onClick={() => updateOutCome('clinician_disagrees', getOutComeBtnState(detail, 'clinician_disagrees'), detail)}>
+                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_disagrees')} onClick={() => updateButtonState('clinician_disagrees', getOutComeBtnState(detail, 'clinician_disagrees'), detail)}>
                                                                         Clinician Disagrees
                                                                     </StyledMuiButton>
-                                                                    {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateOutCome('test_ordered',
-                                                                        getOutComeBtnState(detail, 'test_ordered'), detail)}>
+                                                                    {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateButtonState('test_ordered',getOutComeBtnState(detail, 'test_ordered'), detail)}>
                                                                         Test Ordered
                                                                     </StyledMuiButton> :
                                                                         <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '5px', }} /></Tooltip>Test Not Needed</TestButton>
@@ -188,6 +192,8 @@ const Row = (props: any) => {
                                                     </TableBody>
                                                 )
                                         }
+                                        <ActionConfirmation actionValue={actionValue} confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} updateOutCome={updateOutCome} />
+                                        <ActionReverse actionValue={actionValue} reverseModal={reverseModal} setReverseModal={setReverseModal} updateOutCome={updateOutCome} />
                                     </Table>
                             }
                         </Box>

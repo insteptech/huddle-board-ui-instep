@@ -87,12 +87,21 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening || []);
   const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids || []);
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
+  const [selectedAppointmentGap, setSelectedAppointmentGap] = useState<number>();
   const [selectedSavedFilterUuid, setSelectedSavedFilterUuid] = useState<string>('');
   const [isAppointmentTimeSortAscending, setIsAppointmentTimeSortAscending] = useState(false);
   const [isPatientNameSortAscending, setIsPatientNameSortAscending] = useState(false);
   const [loaderAppoint, setLoaderAppoint] = useState<any>(false);
   const [mainLoader, setMainLoader] = useState<any>(true);
 
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [reverseModal, setReverseModal] = useState(false);
+
+  const [actionValue, setActionValue] = useState({
+    value: "",
+    data: "",
+    detail: {}
+  })
 
   const { ref, inView } = useInView();
 
@@ -152,19 +161,58 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
   };
 
-  const updateOutCome = (value: any, data: any, detail: any) => {
+  const getAction2 = (value: string) => {
+    switch (value) {
+      case 'clinician_agrees':
+        return { clinician_agrees: false, clinician_disagrees: false, test_ordered: false };
+      case 'clinician_disagrees':
+        return { clinician_disagrees: false, clinician_agrees: false, test_ordered: false };
+      case 'test_ordered':
+        return { test_ordered: false, clinician_disagrees: false, clinician_agrees: false };
+      default:
+        return {};
+    }
+  };
+
+
+  const updateButtonState = (value: any, data: any, detail: any) => {
 
     if (data == "disable") {
-      toast.error("This Option cannot be selected");
-      return
+      toast.error("cannot select")
+      return;
     }
 
-    console.log(value, data, detail)
+
+    if (data == "enable") {
+      setConfirmationModal(true)
+      setActionValue({
+        value: value,
+        data: data,
+        detail: detail
+      })
+    }
+    if (data == "active") {
+      setReverseModal(true)
+      setActionValue({
+        value: value,
+        data: data,
+        detail: detail
+      })
+    }
+
+  }
+
+  const updateOutCome = (value: any, data: any, detail: any) => {
+
+    setReverseModal(false);
+    setConfirmationModal(false)
+
+
     const { appointment_id, uuid } = detail;
     const payload = {
       appointment_id: appointment_id,
       screening_id: uuid,
-      action: getAction(value)
+      action: data == "enable" ? getAction(value) : getAction2(value)
     }
 
     dispatch(updateAppointmentDetail(payload)).then(() => {
@@ -573,6 +621,14 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                           isDetailLoading={isDetailLoading}
                           setLoaderAppoint={setLoaderAppoint}
                           loaderAppoint={loaderAppoint}
+                          updateButtonState={updateButtonState}
+                          confirmationModal={confirmationModal}
+                          reverseModal={reverseModal}
+                          setConfirmationModal={setConfirmationModal}
+                          setReverseModal={setReverseModal}
+                          actionValue={actionValue}
+                          setSelectedAppointmentGap={setSelectedAppointmentGap}
+                          selectedAppointmentGap={selectedAppointmentGap}
                         />
                       )
                     )}

@@ -1,8 +1,6 @@
 'use client'
-import React, { useEffect } from 'react'
-
+import React, { useEffect, useState, useRef, MouseEvent } from 'react';
 import { Box, Button } from '@mui/material';
-import { useState } from 'react';
 import { getCurrentDateFormatted } from '@/app/utils/helper';
 import { Calendar } from '@iroomit/react-date-range';
 import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
@@ -10,17 +8,17 @@ import calenderIcon from "../../images/calender.svg"
 
 const DatePicker = (props: any) => {
 
-    const { dateRangeHandleChange,date, setArrowDisabledRight,setDate, setArrowDisabledLeft } = props;
+    const { dateRangeHandleChange, date, setArrowDisabledRight, setDate, setArrowDisabledLeft } = props;
     const [anchorEl, setAnchorEl] = useState(false);
     const [minDate, setMinDate] = useState(new Date());
     const [maxDate, setMaxDate] = useState(new Date());
+    const anchorRef = useRef<any>(null);
 
 
-    
 
     const handleDateChange = (newDate: Date) => {
         const currentDate = new Date()
-        
+
         dateRangeHandleChange(newDate);
         setDate(newDate);
 
@@ -33,7 +31,7 @@ const DatePicker = (props: any) => {
         const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
         const maxDateOnly = maxDate.toISOString().split('T')[0];
 
-        
+
 
         if (newDate1Only == minDateOnly) {
             setArrowDisabledLeft(true)
@@ -52,10 +50,21 @@ const DatePicker = (props: any) => {
 
     useEffect(() => {
         const currentDate = new Date();
-        const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);;
+        const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
         const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
         setMinDate(minDate);
         setMaxDate(maxDate);
+
+        const handleClickOutside = (event:any) => {
+            if (anchorRef.current && !anchorRef.current.contains(event.target)) {
+                setAnchorEl(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const handleClick = () => {
@@ -63,7 +72,7 @@ const DatePicker = (props: any) => {
     };
 
     return (
-        <CalenderSection>
+        <CalenderSection ref={anchorRef}>
             <Button
                 className=""
                 aria-controls="simple-menu"

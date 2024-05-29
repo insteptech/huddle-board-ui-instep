@@ -606,6 +606,23 @@ export const ButtonDelete = styled(Button)(({ div }: any) => ({
 
 }));
 
+
+export const ButtonConfirm = styled(Button)(({ div }: any) => ({
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '24px',
+  border: '1px solid #2abdf0',
+  padding: '10px 18px',
+  borderRadius: '8px',
+  background: '#2abdf0',
+  color: '#fff !important',
+  width: '50%',
+  "&:hover": {
+    background: '#2abdf0',
+  },
+
+}));
+
 export const TextFieldInput = styled('input')(({ div }: any) => ({
   fontSize: '16px',
   fontWeight: '400',

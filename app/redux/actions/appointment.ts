@@ -80,6 +80,6 @@ export const getAppointmentPdf = createAsyncThunk('getAppointmentPdf', async () 
   return await axiosWrapper({ method: "get", url: 'download-appointments/?file_type=pdf', responseType: 'blob' })
 });
 
-export const auditLog = createAsyncThunk('auditLog', async (payload: IAuditLog) => {
+export const auditLog = createAsyncThunk('auditLog', async (payload: IAuditLog[]) => {
   return await axiosWrapper({ method: "post", url: 'audit-log/', payload })
 });
