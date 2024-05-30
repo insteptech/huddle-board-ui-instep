@@ -43,7 +43,7 @@ import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
 import { formatDates, urlParams } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
-import { accessToken } from '@/app/utils/auth';
+import { accessToken, notAuthenticated } from '@/app/utils/auth';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -120,6 +120,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   };
 
   useEffect(() => {
+    if(!notAuthenticated()) {
+      sessionStorage.setItem('slugStatus', 'error');
+      window.location.href = '/pageNotFound';
+    }
+    
     dispatch(getAppointmentsList(filters))
       .then((response: any) => {
         setIsPatientNotFound(false);

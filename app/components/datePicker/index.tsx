@@ -18,8 +18,8 @@ const DatePicker = (props: any) => {
     const huddleBoardConfig:any = localStorage.getItem('huddleBoardConfig');
     const config = JSON.parse(huddleBoardConfig);
  
-    const minDateFromConfig = config.past_calendar_days_count;
-    const maxDateFromConfig = config.future_calender_days_count;
+    const minDateFromConfig = config?.past_calendar_days_count;
+    const maxDateFromConfig = config?.future_calender_days_count;
     
     const handleDateChange = (newDate: Date) => {
 

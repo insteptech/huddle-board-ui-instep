@@ -1,4 +1,7 @@
+'use client'
+
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation'
 
 const Header = dynamic(() => import('./header').then((mod) => mod), {
   ssr: false,
@@ -13,10 +16,12 @@ export interface RootLayoutProps {
 
 const RootLayout = (props: RootLayoutProps) => {
   const { children } = props;
+  const pathname = usePathname();
+  
   return (
     <>
-      <Header />
-      <main>{children}</main>
+      {pathname.includes('appointment') && <Header />}
+        <main>{children}</main>
       
     </>
   );

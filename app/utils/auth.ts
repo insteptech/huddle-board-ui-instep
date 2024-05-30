@@ -107,3 +107,16 @@ export const getAndSetAccessToken = async (slug: any) => {
 };
 
 export const accessToken = () => { return localStorage.getItem(sessionKeys.accessToken); }
+
+export const notAuthenticated = () => {
+  const { accessToken, slugKey, refreshToken } = sessionKeys;
+
+  const refresh = localStorage.getItem(refreshToken);
+  const access = localStorage.getItem(accessToken);
+  const userSlug = localStorage.getItem(slugKey);
+  const huddleBoardConfig = localStorage.getItem('huddleBoardConfig');
+
+  if (refresh && access && userSlug && huddleBoardConfig) {
+    return true
+  } else false;
+};
