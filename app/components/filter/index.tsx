@@ -106,7 +106,8 @@ function FilterButton(props:any) {
   };
 
   const applyFilters = () => {
-    const filters = {
+    const filtersData = {
+      ...filters,
       visit_types: selectedVisitType,
       providers_uuids: selectedProviders,
       screening: selectedScreening,
@@ -115,9 +116,9 @@ function FilterButton(props:any) {
     };
     setMainLoader(true);
     setIsFilterApplied(true);
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filtersData);
     setAnchorEl(null);
   }
 

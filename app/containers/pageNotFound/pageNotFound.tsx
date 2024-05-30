@@ -4,7 +4,6 @@ import FourBg from "../../images/Fourbg.svg"
 import FourLogo from "../../images/Fourlogo.svg"
 import IconLock from "../../images/IconLock.svg"
 import { Button } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
 
 import {
   BoxSec,
@@ -21,6 +20,11 @@ import {
 const PageNotFound = () => {
 
   const slugStatus = sessionStorage.getItem('slugStatus');
+
+  const closeCurrentTab = () => {
+    window.close();
+  }
+
   return (
 
     <BoxSec sx={{ backgroundImage: `url(${FourBg.src})`, }} className='page-not-found'>
@@ -32,7 +36,7 @@ const PageNotFound = () => {
               <img src={IconLock.src} />
               <AccessBoxHeading>You don’t have access to this app.</AccessBoxHeading>
               <AccessBoxContent>Please contact the owner to request access.</AccessBoxContent>
-              <AccessActions><Button variant="contained">Close</Button></AccessActions>
+              <AccessActions><Button variant="contained" id="close" onClick={()=> closeCurrentTab()}>Close</Button></AccessActions>
             </AccessBox>
           </BoxContent>
         )

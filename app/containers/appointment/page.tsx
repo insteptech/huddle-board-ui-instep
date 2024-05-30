@@ -41,11 +41,9 @@ import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter 
 import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
-import { formatDates } from '@/app/utils/helper';
+import { formatDates, urlParams } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
 import { accessToken } from '@/app/utils/auth';
-
-const url = `${API_URL}download-appointments/?file_type=pdf`;
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -123,10 +121,17 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   useEffect(() => {
     dispatch(getAppointmentsList(filters))
-      .then(() => {
+      .then((response: any) => {
         setIsPatientNotFound(false);
         dispatch(updateFilter({ page: Number(page) + 1 }));
         setMainLoader(false);
+
+        if (response?.payload?.results.length === 0) {
+          setIsClearFilter(true);
+  
+        } else {
+          setIsClearFilter(false);
+        }
       })
       .catch((error) => {
         setMainLoader(false);
@@ -243,23 +248,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
 
   const handlePdf = () => {
-
-    const filters = {
-      page: 1,
-      page_size: 10,
-      visit_types: selectedVisitType,
-      providers_uuids: selectedProviders,
-      screening: selectedScreening,
+    const appliedFilters = {
+      ...filters,
+      file_type : 'pdf'
     };
+    const url = `${API_URL}download-appointments/?${urlParams(appliedFilters)}`;
 
-    fetch(url, {
-      method: 'POST', // Change method to POST
-      headers: {
-        "Authorization": `JWT ${accessToken()}`,
-        "Content-Type": "application/json" // Set Content-Type header
-      },
-      body: JSON.stringify(filters) // Convert filters to JSON string and pass as body
-    })
+    fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken()}` } })
       .then(res => res.blob())
       .then(res => {
         const aElement = document.createElement('a');
@@ -272,16 +267,14 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       });
   };
 
-
-
-
-
   const getAppointmentFiltersData = () => {
     dispatch(getFiltersData());
     dispatch(getSelectedFilterList());
   }
 
   const resetFilters = (isFilterPopOpen: boolean = false) => {
+    const formattedDates = formatDates(new Date(), new Date());
+
     const filters = {
       visit_types: [],
       providers_uuids: [],
@@ -289,8 +282,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       page: 1,
       page_size: 10,
       patient_name: '',
-      appointment_start_date: '',
-      appointment_end_date: '',
+      appointment_start_date: formattedDates.start,
+      appointment_end_date: formattedDates.end,
       sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
     };
     setMainLoader(true);
@@ -317,20 +310,22 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setPatientNameSearch(e.target.value);
 
     if (!e?.target?.value) {
-      const filters = {
+      const filtersData = {
+        ...filters,
         page: 1,
         page_size: 10,
         patient_name: '',
         sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
       };
       setIsFilterApplied(false);
-      dispatch(updateFilter(filters));
+      dispatch(updateFilter(filtersData));
       dispatch(emptyAppointmentList());
-      loadMoreAppointment(filters);
+      loadMoreAppointment(filtersData);
     }
 
     if (e?.target?.value?.length > 3) {
-      const filters = {
+      const filtersData = {
+        ...filters,
         visit_types: [],
         providers_uuids: [],
         screening: [],
@@ -339,9 +334,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         patient_name: e.target.value
       };
       setIsFilterApplied(true);
-      dispatch(updateFilter(filters));
+      dispatch(updateFilter(filtersData));
       dispatch(emptyAppointmentList());
-      loadMoreAppointment(filters);
+      loadMoreAppointment(filtersData);
     }
 
 
@@ -353,7 +348,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       const { payload } = response || {};
       if (!payload) return;
 
-      const filters = {
+      const filtersData = {
+        ...filters,
         visit_types: payload.visit_type,
         providers_uuids: payload.providers,
         screening: payload.screening,
@@ -365,9 +361,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setSelectedVisitType(payload.visit_type);
       setSelectedScreening(payload.screening);
       setSelectedProviders(payload.providers);
-      dispatch(updateFilter(filters));
+      dispatch(updateFilter(filtersData));
       dispatch(emptyAppointmentList());
-      loadMoreAppointment(filters);
+      loadMoreAppointment(filtersData);
     })
   }
 
@@ -386,34 +382,30 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const handleAppointmentTimeSort = () => {
     setIsAppointmentTimeSortAscending(!isAppointmentTimeSortAscending);
-    const filters = {
+    const filtersData = {
+      ...filters,
       sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp',
       page: 1,
       page_size: 10,
-      visit_types: selectedVisitType,
-      providers_uuids: selectedProviders,
-      screening: selectedScreening,
     };
 
 
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filtersData);
   }
 
   const handlePatientNameSort = () => {
     setIsPatientNameSortAscending(!isPatientNameSortAscending);
-    const filters = {
+    const filtersData = {
+      ...filters,
       sort_by: isPatientNameSortAscending ? 'patient__patient_first_name' : '-patient__patient_first_name',
       page: 1,
       page_size: 10,
-      visit_types: selectedVisitType,
-      providers_uuids: selectedProviders,
-      screening: selectedScreening,
     };
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filtersData);
   }
 
   const calenderArrowClick = (direction: string) => {
