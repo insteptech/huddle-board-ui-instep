@@ -239,8 +239,27 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   //     });
   // }
 
+
+
+
   const handlePdf = () => {
-    fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken()}` } })
+
+    const filters = {
+      page: 1,
+      page_size: 10,
+      visit_types: selectedVisitType,
+      providers_uuids: selectedProviders,
+      screening: selectedScreening,
+    };
+
+    fetch(url, {
+      method: 'POST', // Change method to POST
+      headers: {
+        "Authorization": `JWT ${accessToken()}`,
+        "Content-Type": "application/json" // Set Content-Type header
+      },
+      body: JSON.stringify(filters) // Convert filters to JSON string and pass as body
+    })
       .then(res => res.blob())
       .then(res => {
         const aElement = document.createElement('a');
@@ -252,6 +271,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         URL.revokeObjectURL(href);
       });
   };
+
+
+
+
 
   const getAppointmentFiltersData = () => {
     dispatch(getFiltersData());
@@ -395,6 +418,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const calenderArrowClick = (direction: string) => {
 
+    const appointmentsListString: any = localStorage.getItem('huddleBoardConfig');
+    const appointmentsList = JSON.parse(appointmentsListString);
+    const mindateapi = appointmentsList.past_calendar_days_count;
+    const maxdateapi = appointmentsList.future_calender_days_count;
+
     const temp = direction;
     let newDate = new Date(date);
 
@@ -414,10 +442,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);
     const newDate1Only = newDate1.toISOString().split('T')[0];
 
-    const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
+    const minDate = new Date(currentDate.getTime() - mindateapi * 24 * 60 * 60 * 1000);
     const minDateOnly = minDate.toISOString().split('T')[0];
 
-    const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+    const maxDate = new Date(currentDate.getTime() + maxdateapi * 24 * 60 * 60 * 1000);
     const maxDateOnly = maxDate.toISOString().split('T')[0];
 
     if (newDate1Only == minDateOnly) {
