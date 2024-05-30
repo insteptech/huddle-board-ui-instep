@@ -8,14 +8,42 @@ const Login = () => {
 
   useEffect(() => {
     let slug = searchParam.get("slug");
-    if(slug){
-      getAndSetAccessToken(slug).then((response:any) => {        
-        window.location.href= '/appointment';
-      })
-    }else{
-      window.location.href= '/pageNotFound';
+    try {
+      if (slug) {
+        getAndSetAccessToken(slug)
+          .then(() => {
+            window.location.href = '/appointment';
+          })
+          .catch(() => {
+            handleSessionStorage('notFound');
+          });
+      } else {
+        handleSessionStorage('missing');
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      handleSessionStorage('error');
+    }
+  
+    function handleSessionStorage(status:any) {
+      let sessionStorageStatus;
+      switch (status) {
+        case 'missing':
+          sessionStorageStatus = 'unauthorized';
+          break;
+        case 'error':
+          sessionStorageStatus = 'error';
+          break;
+        case 'notFound':
+        default:
+          sessionStorageStatus = 'notFound';
+          break;
+      }
+      sessionStorage.setItem('slugStatus', sessionStorageStatus);
+      window.location.href = '/pageNotFound';
     }
   }, [searchParam]);
+  
 
   return (
       <div className='main_sec'></div>

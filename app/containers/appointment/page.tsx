@@ -168,7 +168,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       case 'clinician_disagrees':
         return { clinician_disagrees: false, clinician_agrees: false, test_ordered: false };
       case 'test_ordered':
-        return { test_ordered: false, clinician_disagrees: false, clinician_agrees: false };
+        return { test_ordered: false };
       default:
         return {};
     }

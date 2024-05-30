@@ -46,9 +46,9 @@ export const TableMainContainer = styled(TableContainer)(({ theme }: any) => ({
   height: '615px',
   margin: '10px 0 0 0 !important',
 
-  '@media(max-width: 1600px)' : {
+  '@media(max-width: 1600px)': {
     height: '515px',
-   }
+  }
 }));
 
 export const TableOtherContainer = styled(TableContainer)(({ theme }: any) => ({
@@ -163,10 +163,6 @@ export const Text = styled(Typography)(({ div }: any) => ({
   lineHeight: '16px',
   textAlign: 'left',
   color: '#242629',
-  whiteSpace: 'nowrap',
-  width: '200px',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
   cursor: 'pointer'
 }));
 
@@ -192,8 +188,8 @@ export const StyledMuiButton = styled(Button) <StyledButtonProps>`
     display: inline-block;
     border-radius: 3px;
     text-align: center;
+    margin: 5px 0;
     margin-right: 10px;
-    margin-bottom: 10px;
     &:hover{
       background-color: ${(props) =>
     props.buttonstate == 'active' ? '#0D426A' :
@@ -208,6 +204,12 @@ export const StyledMuiButton = styled(Button) <StyledButtonProps>`
       props.buttonstate == 'enable' ? '1px solid #5C6469' :
         props.buttonstate == 'disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
     }
+
+    &:last-child{
+      margin-right: 0px;
+    }
+
+
 `;
 
 export const BorderLinearProgress = styled(LinearProgress)(({ theme, value }: any) => ({
@@ -665,7 +667,7 @@ export const DataRangeBox = styled('div')(({ div }: any) => ({
   },
   '.rdrDefinedRangesWrapper button': {
     borderBottom: 'none',
-    color:'#2D3748',
+    color: '#2D3748',
     'span': {
       fontSize: '14px',
       fontWeight: '400',
@@ -696,11 +698,11 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
   '.rdrMonth button span': {
     borderRadius: '50%!important',
     margin: 'auto',
-    width:'30px',
-    height:'30px',
+    width: '30px',
+    height: '30px',
     fontSize: '14px',
-  fontWeight: '400',
-  lineHeight: '21px',
+    fontWeight: '400',
+    lineHeight: '21px',
   },
 }));
 
@@ -717,37 +719,105 @@ export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({
 export const BoxSec = styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
-  background:'#fff',
+  background: '#fff',
   justifyContent: 'center',
   position: 'absolute',
   left: '0',
   right: '0',
   bottom: '0',
-  top: '0',
-  margin: '10rem'
+  top: '-150px',
+  backgroundColor: '#F3F7FC',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: '100%',
+
 }));
 
-export const BoxContent = styled('div')(({ div }: any) => ({
-  fontSize: '50px',
-  fontWeight: '400',
-  lineHeight: '36px',
-  color: '#101828',
+export const BoxtopContent = styled('div')(({ div }: any) => ({
+  fontSize: '60px',
+  fontWeight: '600',
+  lineHeight: '60px',
+  color: '#0D426A',
   textAlign: 'center',
 }));
 
+
+export const BoxContent = styled('div')(({ div }: any) => ({
+
+  textAlign: 'center',
+}));
+
+export const BoxContimg = styled('div')(({ div }: any) => ({
+
+  marginBottom: '10rem',
+}));
+
+
+
+
+
+
 export const BoldContent = styled('div')(({ div }: any) => ({
-  fontSize: '100px',
-  fontWeight: '800',
-  lineHeight: '80px',
-  color: '#101828',
-  marginBottom:'30px',
+  fontSize: '120px',
+  fontWeight: '700',
+  lineHeight: '12px',
+  color: '#0D426A',
+  marginBottom: '4rem',
 
 }));
 
-export const BoxMid = styled('div')(({ div }: any) => ({  
+export const BoxMid = styled('div')(({ div }: any) => ({
   fontSize: '100px',
   fontWeight: '800',
   lineHeight: '80px',
   color: '#101828',
-  marginBottom:'30px',
+  marginBottom: '30px',
+}));
+
+
+
+export const AccessBox = styled('div')(({ div }: any) => ({
+  boxShadow: '0px 4px 12px 0px rgba(0, 0, 0, 0.05)',
+  padding: '40px 50px',
+  backgroundColor: '#fff',
+  borderRadius: '5px',
+  width: '500px',
+  margin: 'auto',
+}));
+
+
+export const AccessBoxheading = styled('h2')(({ div }: any) => ({
+
+  fontSize: '24px',
+  fontWeight: '600',
+  lineHeight: '24px ',
+  color: '#0D426A',
+  marginTop: '15px',
+  marginBottom: '10px',
+
+}));
+
+
+export const AccessBoxcontent = styled(Typography)(({ div }: any) => ({
+
+  fontSize: '18px',
+  fontWeight: '400',
+  lineHeight: '18px ',
+  color: '#5C6469',
+  marginTop: '5px',
+
+}));
+
+
+export const AccessActions = styled('div')(({ div }: any) => ({
+
+  margin: '30px 0 0 0',
+
+  'Button': {
+    backgroundColor: "#0D426A",
+    padding: '10px 20px',
+    color: "#FFFFFF",
+    textTransform: "capitalize",
+    borderRadius: '3px',
+  }
 }));
