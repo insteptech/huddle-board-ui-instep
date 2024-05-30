@@ -12,9 +12,9 @@ import { AppState } from '@/app/redux/store';
 
 const Header = ( ) => { 
   const theme: any = useTheme();
-  const huddleBoardConfig = localStorage.getItem('huddleBoardConfig');
-  const appointmentsList = useSelector((state: AppState) => state.auth.huddleBoardConfig) || huddleBoardConfig;
-  
+  const huddleBoardConfig:any = localStorage.getItem('huddleBoardConfig');
+  const config = JSON.parse(huddleBoardConfig);
+    
   return (
     <Box sx={{ display: 'flex'    }}>
       <CssBaseline />
@@ -22,7 +22,7 @@ const Header = ( ) => {
       <LogoIcon /> 
         <Typography_Grid>
         <StaticTypo variant="caption" display="block" gutterBottom>
-          {appointmentsList?.user_full_name}
+          {config?.user_full_name}
         </StaticTypo>
         <LinkText sx={{textDecoration:'none', borderLeft:'2px solid #C8CED2', paddingLeft: '10px',}} > Logout</LinkText>
         </Typography_Grid>

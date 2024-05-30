@@ -1,6 +1,7 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail } from '../actions/appointment';
 import { sortArraysInObject, sortObjectsByName } from '@/app/utils/appointment';
+import { formatDates } from '@/app/utils/helper';
 
 export type AppointmentsState = {
     appointmentsData: {
@@ -74,6 +75,7 @@ export type AppointmentDetail = {
   description: String,
   screening_uuid: String
 }
+const formattedDates = formatDates(new Date(), new Date());
 
 const initialState: AppointmentsState = {
     appointmentsData: {},
@@ -85,7 +87,9 @@ const initialState: AppointmentsState = {
     filtersData: {
       page_size: 10,
       page: 1,
-      sort_by: 'appointment_timestamp'
+      sort_by: 'appointment_timestamp',
+      appointment_start_date: formattedDates.start,
+      appointment_end_date: formattedDates.end
     },
     selectedFilterList: [],
     selectedFilterDetail: null,

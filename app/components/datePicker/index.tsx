@@ -15,15 +15,11 @@ const DatePicker = (props: any) => {
     const [maxDate, setMaxDate] = useState(new Date());
     const anchorRef = useRef<any>(null);
 
-    const appointmentsListString:any = localStorage.getItem('huddleBoardConfig');
-    const appointmentsList = JSON.parse(appointmentsListString);
-    console.log('appointmentsList:', appointmentsList);
-    
-    console.log('appointmentsList:----',appointmentsList);
-
-    
-    const mindateapi = appointmentsList.past_calendar_days_count;
-    const maxdateapi = appointmentsList.future_calender_days_count;
+    const huddleBoardConfig:any = localStorage.getItem('huddleBoardConfig');
+    const config = JSON.parse(huddleBoardConfig);
+ 
+    const minDateFromConfig = config.past_calendar_days_count;
+    const maxDateFromConfig = config.future_calender_days_count;
     
     const handleDateChange = (newDate: Date) => {
 
@@ -35,10 +31,10 @@ const DatePicker = (props: any) => {
         const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
         const newDate1Only = newDate1.toISOString().split('T')[0];
 
-        const minDate = new Date(currentDate.getTime() - mindateapi);
+        const minDate = new Date(currentDate.getTime() - minDateFromConfig);
         const minDateOnly = minDate.toISOString().split('T')[0];
 
-        const maxDate = new Date(currentDate.getTime() + maxdateapi * 24 * 60 * 60 * 1000);
+        const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
         const maxDateOnly = maxDate.toISOString().split('T')[0];
 
         if (newDate1Only == minDateOnly) {
@@ -58,9 +54,8 @@ const DatePicker = (props: any) => {
 
     useEffect(() => {
         const currentDate = new Date();
-        const minDate = new Date(currentDate.getTime() - mindateapi * 24 * 60 * 60 * 1000);
-        const maxDate = new Date(currentDate.getTime() + maxdateapi * 24 * 60 * 60 * 1000);
-        console.log(currentDate,'minDate:---', minDate);
+        const minDate = new Date(currentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
+        const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
         
         setMinDate(minDate);
         setMaxDate(maxDate);
