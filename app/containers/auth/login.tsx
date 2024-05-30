@@ -1,12 +1,14 @@
 'use client'
 import { getAndSetAccessToken } from '@/app/utils/auth';
-import {  useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 const Login = () => {
-  const searchParam   = useSearchParams();
+  const searchParam = useSearchParams();
 
   useEffect(() => {
+    sessionStorage.clear();
+
     let slug = searchParam.get("slug");
     try {
       if (slug) {
@@ -24,8 +26,8 @@ const Login = () => {
       console.error("Error:", error);
       handleSessionStorage('error');
     }
-  
-    function handleSessionStorage(status:any) {
+
+    function handleSessionStorage(status: any) {
       let sessionStorageStatus;
       switch (status) {
         case 'missing':
@@ -43,10 +45,11 @@ const Login = () => {
       window.location.href = '/pageNotFound';
     }
   }, [searchParam]);
-  
+
+
 
   return (
-      <div className='main_sec'></div>
+    <div className='main_sec'></div>
   );
 };
 

@@ -18,14 +18,14 @@ import {
 
 const PageNotFound = () => {
 
-  const slugStatus = sessionStorage.getItem('sessionStorageStatus');
+  const slugStatus = sessionStorage.getItem('slugStatus');
   console.log(slugStatus)
   return (
 
     <BoxSec sx={{ backgroundImage: `url(${FourBg.src})`, }} className='page-not-found'>
 
       {
-        slugStatus == "notFound"  ? (
+        slugStatus == "notFound" || slugStatus == "unauthorized" ? (
           <BoxContent>
             <BoxContimg> <img src={FourLogo.src} /> </BoxContimg>
             <AccessBox>
