@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signInCall } from '../actions/auth';
+import { signInCall, getHuddleBoardConfig } from '../actions/auth';
 
 export type AuthState = {
   loggedInUser: { token: ''; user: null; permissions: null };
+  huddleBoardConfig: { user_full_name: string; past_calendar_days_count: number | null; future_calender_days_count: number | null };
 };
 
 const initialState: AuthState = {
   loggedInUser: { token: '', user: null, permissions: null },
+  huddleBoardConfig: { user_full_name: '', past_calendar_days_count: null, future_calender_days_count: null},
 };
 
 export const auth = createSlice({
@@ -26,6 +28,10 @@ export const auth = createSlice({
     });
     builder.addCase(signInCall.fulfilled, (state, action) => {
       console.log(state, action, 'fulfilled');
+    });
+
+    builder.addCase(getHuddleBoardConfig.fulfilled, (state, { payload }) => {
+      state.huddleBoardConfig = payload;
     });
   },
 });

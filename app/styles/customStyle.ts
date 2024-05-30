@@ -733,7 +733,7 @@ export const BoxSec = styled('div')(({ div }: any) => ({
 
 }));
 
-export const BoxtopContent = styled('div')(({ div }: any) => ({
+export const BoxTopContent = styled('div')(({ div }: any) => ({
   fontSize: '60px',
   fontWeight: '600',
   lineHeight: '60px',
@@ -747,7 +747,7 @@ export const BoxContent = styled('div')(({ div }: any) => ({
   textAlign: 'center',
 }));
 
-export const BoxContimg = styled('div')(({ div }: any) => ({
+export const BoxImg = styled('div')(({ div }: any) => ({
 
   marginBottom: '10rem',
 }));
@@ -786,7 +786,7 @@ export const AccessBox = styled('div')(({ div }: any) => ({
 }));
 
 
-export const AccessBoxheading = styled('h2')(({ div }: any) => ({
+export const AccessBoxHeading = styled('h2')(({ div }: any) => ({
 
   fontSize: '24px',
   fontWeight: '600',
@@ -798,7 +798,7 @@ export const AccessBoxheading = styled('h2')(({ div }: any) => ({
 }));
 
 
-export const AccessBoxcontent = styled(Typography)(({ div }: any) => ({
+export const AccessBoxContent = styled(Typography)(({ div }: any) => ({
 
   fontSize: '18px',
   fontWeight: '400',

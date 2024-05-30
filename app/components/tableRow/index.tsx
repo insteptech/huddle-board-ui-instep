@@ -78,8 +78,6 @@ const Row = (props: any) => {
         isBold ? <FontBold>{content}</FontBold> : <StyledText>{content}</StyledText>
     );
 
-    console.log(appointment, "dgdsgdsghdsgdfghdf")
-
     return (
         <>
             <StyledTableRow onClick={() => setRow(appointment.uuid, appointment.selected_gap_count)} sx={{ '& > *': { borderBottom: 'unset', backgroundColor: (open && selectedAppointmentUuid === appointment.uuid) ? '#D2E6FF' : '#fff' } }}>

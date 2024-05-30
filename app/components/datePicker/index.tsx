@@ -5,17 +5,20 @@ import { getCurrentDateFormatted } from '@/app/utils/helper';
 import { Calendar } from '@iroomit/react-date-range';
 import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
 import calenderIcon from "../../images/calender.svg"
+import { useSelector } from 'react-redux';
+import { AppState } from '@/app/redux/store';
 
 const DatePicker = (props: any) => {
-
     const { dateRangeHandleChange, date, setArrowDisabledRight, setDate, setArrowDisabledLeft } = props;
     const [anchorEl, setAnchorEl] = useState(false);
     const [minDate, setMinDate] = useState(new Date());
     const [maxDate, setMaxDate] = useState(new Date());
     const anchorRef = useRef<any>(null);
 
-
-
+    const appointmentsList = localStorage.getItem('huddleBoardConfig');
+    // const appointmentsList = useSelector((state: AppState) => state.auth.huddleBoardConfig) || huddleBoardConfig;
+    console.log('appointmentsList:----',appointmentsList);
+    
     const handleDateChange = (newDate: Date) => {
         const currentDate = new Date()
 
@@ -52,6 +55,8 @@ const DatePicker = (props: any) => {
         const currentDate = new Date();
         const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
         const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+        console.log(currentDate,'minDate:---', minDate);
+        
         setMinDate(minDate);
         setMaxDate(maxDate);
 

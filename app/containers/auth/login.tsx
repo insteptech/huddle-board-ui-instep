@@ -1,10 +1,15 @@
 'use client'
+import { getHuddleBoardConfig } from '@/app/redux/actions/auth';
+import { AppDispatch } from '@/app/redux/store';
 import { getAndSetAccessToken } from '@/app/utils/auth';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const searchParam = useSearchParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter()
 
   useEffect(() => {
     sessionStorage.clear();
@@ -14,7 +19,10 @@ const Login = () => {
       if (slug) {
         getAndSetAccessToken(slug)
           .then(() => {
-            window.location.href = '/appointment';
+            dispatch(getHuddleBoardConfig()).then((res) => {
+              localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
+              router.push('/appointment')
+            })
           })
           .catch(() => {
             handleSessionStorage('notFound');
@@ -23,7 +31,6 @@ const Login = () => {
         handleSessionStorage('missing');
       }
     } catch (error) {
-      console.error("Error:", error);
       handleSessionStorage('error');
     }
 
@@ -45,8 +52,6 @@ const Login = () => {
       window.location.href = '/pageNotFound';
     }
   }, [searchParam]);
-
-
 
   return (
     <div className='main_sec'></div>

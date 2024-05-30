@@ -9,45 +9,42 @@ import { useSearchParams } from 'next/navigation';
 import {
   BoxSec,
   BoxContent,
-  BoldContent, BoxtopContent, BoxContimg,
+  BoldContent, 
+  BoxTopContent, 
+  BoxImg,
   AccessBox,
-  AccessBoxheading,
-  AccessBoxcontent,
+  AccessBoxHeading,
+  AccessBoxContent,
   AccessActions
 } from '../../styles/customStyle';
 
 const PageNotFound = () => {
 
   const slugStatus = sessionStorage.getItem('slugStatus');
-  console.log(slugStatus)
   return (
 
     <BoxSec sx={{ backgroundImage: `url(${FourBg.src})`, }} className='page-not-found'>
-
       {
         slugStatus == "notFound" || slugStatus == "unauthorized" ? (
           <BoxContent>
-            <BoxContimg> <img src={FourLogo.src} /> </BoxContimg>
+            <BoxImg> <img src={FourLogo.src} /> </BoxImg>
             <AccessBox>
               <img src={IconLock.src} />
-              <AccessBoxheading>You don’t have access to this app.</AccessBoxheading>
-              <AccessBoxcontent>Please contact the owner to request access.</AccessBoxcontent>
+              <AccessBoxHeading>You don’t have access to this app.</AccessBoxHeading>
+              <AccessBoxContent>Please contact the owner to request access.</AccessBoxContent>
               <AccessActions><Button variant="contained">Close</Button></AccessActions>
             </AccessBox>
           </BoxContent>
         )
-
           :
-
-          (<BoxContent>
-            <BoxContimg> <img src={FourLogo.src} /> </BoxContimg>
+          (
+          <BoxContent>
+            <BoxImg> <img src={FourLogo.src} /> </BoxImg>
             <BoldContent>404</BoldContent>
-            <BoxtopContent>Not Found</BoxtopContent>
-          </BoxContent>)
-
-      }
-
-
+            <BoxTopContent>Not Found</BoxTopContent>
+          </BoxContent>
+          )
+        }
     </BoxSec>
   );
 };
