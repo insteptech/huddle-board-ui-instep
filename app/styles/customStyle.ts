@@ -1,4 +1,4 @@
-import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox } from "@mui/material";
+import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox,List,ListItem } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
@@ -733,6 +733,25 @@ export const BoxSec = styled('div')(({ div }: any) => ({
 
 }));
 
+export const BoxSecin = styled('div')(({ div }: any) => ({
+  display: 'flex',
+  alignItems: 'center',
+  background: '#fff',
+  justifyContent: 'center',
+  position: 'absolute',
+  left: '0',
+  right: '0',
+  bottom: '0',
+  top: '-50px',
+  backgroundColor: '#F3F7FC',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: '100%',
+
+}));
+
+
+
 export const BoxTopContent = styled('div')(({ div }: any) => ({
   fontSize: '60px',
   fontWeight: '600',
@@ -757,6 +776,10 @@ export const BoxImg = styled('div')(({ div }: any) => ({
 
 
 
+
+
+
+
 export const BoldContent = styled('div')(({ div }: any) => ({
   fontSize: '120px',
   fontWeight: '700',
@@ -775,49 +798,112 @@ export const BoxMid = styled('div')(({ div }: any) => ({
 }));
 
 
-
-export const AccessBox = styled('div')(({ div }: any) => ({
-  boxShadow: '0px 4px 12px 0px rgba(0, 0, 0, 0.05)',
-  padding: '40px 50px',
-  backgroundColor: '#fff',
-  borderRadius: '5px',
-  width: '500px',
-  margin: 'auto',
-}));
-
-
-export const AccessBoxHeading = styled('h2')(({ div }: any) => ({
-
+export const ContentonTop = styled('h4')(({ div }: any) => ({
   fontSize: '24px',
   fontWeight: '600',
-  lineHeight: '24px ',
+  lineHeight: '26.4px',
   color: '#0D426A',
-  marginTop: '15px',
-  marginBottom: '10px',
-
+  marginBottom: '30px',
 }));
 
-
-export const AccessBoxContent = styled(Typography)(({ div }: any) => ({
-
+export const ContentBottom = styled(Typography)(({ div }: any) => ({
   fontSize: '18px',
   fontWeight: '400',
-  lineHeight: '18px ',
-  color: '#5C6469',
-  marginTop: '5px',
+  lineHeight: '19.8px',
+  color: '#000',
+  marginBottom: '20px',
+}));
 
+export const ContentBottomBold = styled('h4')(({ div }: any) => ({
+  fontSize: '20px',
+  fontWeight: '600',
+  lineHeight: '20px',
+  color: '#0D426A',
+  marginBottom: '2rem',
 }));
 
 
-export const AccessActions = styled('div')(({ div }: any) => ({
+export const ListloginItem = styled(ListItem)(({ div }: any) => ({
+  fontSize: '18px',
+  fontWeight: '400',
+  lineHeight: '21.6px',
+  color: '#000',
+  marginBottom: '20px',
+  display: 'list-item',
+  padding:'0px',
+  paddingLeft:'5px',
+}));
 
-  margin: '30px 0 0 0',
+export const ListLogin = styled(List)(({ div }: any) => ({
+  listStyleType : 'disc',
+  padding:'0',
+  marginBottom: '0',
+  marginLeft:'3rem',
+}));
 
-  'Button': {
-    backgroundColor: "#0D426A",
-    padding: '10px 20px',
-    color: "#FFFFFF",
-    textTransform: "capitalize",
-    borderRadius: '3px',
+
+
+export const MidcontentSec = styled('div')(({ div }: any) => ({
+  
+  display: 'flex',
+  margin: '2rem 0',
+
+}));
+
+export const MidcontentLeft = styled('div')(({ div }: any) => ({
+  
+  width: '40%',
+
+  'img': {
+    width: '100%',
   }
+
 }));
+
+export const MidcontentRight = styled('div')(({ div }: any) => ({
+  
+  width: '60%',
+
+}));
+
+export const Listlogin = styled('div')(({ div }: any) => ({
+  
+  width: 'auto',
+
+}));
+
+export const BoxContentLogin = styled('div')(({ div }: any) => ({
+  
+  width: '50%',
+  textAlign: 'center',
+
+}));
+export const ButtonLogin = styled('button')(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '18px',
+  textAlign: 'center',
+  padding: '10px 20px',
+  borderRadius: '3px',
+  cursor: 'pointer',
+  background: '#0D426A',
+  color:'#fff',
+  border:'none',
+}));
+
+
+export const BoxImglog = styled('div')(({ div }: any) => ({
+
+  marginBottom: '3rem',
+}));
+
+
+
+
+
+
+
+
+
+
+

@@ -2,8 +2,9 @@
 import React from 'react';
 import FourBg from "../../images/Fourbg.svg"
 import FourLogo from "../../images/Fourlogo.svg"
-import IconLock from "../../images/IconLock.svg"
+import toppng from "../../images/toppng.svg"
 import { Button } from '@mui/material';
+
 
 import {
   BoxSec,
@@ -11,10 +12,18 @@ import {
   BoldContent, 
   BoxTopContent, 
   BoxImg,
-  AccessBox,
-  AccessBoxHeading,
-  AccessBoxContent,
-  AccessActions
+  ListloginItem,
+  MidcontentSec,
+  MidcontentRight,
+  ContentonTop,
+  MidcontentLeft,
+  ListLogin,
+  ContentBottom,
+  ContentBottomBold,
+  BoxContentLogin,
+  ButtonLogin,
+  BoxSecin,
+  BoxImglog,
 } from '../../styles/customStyle';
 
 const PageNotFound = () => {
@@ -27,18 +36,46 @@ const PageNotFound = () => {
 
   return (
 
-    <BoxSec sx={{ backgroundImage: `url(${FourBg.src})`, }} className='page-not-found'>
+    <BoxSecin sx={{ backgroundImage: `url(${FourBg.src})`, }} className='page-not-found'>
       {
         slugStatus == "notFound" || slugStatus == "unauthorized" ? (
-          <BoxContent>
-            <BoxImg> <img src={FourLogo.src} /> </BoxImg>
-            <AccessBox>
-              <img src={IconLock.src} />
-              <AccessBoxHeading>You don’t have access to this app.</AccessBoxHeading>
-              <AccessBoxContent>Please contact the owner to request access.</AccessBoxContent>
-              <AccessActions><Button variant="contained" id="close" onClick={()=> closeCurrentTab()}>Close</Button></AccessActions>
-            </AccessBox>
-          </BoxContent>
+          <BoxContentLogin>
+            <BoxImglog> <img src={FourLogo.src} /> </BoxImglog>
+            <ContentonTop>Unfortunately, your current subscription doesn’t<br/> include our Huddle Board feature. </ContentonTop>
+
+            <MidcontentSec>
+
+            <MidcontentLeft>
+            <img src={toppng.src} /> 
+            </MidcontentLeft>
+
+            <MidcontentRight>
+
+            <ListLogin>
+            <ListloginItem >
+            The Huddle Board provides scribes, MAs, chart preppers and other clinical users with a comprehensive view of clinical action items for past, current, and future patient appointments.
+            </ListloginItem >
+
+            <ListloginItem >
+            Users can view appointment times, patient names, visit types, and screening tests or conditions for each patient – as well as any actions to be taken.
+            </ListloginItem >
+
+            <ListloginItem >
+            This feature optimizes clinical workflows and improves healthcare delivery by helping users prepare and document more efficiently .
+            </ListloginItem >
+            </ListLogin>
+            </MidcontentRight>
+              
+              
+            </MidcontentSec>
+
+           <ContentBottom>The huddle board is a powerful tool to help clinical and non-clinical staff more effectively<br/> manage their time and deliver exceptional patient care.</ContentBottom>
+
+           <ContentBottomBold>Contact DoctusTech support to add it to your subscription today.</ContentBottomBold>
+
+           <ButtonLogin>Show Interest in Huddle Board</ButtonLogin>
+            
+          </BoxContentLogin>
         )
           :
           (
@@ -49,7 +86,7 @@ const PageNotFound = () => {
           </BoxContent>
           )
         }
-    </BoxSec>
+    </BoxSecin>
   );
 };
 
