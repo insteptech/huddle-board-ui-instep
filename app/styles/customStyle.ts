@@ -3,6 +3,7 @@ import TableRow from "@mui/material/TableRow";
 import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
 
+
 interface StyledButtonProps {
   buttonstate: string;
   onClick: () => void;
@@ -653,7 +654,7 @@ export const DataRangeBox = styled('div')(({ div }: any) => ({
       fontSize: '14px',
       fontWeight: '400',
       lineHeight: '21px',
-      textWrap: 'nowrap',
+      textWrap: 'nowrap',  
       marginBottom: '0.6rem',
     }
   }
@@ -695,6 +696,8 @@ export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({
   height: '150px',
 }));
 
+
+
 // 404 - Page not found
 
 export const BoxSec = styled('div')(({ div }: any) => ({
@@ -706,24 +709,39 @@ export const BoxSec = styled('div')(({ div }: any) => ({
   left: '0',
   right: '0',
   bottom: '0',
-  top: '0',
-  margin: '10rem'
+  top: '-150px',
+  backgroundColor:'#F3F7FC',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: '100%',
+
 }));
 
-export const BoxContent = styled('div')(({ div }: any) => ({
-  fontSize: '50px',
-  fontWeight: '400',
-  lineHeight: '36px',
-  color: '#101828',
+export const BoxtopContent = styled('div')(({ div }: any) => ({
+  fontSize: '60px',
+  fontWeight: '600',
+  lineHeight: '60px',
+  color: '#0D426A',
   textAlign: 'center',
 }));
 
+
+export const BoxContent = styled('div')(({ div }: any) => ({
+  
+  textAlign: 'center',
+}));
+
+export const BoxContimg = styled('div')(({ div }: any) => ({
+  
+  marginBottom:'10rem',
+}));
+
 export const BoldContent = styled('div')(({ div }: any) => ({
-  fontSize: '100px',
-  fontWeight: '800',
-  lineHeight: '80px',
-  color: '#101828',
-  marginBottom:'30px',
+  fontSize: '120px',
+  fontWeight: '700',
+  lineHeight: '12px',
+  color: '#0D426A',
+  marginBottom:'4rem',
 
 }));
 
@@ -734,3 +752,258 @@ export const BoxMid = styled('div')(({ div }: any) => ({
   color: '#101828',
   marginBottom:'30px',
 }));
+
+
+
+export const AccessBox = styled('div')(({ div }: any) => ({  
+  boxShadow: '0px 4px 12px 0px rgba(0, 0, 0, 0.05)',
+  padding:'40px 50px',
+  backgroundColor:'#fff',
+  borderRadius:'5px',
+  width: '500px',
+  margin: 'auto',
+}));
+ 
+
+export const AccessBoxheading = styled('h2')(({ div }: any) => ({  
+ 
+  fontSize: '24px',
+  fontWeight: '600',
+  lineHeight: '24px ',
+  color: '#0D426A',
+  marginTop:'15px',
+  marginBottom:'10px',
+
+}));
+
+
+export const AccessBoxcontent = styled(Typography)(({ div }: any) => ({  
+
+  fontSize: '18px',
+  fontWeight: '400',
+  lineHeight: '18px ',
+  color: '#5C6469',
+  marginTop:'5px',
+
+}));
+
+
+export const AccessActions = styled('div')(({ div }: any) => ({  
+
+  margin:'30px 0 0 0',
+
+  'Button': {
+    backgroundColor:"#0D426A" ,
+    padding:'10px 20px',
+    color:"#FFFFFF" ,
+    textTransform:"capitalize",
+    borderRadius:'3px',
+  }
+}));
+
+
+
+
+
+// Login Screen -----------------
+
+export const MainLogin = styled('div')(({ div }: any) => ({  
+  
+  display: 'flex',
+  alignItems: 'center',
+  background:'#fff',
+
+}));
+
+export const MainLoginleft = styled('div')(({ div }: any) => ({  
+  width:'50%',
+  minHeight: '100vh',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  padding:'5rem',
+  backgroundSize: '100%',
+  display: 'flex',
+  alignItems: 'baseline',
+  flexDirection: 'column',
+  justifyContent: 'center',
+
+}));
+ 
+
+export const MainLoginright = styled('div')(({ div }: any) => ({  
+  width:'50%',
+  minHeight: '100vh',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  padding:'5rem',
+  backgroundColor:'#EEF9FD',
+  backgroundSize: '100%',
+  display: 'flex',
+  alignItems: 'center',
+}));
+
+
+
+
+
+
+export const HeadingLeft = styled('h2')(({ div }: any) => ({  
+
+  fontSize: '24px',
+  fontWeight: '600',
+  lineHeight: '29.05px ',
+  color: '#3A3541',
+  marginBottom:'5px',
+  marginTop:'30px',
+
+}));
+
+export const ParaLeft = styled(Typography)(({ div }: any) => ({  
+
+  fontSize: '16px',
+  fontWeight: '400',
+  lineHeight: '24px',
+  color: '#000',
+  marginBottom:'20px',
+
+}));
+
+
+export const LoginForm = styled('div')(({ div }: any) => ({  
+  boxShadow: '0px 12px 30px 0px #3A35410D',
+  padding:'30px',
+  backgroundColor:'#fff',
+  borderRadius:'4.5px',
+  width: '400px',
+  margin: 'auto',
+}));
+
+export const LoginTitle = styled('h3')(({ div }: any) => ({  
+
+  fontSize: '18px',
+  fontWeight: '700',
+  lineHeight: '26px ',
+  color: '#242629',
+  marginBottom:'5px',
+ 
+
+}));
+
+export const LoginLabel = styled(Typography)(({ div }: any) => ({  
+
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '21px ',
+  color: '#5C6469',
+  marginBottom:'25px',
+ 
+
+}));
+
+
+export const LoginId = styled('span')(({ div }: any) => ({  
+
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '18px ',
+  color: '#242629',
+  margin:'15px 0',
+  display:'block',
+  width:'100%',
+ 
+
+}));
+export const VcCode = styled('span')(({ div }: any) => ({  
+
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '21px ',
+  color: '#5C6469',
+  margin:'5px 0',
+  width:'100%',
+  display:'block',
+ 
+
+}));
+
+
+export const VerficationPolicy = styled('a')(({ div }: any) => ({  
+
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '21px ',
+  color: '#2ABDF0',
+ 
+ 
+
+}));
+
+export const Logincode = styled('p')(({ div }: any) => ({  
+
+  fontSize: '12px',
+  fontWeight: '400',
+  lineHeight: '18px ',
+  color: '#5C6469',
+  margin:'15px 0',
+ 
+ 
+
+}));
+
+
+
+
+
+
+
+export const LoginPolicy = styled(Typography)(({ div }: any) => ({  
+
+  fontSize: '12px',
+  fontWeight: '400',
+  lineHeight: '18px ',
+  color: '#84818A',
+  'a': {
+    color: '#2ABDF0',
+  }
+ 
+
+}));
+
+
+
+
+export const LoginContent = styled('div')(({ div }: any) => ({  
+
+  
+  marginBottom:'25px',
+
+  '.MuiFormControl-root': {
+   
+    width:"100%" ,
+  }
+}));
+
+
+
+
+export const LoginActions = styled('div')(({ div }: any) => ({  
+
+  marginBottom:'10px',
+
+  'Button': {
+    backgroundColor:"#0D426A" ,
+    padding:'10px 20px',
+    color:"#FFFFFF" ,
+    width:"100%" ,
+    textTransform:"capitalize",
+  }
+}));
+
+
+
+
+
+
+
+
+
