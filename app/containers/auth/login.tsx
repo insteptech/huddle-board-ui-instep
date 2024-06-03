@@ -25,32 +25,15 @@ const Login = () => {
             })
           })
           .catch(() => {
-            handleSessionStorage('notFound');
+            window.location.href = '/pageNotFound';
           });
       } else {
-        handleSessionStorage('missing');
+        window.location.href = '/unauthorized';
       }
     } catch (error) {
-      handleSessionStorage('error');
-    }
-
-    function handleSessionStorage(status: any) {
-      let sessionStorageStatus;
-      switch (status) {
-        case 'missing':
-          sessionStorageStatus = 'unauthorized';
-          break;
-        case 'error':
-          sessionStorageStatus = 'error';
-          break;
-        case 'notFound':
-        default:
-          sessionStorageStatus = 'notFound';
-          break;
-      }
-      sessionStorage.setItem('slugStatus', sessionStorageStatus);
       window.location.href = '/pageNotFound';
     }
+
   }, [searchParam]);
 
   return (

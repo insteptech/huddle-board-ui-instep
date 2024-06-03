@@ -84,6 +84,7 @@ export const getAndSetAccessToken = async (slug: any) => {
         return;
       }
     }).catch((err) => {
+      localStorage.removeItem(slugKey);
       window.location.href= '/pageNotFound';
     })
   
@@ -108,7 +109,7 @@ export const getAndSetAccessToken = async (slug: any) => {
 
 export const accessToken = () => { return localStorage.getItem(sessionKeys.accessToken); }
 
-export const notAuthenticated = () => {
+export const notAuthenticated:any = () => {
   const { accessToken, slugKey, refreshToken } = sessionKeys;
 
   const refresh = localStorage.getItem(refreshToken);

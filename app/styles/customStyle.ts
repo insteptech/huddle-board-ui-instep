@@ -733,7 +733,7 @@ export const BoxSec = styled('div')(({ div }: any) => ({
 
 }));
 
-export const BoxSecin = styled('div')(({ div }: any) => ({
+export const BoxSection = styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
   background: '#fff',
@@ -798,7 +798,7 @@ export const BoxMid = styled('div')(({ div }: any) => ({
 }));
 
 
-export const ContentonTop = styled('h4')(({ div }: any) => ({
+export const ContentOnTop = styled('h4')(({ div }: any) => ({
   fontSize: '24px',
   fontWeight: '600',
   lineHeight: '26.4px',
@@ -823,7 +823,7 @@ export const ContentBottomBold = styled('h4')(({ div }: any) => ({
 }));
 
 
-export const ListloginItem = styled(ListItem)(({ div }: any) => ({
+export const ListLoginItem = styled(ListItem)(({ div }: any) => ({
   fontSize: '18px',
   fontWeight: '400',
   lineHeight: '21.6px',
@@ -843,14 +843,14 @@ export const ListLogin = styled(List)(({ div }: any) => ({
 
 
 
-export const MidcontentSec = styled('div')(({ div }: any) => ({
+export const MidContentSection = styled('div')(({ div }: any) => ({
   
   display: 'flex',
   margin: '2rem 0',
 
 }));
 
-export const MidcontentLeft = styled('div')(({ div }: any) => ({
+export const MidContentLeft = styled('div')(({ div }: any) => ({
   
   width: '40%',
 
@@ -860,7 +860,7 @@ export const MidcontentLeft = styled('div')(({ div }: any) => ({
 
 }));
 
-export const MidcontentRight = styled('div')(({ div }: any) => ({
+export const MidContentRight = styled('div')(({ div }: any) => ({
   
   width: '60%',
 
@@ -892,7 +892,7 @@ export const ButtonLogin = styled('button')(({ div }: any) => ({
 }));
 
 
-export const BoxImglog = styled('div')(({ div }: any) => ({
+export const BoxImgLog = styled('div')(({ div }: any) => ({
 
   marginBottom: '3rem',
 }));

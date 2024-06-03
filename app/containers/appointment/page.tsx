@@ -121,8 +121,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   useEffect(() => {
     if(!notAuthenticated()) {
-      sessionStorage.setItem('slugStatus', 'error');
-      window.location.href = '/pageNotFound';
+      window.location.href = '/unauthorized';
     }
     
     dispatch(getAppointmentsList(filters))
