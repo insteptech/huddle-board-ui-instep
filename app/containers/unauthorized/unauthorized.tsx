@@ -1,8 +1,8 @@
 'use client'
 import React from 'react';
-import FourBg from "../../images/FourBg.svg";
-import FourLogo from "../../images/FourLogo.svg";
-import topPng from "../../images/topPng.svg";
+import FourBackground from "../../images/FourBackground.svg";
+import Logo from "../../images/Logo.svg";
+import laptopScreen from "../../images/laptopScreen.svg";
 import {
   ListLoginItem,
   MidContentSection,
@@ -20,13 +20,13 @@ import {
 
 const Unauthorized = () => {
   return (
-    <BoxSection sx={{ backgroundImage: `url(${FourBg.src})`, }} className='page-not-found'>
+    <BoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
       <BoxContentLogin>
-        <BoxImgLog> <img src={FourLogo.src} /> </BoxImgLog>
+        <BoxImgLog> <img src={Logo.src} /> </BoxImgLog>
         <ContentOnTop>Unfortunately, your current subscription doesn’t<br/> include our Huddle Board feature. </ContentOnTop>
         <MidContentSection>
             <MidContentLeft>
-              <img src={topPng.src} /> 
+              <img src={laptopScreen.src} /> 
             </MidContentLeft>
             <MidContentRight>
               <ListLogin>
@@ -44,7 +44,7 @@ const Unauthorized = () => {
         </MidContentSection>
         <ContentBottom>The huddle board is a powerful tool to help clinical and non-clinical staff more effectively<br/> manage their time and deliver exceptional patient care.</ContentBottom>
         <ContentBottomBold>Contact DoctusTech support to add it to your subscription today.</ContentBottomBold>
-        <ButtonLogin>Show Interest in Huddle Board</ButtonLogin>
+        {/* <ButtonLogin>Show Interest in Huddle Board</ButtonLogin> */}
       </BoxContentLogin>
     </BoxSection>
   );

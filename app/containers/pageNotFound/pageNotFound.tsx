@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
-import FourBg from "../../images/FourBg.svg"
-import FourLogo from "../../images/FourLogo.svg"
+import FourBackground from "../../images/FourBackground.svg"
+import Logo from "../../images/Logo.svg"
 
 import {
   BoxContent,
@@ -13,9 +13,9 @@ import {
 
 const PageNotFound = () => {
   return (
-    <BoxSection sx={{ backgroundImage: `url(${FourBg.src})`, }} className='page-not-found'>
+    <BoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
       <BoxContent>
-        <BoxImg> <img src={FourLogo.src} /> </BoxImg>
+        <BoxImg> <img src={Logo.src} /> </BoxImg>
         <BoldContent>404</BoldContent>
         <BoxTopContent>Not Found</BoxTopContent>
       </BoxContent>

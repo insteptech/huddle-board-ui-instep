@@ -24,7 +24,7 @@ const Header = ( ) => {
         <StaticTypo variant="caption" display="block" gutterBottom>
           {config?.user_full_name}
         </StaticTypo>
-        <LinkText sx={{textDecoration:'none', borderLeft:'2px solid #C8CED2', paddingLeft: '10px',}} > Logout</LinkText>
+        {/* <LinkText sx={{textDecoration:'none', borderLeft:'2px solid #C8CED2', paddingLeft: '10px',}} > Logout</LinkText> */}
         </Typography_Grid>
       </AppBar>
     </Box>
