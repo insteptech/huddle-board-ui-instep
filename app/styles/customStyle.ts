@@ -1,4 +1,4 @@
-import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox,List,ListItem } from "@mui/material";
+import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox, List, ListItem } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
@@ -43,12 +43,9 @@ export const TableMainContainer = styled(TableContainer)(({ theme }: any) => ({
   boxShadow: 'none',
   backgroundColor: 'transparent',
   overflow: 'auto',
-  height: '615px',
   margin: '10px 0 0 0 !important',
 
-  '@media(max-width: 1600px)': {
-    height: '515px',
-  }
+
 }));
 
 export const TableOtherContainer = styled(TableContainer)(({ theme }: any) => ({
@@ -830,28 +827,28 @@ export const ListLoginItem = styled(ListItem)(({ div }: any) => ({
   color: '#000',
   marginBottom: '20px',
   display: 'list-item',
-  padding:'0px',
-  paddingLeft:'5px',
+  padding: '0px',
+  paddingLeft: '5px',
 }));
 
 export const ListLogin = styled(List)(({ div }: any) => ({
-  listStyleType : 'disc',
-  padding:'0',
+  listStyleType: 'disc',
+  padding: '0',
   marginBottom: '0',
-  marginLeft:'3rem',
+  marginLeft: '3rem',
 }));
 
 
 
 export const MidContentSection = styled('div')(({ div }: any) => ({
-  
+
   display: 'flex',
   margin: '2rem 0',
 
 }));
 
 export const MidContentLeft = styled('div')(({ div }: any) => ({
-  
+
   width: '40%',
 
   'img': {
@@ -861,19 +858,19 @@ export const MidContentLeft = styled('div')(({ div }: any) => ({
 }));
 
 export const MidContentRight = styled('div')(({ div }: any) => ({
-  
+
   width: '60%',
 
 }));
 
 export const Listlogin = styled('div')(({ div }: any) => ({
-  
+
   width: 'auto',
 
 }));
 
 export const BoxContentLogin = styled('div')(({ div }: any) => ({
-  
+
   width: '50%',
   textAlign: 'center',
 
@@ -887,8 +884,8 @@ export const ButtonLogin = styled('button')(({ div }: any) => ({
   borderRadius: '3px',
   cursor: 'pointer',
   background: '#0D426A',
-  color:'#fff',
-  border:'none',
+  color: '#fff',
+  border: 'none',
 }));
 
 

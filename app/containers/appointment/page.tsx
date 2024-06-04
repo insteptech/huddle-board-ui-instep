@@ -61,6 +61,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [arrowDisabledRight, setArrowDisabledRight] = useState<boolean>(false);
   const [arrowDisabledLeft, setArrowDisabledLeft] = useState<boolean>(false);
 
+
+
   const [range, setRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -103,6 +105,22 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const { ref, inView } = useInView();
 
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowHeight(window.innerHeight);
+    }
+
+    setWindowHeight(window.innerHeight);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  console.log(windowHeight)
+
   const loadMoreAppointment = (filter: FiltersDataState) => {
 
     dispatch(getAppointmentsList(filter)).then((response: any) => {
@@ -120,10 +138,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   };
 
   useEffect(() => {
-    if(!notAuthenticated()) {
+    if (!notAuthenticated()) {
       window.location.href = '/unauthorized';
     }
-    
+
     dispatch(getAppointmentsList(filters))
       .then((response: any) => {
         setIsPatientNotFound(false);
@@ -132,7 +150,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
         if (response?.payload?.results.length === 0) {
           setIsClearFilter(true);
-  
+
         } else {
           setIsClearFilter(false);
         }
@@ -254,7 +272,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const handlePdf = () => {
     const appliedFilters = {
       ...filters,
-      file_type : 'pdf'
+      file_type: 'pdf'
     };
     const url = `${API_URL}download-appointments/?${urlParams(appliedFilters)}`;
 
@@ -561,8 +579,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
 
           {(isPatientNotFound || isClearFilter) && (
-            <TableOtherContainer sx={{ m: "30px 0" }}>
-              <Table aria-label="collapsible table">
+            <TableOtherContainer sx={{ m: "30px 0", height: windowHeight - 300 }}>
+              <Table sx={{ height: "100%" }} aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>
                     <StyledTableCell>
@@ -589,7 +607,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                       ?
                       <TableRow>
                         <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
-                          <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px", justifyContent: "center" }}>
+                          <LoaderBox sx={{ width: "100%", margin: "0px", height: windowHeight - 400, justifyContent: "center" }}>
                             <CircularProgress />
                             Loading Appointments
                           </LoaderBox>
@@ -603,7 +621,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           )}
 
           {!isPatientNotFound && !isClearFilter && (
-            <TableMainContainer sx={{ m: "30px 0" }}>
+            <TableMainContainer sx={{ m: "30px 0", height: windowHeight - 250 }}>
               <Table aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>
@@ -625,7 +643,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   mainLoader ? <TableBody>
                     <TableRow>
                       <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
-                        <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px", justifyContent: "center" }}>
+                        <LoaderBox sx={{ width: "100%", margin: "0px", height: windowHeight - 400, justifyContent: "center" }}>
                           <CircularProgress />
                           Loading Appointments
                         </LoaderBox>
