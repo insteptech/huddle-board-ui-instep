@@ -464,7 +464,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   return (
     <>
-      <Container maxWidth='xl'>
+      <Container maxWidth={false}>
         <MainBoxTop>
           <HeadingTag variant="h1" sx={{ margin: "0" }}>
             My Schedule
