@@ -69,16 +69,9 @@ function FilterButton(props: any) {
   };
 
   const isEmptyFilter = () => {    
-    if (selectedFilterDetail) {
+    if (selectedVisitType.length === 0 && selectedScreening.length === 0 && selectedProviders.length === 0) {
       return true;
-    }
-    else {
-      if (selectedVisitType.length === 0 && selectedScreening.length === 0 && selectedProviders.length === 0) {
-        return null;
-      }
-      return false;
-    }
-
+    } return false;
   }
 
   const handleVisitTypeFilterClick = (filter: any) => {
@@ -255,10 +248,10 @@ function FilterButton(props: any) {
                   <BoxFilterRight>
                     {!isSavedFilterSettingClicked ? <>
                       <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => applyFilters()}>Apply</BoxFilterRightMid>
-                      {isEmptyFilter() === false ? <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
+                      {!isEmptyFilter() && <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
                         Create Filter
-                      </BoxFilterRightMid> : null}
-                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: isEmptyFilter() ? "pointer" : "not-allowed" }} onClick={() => resetFilters()} disabled={!isEmptyFilter()}>
+                      </BoxFilterRightMid>}
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: !isEmptyFilter() ? "pointer" : "not-allowed" }} onClick={() => resetFilters()} disabled={isEmptyFilter()}>
                         Reset
                       </BoxFilterRightMid>
                     </> : <>
