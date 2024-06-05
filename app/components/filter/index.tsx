@@ -68,17 +68,15 @@ function FilterButton(props: any) {
     getAppointmentFiltersData();
   };
 
-  const isEmptyFilter = () => {
+  const isEmptyFilter = () => {    
     if (selectedFilterDetail) {
       return true;
     }
-
     else {
       if (selectedVisitType.length === 0 && selectedScreening.length === 0 && selectedProviders.length === 0) {
-        return null
+        return null;
       }
-      return false
-
+      return false;
     }
 
   }

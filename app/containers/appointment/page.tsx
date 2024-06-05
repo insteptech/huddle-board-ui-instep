@@ -37,7 +37,7 @@ import {
   SearchClearIcon,
   TableMidData
 } from '../../styles/customStyle';
-import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
+import { AppointmentState, FiltersDataState, emptyAppointmentList, emptySelectedFilter, updateFilter } from '@/app/redux/slices/appointment';
 import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
@@ -303,6 +303,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       key: 'selection'
     });
     setIsFilterApplied(false);
+    dispatch(emptySelectedFilter());
   }
 
   const searchAppointmentPatientName = (e: any) => {

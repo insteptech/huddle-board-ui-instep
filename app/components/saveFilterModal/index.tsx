@@ -65,7 +65,7 @@ const SaveFilterModal = (props: any) => {
         <Container>
           <InputTitleInner>Filter name</InputTitleInner>
           <TextFieldInput
-            value={filterName || initialFilterName ||  " "}
+            value={filterName || initialFilterName}
             id="fullWidth"
             placeholder="AWV+PVD"
             onChange={setFilterName}
