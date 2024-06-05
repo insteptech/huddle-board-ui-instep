@@ -338,7 +338,12 @@ export const BoxFilterRightMid = styled(Button)(({ div }: any) => ({
   lineHeight: '17.05px',
   textAlign: 'left',
   color: '#17236D',
-  margin: '0 10px',
+  margin: '0px',
+  minWidth:'auto',
+
+  "&:hover": {
+    background: '#fff',
+  },
 }));
 
 export const TableCellHd = styled('div')(({ div }: any) => ({
@@ -447,8 +452,7 @@ export const TestButton = styled('div')(({ div }: any) => ({
   fontWeight: '400',
   lineHeight: '16px',
   color: '#5C6469',
-  marginRight: '10px',
-  marginBottom: '10px',
+  marginRight: '10px'
 }));
 
 export const ModalHeader = styled('div')(({ div }: any) => ({
