@@ -61,8 +61,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [arrowDisabledRight, setArrowDisabledRight] = useState<boolean>(false);
   const [arrowDisabledLeft, setArrowDisabledLeft] = useState<boolean>(false);
 
-
-
   const [range, setRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -104,35 +102,26 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   })
 
   const { ref, inView } = useInView();
-
   const [windowHeight, setWindowHeight] = useState(0);
 
   useEffect(() => {
     function handleResize() {
       setWindowHeight(window.innerHeight);
     }
-
     setWindowHeight(window.innerHeight);
-
     window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  console.log(windowHeight)
 
   const loadMoreAppointment = (filter: FiltersDataState) => {
-
     dispatch(getAppointmentsList(filter)).then((response: any) => {
       setMainLoader(false);
       dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
-
       if (response?.payload?.results.length === 0) {
         setIsClearFilter(true);
-
       } else {
         setIsClearFilter(false);
-
       }
     })
   };
@@ -141,16 +130,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     if (!notAuthenticated()) {
       window.location.href = '/unauthorized';
     }
-
     dispatch(getAppointmentsList(filters))
       .then((response: any) => {
         setIsPatientNotFound(false);
         dispatch(updateFilter({ page: Number(page) + 1 }));
         setMainLoader(false);
-
         if (response?.payload?.results.length === 0) {
           setIsClearFilter(true);
-
         } else {
           setIsClearFilter(false);
         }
@@ -172,7 +158,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentDetail({ appointment_id: id })).then(() => {
       setLoaderAppoint(false);
     })
-
   };
 
   const getAction = (value: string) => {
@@ -203,13 +188,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
 
   const updateButtonState = (value: any, data: any, detail: any) => {
-
     if (data == "disable") {
       toast.error("cannot select")
       return;
     }
-
-
     if (data == "enable") {
       setConfirmationModal(true)
       setActionValue({
@@ -226,14 +208,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         detail: detail
       })
     }
-
   }
 
   const updateOutCome = (value: any, data: any, detail: any) => {
-
     setReverseModal(false);
     setConfirmationModal(false)
-
 
     const { appointment_id, uuid } = detail;
     const payload = {
@@ -275,7 +254,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       file_type: 'pdf'
     };
     const url = `${API_URL}download-appointments/?${urlParams(appliedFilters)}`;
-
     fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken()}` } })
       .then(res => res.blob())
       .then(res => {
@@ -296,7 +274,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const resetFilters = (isFilterPopOpen: boolean = false) => {
     const formattedDates = formatDates(new Date(), new Date());
-
     const filters = {
       visit_types: [],
       providers_uuids: [],
@@ -360,8 +337,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       dispatch(emptyAppointmentList());
       loadMoreAppointment(filtersData);
     }
-
-
   }
 
   const getFilterDetail = (filter: any) => {
@@ -597,7 +572,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>
-                    <StyledTableCell>Providers</StyledTableCell>
+                    <StyledTableCell>Provider</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </Table_Head>
@@ -635,7 +610,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>
-                    <StyledTableCell>Providers</StyledTableCell>
+                    <StyledTableCell>Provider</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </Table_Head>

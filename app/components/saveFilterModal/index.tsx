@@ -18,6 +18,7 @@ import {
   ButtonCancel,
   TextFieldInput,
   DialogContentTexts,
+  CharacterCountText,
 } from "../../styles/customStyle";
 
 const SaveTransition = React.forwardRef(function Transition(
@@ -66,7 +67,9 @@ const SaveFilterModal = (props: any) => {
             id="fullWidth"
             placeholder="AWV+PVD"
             onChange={setFilterName}
+            maxLength={200}
           />
+          <CharacterCountText>200 Characters Limit</CharacterCountText>
           <DialogActionsMain>
             <ButtonCancel onClick={()=>closeModal()}>Cancel</ButtonCancel>
             <ButtonSave

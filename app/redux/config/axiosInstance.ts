@@ -67,7 +67,9 @@ export const axiosWrapper = async (config:any) => {
       return response.data;
   } catch (error:any) {
       if(error?.response?.data?.error) {
-        toast.error(error?.response?.data?.error);
+        if (config?.url !== "select-filter-list") {
+          toast.error(error?.response?.data?.error);
+        }
       } else throw error;
   }
 };

@@ -332,7 +332,7 @@ export const TypoSpan = styled(Typography)(({ div }: any) => ({
   color: '#344054',
 }));
 
-export const BoxFilterRightMid = styled(Typography)(({ div }: any) => ({
+export const BoxFilterRightMid = styled(Button)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '600',
   lineHeight: '17.05px',
@@ -545,7 +545,7 @@ export const DialogActionsMain = styled('div')(({ div }: any) => ({
   alignItems: 'Center',
   justifyContent: 'space-between',
   gap: '10px',
-  margin: '30px 0 20px 0',
+  margin: '20px 0 20px 0',
 }));
 
 export const SearchClearIcon = styled('div')(({ div }: any) => ({
@@ -894,13 +894,10 @@ export const BoxImgLog = styled('div')(({ div }: any) => ({
   marginBottom: '3rem',
 }));
 
-
-
-
-
-
-
-
-
-
-
+export const CharacterCountText = styled(Typography)(({ div }: any) => ({
+  fontSize: '10px',
+  fontWeight: '400',
+  lineHeight: '20px',
+  color: '#8B8D97',
+  textAlign: 'end'
+}));

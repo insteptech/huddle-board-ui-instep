@@ -68,6 +68,12 @@ function FilterButton(props:any) {
     getAppointmentFiltersData();
   };
 
+  const isEmptyFilter = () => {
+    if(selectedVisitType?.length > 0 || selectedProviders?.length > 0 || selectedScreening?.length > 0) {
+      return true;
+    } return false;
+  }
+
   const handleVisitTypeFilterClick = (filter: any) => {
     const index = selectedVisitType.indexOf(filter);
     if (index === -1) {
@@ -220,10 +226,10 @@ function FilterButton(props:any) {
                   <BoxFilterRight>
                     {!isSavedFilterSettingClicked ? <>
                       <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={()=>applyFilters()}>Apply</BoxFilterRightMid>
-                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
+                      {isEmptyFilter() && <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
                         Create Filter
-                      </BoxFilterRightMid>
-                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>resetFilters()}>
+                      </BoxFilterRightMid>}
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: isEmptyFilter()?"pointer":"not-allowed" }} onClick={()=>resetFilters()} disabled={!isEmptyFilter()}>
                         Reset
                       </BoxFilterRightMid>
                       </> : <>
