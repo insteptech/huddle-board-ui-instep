@@ -519,6 +519,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 selectedSavedFilterUuid={selectedSavedFilterUuid}
                 setIsFilterApplied={setIsFilterApplied}
                 setMainLoader={setMainLoader}
+                isFilterApplied={isFilterApplied}
               />
             </FilterMenu>
             <TableTop>

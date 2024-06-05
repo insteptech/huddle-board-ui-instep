@@ -23,7 +23,7 @@ export interface IUpdateAppointmentDetailPayload {
 }
 
 export interface ICreateFilterPayload {
-  filter_name: string,
+  filter_name?: string,
   visit_type: string[],
   screening: string[],
   provider: string[]

@@ -18,18 +18,18 @@ import TuneIconimage from "../../images/filterIcon.png"
 
 
 import {
-    BoxFilter,
-    FilterButtons,
-    BoxFilterLeft,
-    BoxFilterRightMid,
-    BoxFilterRight,
-    TableCellHd,
-    TableCellTd,
-    CheckboxInner,
-    LoaderBox,
-    TableDataList,
-    TableData,
-    RadioMain,
+  BoxFilter,
+  FilterButtons,
+  BoxFilterLeft,
+  BoxFilterRightMid,
+  BoxFilterRight,
+  TableCellHd,
+  TableCellTd,
+  CheckboxInner,
+  LoaderBox,
+  TableDataList,
+  TableData,
+  RadioMain,
 } from '../../styles/customStyle';
 import SaveFilterModal from '@/app/components/saveFilterModal';
 import { AppDispatch, AppState } from '@/app/redux/store';
@@ -38,19 +38,19 @@ import { createAppointmentFilter, deleteSelectedFilterDetail, getSelectedFilterL
 import { toast } from 'react-toastify';
 import DeleteFilterModal from '../deleteFilterModal';
 
-function FilterButton(props:any) {
-  const { getAppointmentFiltersData, appointmentFiltersData,setMainLoader, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl,selectedVisitType,selectedScreening,selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid, setIsFilterApplied } = props;
+function FilterButton(props: any) {
+  const { getAppointmentFiltersData, isFilterApplied, appointmentFiltersData, setMainLoader, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl, selectedVisitType, selectedScreening, selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid, setIsFilterApplied } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
-  
+
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-  
+
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [filterName , setFilterName] = React.useState('');
+  const [filterName, setFilterName] = React.useState('');
   const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = React.useState(false);
-  const [selectedFilter , setSelectedFilter] = React.useState<any>({});
+  const [selectedFilter, setSelectedFilter] = React.useState<any>({});
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
-  
+
   const dispatch = useDispatch<AppDispatch>();
   const selectedFilterDetail = useSelector((state: AppState) => state.appointment.selectedFilterDetail);
 
@@ -58,7 +58,7 @@ function FilterButton(props:any) {
     setIsModalOpen(!isModalOpen);
   }
 
-  const handleInput = (data: any) => {    
+  const handleInput = (data: any) => {
     setFilterName(data.target.value);
   }
 
@@ -69,9 +69,18 @@ function FilterButton(props:any) {
   };
 
   const isEmptyFilter = () => {
-    if(selectedVisitType?.length > 0 || selectedProviders?.length > 0 || selectedScreening?.length > 0) {
+    if (selectedFilterDetail) {
       return true;
-    } return false;
+    }
+
+    else {
+      if (selectedVisitType.length === 0 && selectedScreening.length === 0 && selectedProviders.length === 0) {
+        return null
+      }
+      return false
+
+    }
+
   }
 
   const handleVisitTypeFilterClick = (filter: any) => {
@@ -87,24 +96,24 @@ function FilterButton(props:any) {
 
   const handleScreeningFilterClick = (filter: any) => {
     const index = selectedScreening.indexOf(filter);
-      if (index === -1) {
-        setSelectedScreening([...selectedScreening, filter]);
-      } else {
-        const updatedFilters = [...selectedScreening];
-        updatedFilters.splice(index, 1);
-        setSelectedScreening(updatedFilters);
-      }
+    if (index === -1) {
+      setSelectedScreening([...selectedScreening, filter]);
+    } else {
+      const updatedFilters = [...selectedScreening];
+      updatedFilters.splice(index, 1);
+      setSelectedScreening(updatedFilters);
+    }
   }
 
   const handleProvidersFilterClick = (filter: any) => {
     const index = selectedProviders.indexOf(filter.uuid);
-      if (index === -1) {
-        setSelectedProviders([...selectedProviders, filter.uuid]);
-      } else {
-        const updatedFilters = [...selectedProviders];
-        updatedFilters.splice(index, 1);
-        setSelectedProviders(updatedFilters);
-      }
+    if (index === -1) {
+      setSelectedProviders([...selectedProviders, filter.uuid]);
+    } else {
+      const updatedFilters = [...selectedProviders];
+      updatedFilters.splice(index, 1);
+      setSelectedProviders(updatedFilters);
+    }
   }
 
   const handleClose = () => {
@@ -128,20 +137,24 @@ function FilterButton(props:any) {
     setAnchorEl(null);
   }
 
-  const createFilterModal = (isEdit:boolean = false) => {
+  const createFilterModal = (isEdit: boolean = false) => {
     modalToggle();
-    if(isEdit) setIsEditModalOpen(true);
+    if (isEdit) setIsEditModalOpen(true);
   }
-  
+
+
+
+
   const createFilter = (isEdit: boolean = false) => {
     const payload = {
-      filter_name : filterName,
+      filter_name: filterName,
       visit_type: selectedVisitType,
       screening: selectedScreening,
       provider: selectedProviders
     };
-    if(isEdit) {
-      dispatch(updateAppointmentFilter({action: payload, uuid: selectedFilterDetail?.uuid})).then((e)=> {
+
+    if (isEdit) {
+      dispatch(updateAppointmentFilter({ action: payload, uuid: selectedFilterDetail?.uuid })).then((e) => {
         if (e?.payload) {
           toast.success(e?.payload?.message);
           setIsModalOpen(false);
@@ -150,7 +163,7 @@ function FilterButton(props:any) {
         }
       });
     } else {
-      dispatch(createAppointmentFilter(payload)).then((e)=> {
+      dispatch(createAppointmentFilter(payload)).then((e) => {
         if (e?.payload) {
           toast.success(e?.payload?.message);
           setIsModalOpen(false);
@@ -160,6 +173,24 @@ function FilterButton(props:any) {
       });
     }
   }
+
+  const updateFilterss = () => {
+    const payload = {
+
+      visit_type: selectedVisitType,
+      screening: selectedScreening,
+      provider: selectedProviders
+    };
+    dispatch(updateAppointmentFilter({ action: payload, uuid: selectedFilterDetail?.uuid })).then((e) => {
+      if (e?.payload) {
+        toast.success(e?.payload?.message);
+        setIsModalOpen(false);
+        dispatch(getSelectedFilterList());
+        resetFilters(true);
+      }
+    });
+  }
+
 
   const onRadioButtonClick = (filter: any) => {
     setSelectedFilter(filter)
@@ -205,7 +236,7 @@ function FilterButton(props:any) {
               onClick={handleClick}
               color="inherit"
             >
-             <img src={TuneIconimage.src} style={{ fontSize: "16px", marginRight: "5px", color: "#344054" }}/>
+              <img src={TuneIconimage.src} style={{ fontSize: "16px", marginRight: "5px", color: "#344054" }} />
               <span style={{ fontSize: "16px", color: "#344054" }}>Filter</span>
             </FilterButtons>
             <Menu
@@ -225,21 +256,26 @@ function FilterButton(props:any) {
                   <BoxFilterLeft>Filter by</BoxFilterLeft>
                   <BoxFilterRight>
                     {!isSavedFilterSettingClicked ? <>
-                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={()=>applyFilters()}>Apply</BoxFilterRightMid>
-                      {isEmptyFilter() && <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
+                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => applyFilters()}>Apply</BoxFilterRightMid>
+                      {isEmptyFilter() === false ? <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
                         Create Filter
-                      </BoxFilterRightMid>}
-                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: isEmptyFilter()?"pointer":"not-allowed" }} onClick={()=>resetFilters()} disabled={!isEmptyFilter()}>
+                      </BoxFilterRightMid> : null}
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: isEmptyFilter() ? "pointer" : "not-allowed" }} onClick={() => resetFilters()} disabled={!isEmptyFilter()}>
                         Reset
                       </BoxFilterRightMid>
-                      </> : <>
+                    </> : <>
                       <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => createFilterModal(true)}>
                         Rename
                       </BoxFilterRightMid>
-                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={()=>deleteFilterModal()}>
+
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => updateFilterss()}>
+                        Update
+                      </BoxFilterRightMid>
+
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => deleteFilterModal()}>
                         Delete
                       </BoxFilterRightMid>
-                      </>
+                    </>
                     }
                   </BoxFilterRight>
                 </BoxFilter>
@@ -249,17 +285,17 @@ function FilterButton(props:any) {
                     Loading Filters
                   </LoaderBox>
                 )}
-  
+
                 {!isFilterDataLoading && (
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableData>
-                       {selectedFilterList?.length > 0 && <TableDataList sx={{width:'160px'}}>
-                          <TableCellHd sx={{display:'flex',justifyContent:'space-between'}}>
+                        {selectedFilterList?.length > 0 && <TableDataList sx={{ width: '160px' }}>
+                          <TableCellHd sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             Saved Filter{" "}
-                            <SettingsOutlinedIcon style={{ fontSize: "12px", cursor: "pointer" }} onClick={()=>setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked)}/>
+                            <SettingsOutlinedIcon style={{ fontSize: "12px", cursor: "pointer" }} onClick={() => setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked)} />
                           </TableCellHd>
-                         
+
                           <RadioMain>
                             <RadioGroup
                               aria-labelledby="demo-radio-buttons-group-label"
@@ -267,33 +303,33 @@ function FilterButton(props:any) {
                               name="radio-buttons-group"
                               className='radio_sec'
                             >
-                          {selectedFilterList?.map((list: any, index: number) => (
-                            <FormControlLabel onClick={()=> {getFilterDetail(list)}} key={index} className={selectedSavedFilterUuid ===list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ? <Radio onClick={()=>onRadioButtonClick(list)}/> : <List />} label={list.name} />
-                          ))}
+                              {selectedFilterList?.map((list: any, index: number) => (
+                                <FormControlLabel onClick={() => { getFilterDetail(list) }} key={index} className={selectedSavedFilterUuid === list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ? <Radio onClick={() => onRadioButtonClick(list)} /> : <List />} label={list.name} />
+                              ))}
                             </RadioGroup>
                           </RadioMain>
-                       
+
                         </TableDataList>}
-  
+
                         <TableDataList>
                           <TableCellHd>
                             Visit Type ({visit_type?.length})
                           </TableCellHd>
-  
+
                           {visit_type?.map((visit: any, index: number) => (
                             <TableCellTd key={index}>
                               <CheckboxInner
                                 key={index}
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
-                                onClick={()=>handleVisitTypeFilterClick(visit)}
-                                checked={filters?.visit_types?.includes(visit)|| selectedVisitType?.includes(visit)|| false}
+                                onClick={() => handleVisitTypeFilterClick(visit)}
+                                checked={selectedVisitType?.includes(visit) || false}
                               />
                               {visit}
                             </TableCellTd>
                           ))}
                         </TableDataList>
-  
+
                         <TableDataList>
                           <TableCellHd>
                             Screening ({patient_screening?.length})
@@ -305,15 +341,15 @@ function FilterButton(props:any) {
                                   key={index}
                                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                   {...label}
-                                  onClick={()=>handleScreeningFilterClick(patient)}
-                                  checked={filters?.screening?.includes(patient)|| selectedScreening?.includes(patient)||false} 
+                                  onClick={() => handleScreeningFilterClick(patient)}
+                                  checked={selectedScreening?.includes(patient) || false}
                                 />
                                 {patient}
                               </TableCellTd>
                             )
                           )}
                         </TableDataList>
-  
+
                         <TableDataList>
                           <TableCellHd>
                             Providers ({provider?.length})
@@ -324,8 +360,8 @@ function FilterButton(props:any) {
                                 key={index}
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                 {...label}
-                                onClick={()=>handleProvidersFilterClick(pro)}
-                                checked={filters?.providers_uuids?.includes(pro.uuid)||selectedProviders?.includes(pro.uuid)||false} 
+                                onClick={() => handleProvidersFilterClick(pro)}
+                                checked={selectedProviders?.includes(pro.uuid) || false}
                               />
                               {pro.name}
                             </TableCellTd>
@@ -340,8 +376,8 @@ function FilterButton(props:any) {
           </Grid>
         </Grid>
       </Box>
-      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter} isEditModalOpen={isEditModalOpen} selectedFilterDetail={selectedFilterDetail} closeModal={closeModal}/>
-      <DeleteFilterModal isModalOpen={isDeleteModalOpen} modalToggle={deleteModalToggle} deleteModalClose={deleteModalClose} deleteFilterDetail={deleteFilterDetail}/>
+      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter} isEditModalOpen={isEditModalOpen} selectedFilterDetail={selectedFilterDetail} closeModal={closeModal} />
+      <DeleteFilterModal isModalOpen={isDeleteModalOpen} modalToggle={deleteModalToggle} deleteModalClose={deleteModalClose} deleteFilterDetail={deleteFilterDetail} />
     </>
   );
 }
