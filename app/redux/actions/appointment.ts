@@ -83,3 +83,7 @@ export const getAppointmentPdf = createAsyncThunk('getAppointmentPdf', async () 
 export const auditLog = createAsyncThunk('auditLog', async (payload: IAuditLog[]) => {
   return await axiosWrapper({ method: "post", url: 'audit-log/', payload })
 });
+
+export const getAllAppointments = createAsyncThunk('getAllAppointments', async (payload: FiltersDataState) => {
+  return await axiosWrapper({ method: "get", url: `appointment-details/?${urlParams(payload)}`, payload })
+});

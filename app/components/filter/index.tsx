@@ -165,7 +165,7 @@ function FilterButton(props: any) {
     }
   }
 
-  const updateFilterss = () => {
+  const updateFilters = () => {
     const payload = {
 
       visit_type: selectedVisitType,
@@ -174,7 +174,7 @@ function FilterButton(props: any) {
     };
     dispatch(updateAppointmentFilter({ action: payload, uuid: selectedFilterDetail?.uuid })).then((e) => {
       if (e?.payload) {
-        toast.success(e?.payload?.message);
+        toast.success('Filter successfully updated');
         setIsModalOpen(false);
         dispatch(getSelectedFilterList());
         resetFilters(true);
@@ -255,15 +255,15 @@ function FilterButton(props: any) {
                         Reset
                       </BoxFilterRightMid>
                     </> : <>
-                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => createFilterModal(true)}>
+                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => createFilterModal(true)} disabled={!selectedFilterDetail}>
                         Rename
                       </BoxFilterRightMid>
 
-                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => updateFilterss()}>
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => updateFilters()} disabled={!selectedFilterDetail}>
                         Update
                       </BoxFilterRightMid>
 
-                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => deleteFilterModal()}>
+                      <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => deleteFilterModal()} disabled={!selectedFilterDetail}>
                         Delete
                       </BoxFilterRightMid>
                     </>

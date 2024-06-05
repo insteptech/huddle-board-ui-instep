@@ -1,5 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail } from '../actions/appointment';
+import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail, getAllAppointments } from '../actions/appointment';
 import { sortArraysInObject, sortObjectsByName } from '@/app/utils/appointment';
 import { formatDates } from '@/app/utils/helper';
 
@@ -174,6 +174,9 @@ export const appointment = createSlice({
     builder.addCase(getSelectedFilterDetail.fulfilled, (state, { payload }) => {
       state.selectedFilterDetail = payload;
     });
+    builder.addCase(getAllAppointments.fulfilled, (state, { payload }) => {
+      state.appointmentsData.results = updateAppointment(current(state)?.appointmentsData?.results,current(state)?.appointmentDetail[0], payload);
+    });
   },
 });
 
@@ -204,6 +207,18 @@ const appointmentsList = (previousAppointments: any, payload: any) => {
     previous:''
   }
 };
+
+const updateAppointment = (allAppointment: any,selectedAppointment: any, payload: any) => {
+  const updatedAppointment = payload?.results?.find((e:any)=>e.uuid === selectedAppointment?.appointment_id);
+  let appointments: any[] = [];
+  allAppointment.forEach((obj:any) => {
+    if (obj.uuid === selectedAppointment?.appointment_id) {
+        obj = updatedAppointment;
+    } 
+    appointments.push(obj);
+  });
+  return appointments;
+}
 
 export const { locationData, updateFilter, emptyAppointmentList, emptySelectedFilter } = appointment.actions;
 export default appointment.reducer;
