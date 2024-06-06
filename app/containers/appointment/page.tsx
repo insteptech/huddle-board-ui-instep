@@ -331,7 +331,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       loadMoreAppointment(filtersData);
     }
 
-    if (e?.target?.value?.length > 3) {
+    if (e?.target?.value?.length > 1) {
       const filtersData = {
         ...filters,
         visit_types: [],
@@ -419,7 +419,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const appointmentsListString: any = localStorage.getItem('huddleBoardConfig');
     const appointmentsList = JSON.parse(appointmentsListString);
     const mindateapi = appointmentsList.past_calendar_days_count;
-    const maxdateapi = appointmentsList.future_calender_days_count;
+    const maxdateapi = appointmentsList.future_calender_days_count -1;
 
     const temp = direction;
     let newDate = new Date(date);
@@ -428,13 +428,12 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       newDate.setDate(date.getDate() - 1);
 
     }
-
     else {
       newDate.setDate(date.getDate() + 1);
     }
-
     setDate(newDate);
 
+    console.log(mindateapi);
 
     const currentDate = new Date()
     const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);

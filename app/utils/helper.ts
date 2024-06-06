@@ -1,3 +1,5 @@
+import { sessionKeys } from "./auth";
+
 export const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
 export const cookieName = { jwtToken: 'jwt-token' };
@@ -29,7 +31,7 @@ export const deleteCookie = (name: string) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
-export const getTime = (timestamp:string) => {
+export const getTime = (timestamp: string) => {
   const date = new Date(timestamp);
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -40,23 +42,23 @@ export const getTime = (timestamp:string) => {
   return formattedTime;
 }
 
-export const urlParams = (params:any) =>{
+export const urlParams = (params: any) => {
   const query = Object.entries(params)
-    .filter(([key, value]:any) => {
-        return Array.isArray(value) ? value.length > 0 : value !== '';
+    .filter(([key, value]: any) => {
+      return Array.isArray(value) ? value.length > 0 : value !== '';
     })
-    .map(([key, value]:any) => `${encodeURIComponent(key)}=${Array.isArray(value) ? JSON.stringify(value) : encodeURIComponent(value)}`)
-    .join('&');    
-    return query;
+    .map(([key, value]: any) => `${encodeURIComponent(key)}=${Array.isArray(value) ? JSON.stringify(value) : encodeURIComponent(value)}`)
+    .join('&');
+  return query;
 }
 
-export const getCurrentDateFormatted = (date?: any) => {  
+export const getCurrentDateFormatted = (date?: any) => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const currentDate = new Date(date);
   const day = String(currentDate.getDate()).padStart(2, '0');
   const month = months[currentDate.getMonth()];
   const year = currentDate.getFullYear();
-  
+
   return `${day} ${month} ${year}`;
 }
 
@@ -81,4 +83,13 @@ export const formatDates = (startDate: any, endDate: any) => {
     start: startFormatted,
     end: endFormatted
   };
+}
+
+
+export const deleteLocalStorage = () => {
+  const { accessToken, slugKey, refreshToken, huddleBoardConfig } = sessionKeys;
+  localStorage.removeItem(accessToken);
+  localStorage.removeItem(refreshToken);
+  localStorage.removeItem(slugKey);
+  localStorage.removeItem(huddleBoardConfig);
 }

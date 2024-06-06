@@ -15,12 +15,12 @@ const DatePicker = (props: any) => {
     const [maxDate, setMaxDate] = useState(new Date());
     const anchorRef = useRef<any>(null);
 
-    const huddleBoardConfig:any = localStorage.getItem('huddleBoardConfig');
+    const huddleBoardConfig: any = localStorage.getItem('huddleBoardConfig');
     const config = JSON.parse(huddleBoardConfig);
- 
+
     const minDateFromConfig = config?.past_calendar_days_count;
     const maxDateFromConfig = config?.future_calender_days_count;
-    
+
     const handleDateChange = (newDate: Date) => {
 
         const currentDate = new Date()
@@ -31,7 +31,7 @@ const DatePicker = (props: any) => {
         const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
         const newDate1Only = newDate1.toISOString().split('T')[0];
 
-        const minDate = new Date(currentDate.getTime() - minDateFromConfig);
+        const minDate = new Date(currentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
         const minDateOnly = minDate.toISOString().split('T')[0];
 
         const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
@@ -56,11 +56,11 @@ const DatePicker = (props: any) => {
         const currentDate = new Date();
         const minDate = new Date(currentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
         const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
-        
+
         setMinDate(minDate);
         setMaxDate(maxDate);
 
-        const handleClickOutside = (event:any) => {
+        const handleClickOutside = (event: any) => {
             if (anchorRef.current && !anchorRef.current.contains(event.target)) {
                 setAnchorEl(false);
             }
@@ -79,6 +79,7 @@ const DatePicker = (props: any) => {
     return (
         <CalenderSection ref={anchorRef}>
             <Button
+                sx={{ backgroundColor: "#2ABDF0" }}
                 className=""
                 aria-controls="simple-menu"
                 aria-haspopup="true"
