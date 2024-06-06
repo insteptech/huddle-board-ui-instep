@@ -7,6 +7,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import featuredIcon from "../../images/featuredicon.svg"
+import reverseIcon from "../../images/reverseIcon.svg"
 import { Container } from "@mui/material";
 import {
     ButtonCancel,
@@ -68,15 +69,15 @@ const ActionReverse = (props: any) => {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <ModalHeader>
-                    <img src={featuredIcon.src} />
+                    <img src={reverseIcon.src} />
                     <CloseIcon sx={{ cursor: "pointer" }} onClick={() => actionConfirmationDelete()} />
                 </ModalHeader>
                 <DialogContent sx={{ paddingBottom: "0" }}>
-                    <DialogTitleInner>{"Are you sure?"}</DialogTitleInner>
+                    <DialogTitleInner>{" Reverse Action Confirmed?"}</DialogTitleInner>
 
                     <DialogContentTexts id="alert-dialog-slide-description">
                         <DialogContentTextInner>
-                            Reverse Action Confirmed? Are you sure you want to revert the recent action? Click Undo to Return to previous state <span style={{fontWeight:700}}> {displayvalue}</span>
+                            Are you sure you want to revert the recent action? Click Undo to Return to previous state <span style={{fontWeight:700}}> {displayvalue}</span>
                         </DialogContentTextInner>
                     </DialogContentTexts>
                 </DialogContent>

@@ -223,15 +223,15 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     dispatch(updateAppointmentDetail(payload)).then(() => {
       toast.success("Successfully Updated");
-      appointmentDetails(appointment_id);
-      const formattedDates = formatDates(new Date(), new Date());
-      const filters = {
+      appointmentDetails(appointment_id);      
+      const formattedDates = formatDates(filters.appointment_start_date, filters.appointment_end_date);
+      const payload = {
         page: 1,
         page_size: 200,
         appointment_start_date: formattedDates.start,
         appointment_end_date: formattedDates.end,
       };
-      dispatch(getAllAppointments(filters));
+      dispatch(getAllAppointments(payload));
     }).catch(() => {
       toast.error("Update failed");
     })

@@ -6,7 +6,7 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
-import featuredIcon from "../../images/featuredicon.svg"
+import confirmIcon from "../../images/confirmIcon.svg"
 import { Container } from "@mui/material";
 import {
     ButtonCancel,
@@ -68,7 +68,7 @@ const ActionConfirmation = (props: any) => {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <ModalHeader>
-                    <img src={featuredIcon.src} />
+                    <img src={confirmIcon.src} />
                     <CloseIcon sx={{ cursor: "pointer" }} onClick={() => actionConfirmationDelete()} />
                 </ModalHeader>
                 <DialogContent sx={{ paddingBottom: "0" }}>

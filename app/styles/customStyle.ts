@@ -97,7 +97,7 @@ export const LinkText = styled(Link)(({ div }: any) => ({
 }));
 
 export const StyledPatient = styled('div')(({ div }: any) => ({
-  textDecoration: 'underline',
+  textDecoration: 'none',
 }));
 
 export const StyledName = styled('div')(({ div }: any) => ({
@@ -452,7 +452,7 @@ export const TestButton = styled('div')(({ div }: any) => ({
   fontWeight: '400',
   lineHeight: '16px',
   color: '#5C6469',
-  marginRight: '10px'
+  marginRight: '0px'
 }));
 
 export const ModalHeader = styled('div')(({ div }: any) => ({
