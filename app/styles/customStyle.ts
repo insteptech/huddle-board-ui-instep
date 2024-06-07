@@ -339,7 +339,7 @@ export const BoxFilterRightMid = styled(Button)(({ div }: any) => ({
   textAlign: 'left',
   color: '#17236D',
   margin: '0px',
-  minWidth:'auto',
+  minWidth: 'auto',
 
   "&:hover": {
     background: '#fff',
@@ -705,6 +705,14 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
     fontWeight: '400',
     lineHeight: '21px',
   },
+
+  '.rdrDay .rdrSelected': {
+    backgroundColor: '#2abdf0 !important'
+  },
+  '.rdrDayEndPreview': {
+    borderColor: '#2abdf0'
+  }
+
 }));
 
 export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({

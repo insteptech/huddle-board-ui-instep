@@ -79,7 +79,12 @@ const DatePicker = (props: any) => {
     return (
         <CalenderSection ref={anchorRef}>
             <Button
-                sx={{ backgroundColor: "#2ABDF0" }}
+                sx={{
+                    backgroundColor: "#2ABDF0", ':hover': {
+                        backgroundColor: "#18A2D1",
+
+                    }
+                }}
                 className=""
                 aria-controls="simple-menu"
                 aria-haspopup="true"

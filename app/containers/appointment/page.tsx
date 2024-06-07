@@ -223,7 +223,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     dispatch(updateAppointmentDetail(payload)).then(() => {
       toast.success("Successfully Updated");
-      appointmentDetails(appointment_id);      
+      appointmentDetails(appointment_id);
       const formattedDates = formatDates(filters.appointment_start_date, filters.appointment_end_date);
       const payload = {
         page: 1,
@@ -419,7 +419,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const appointmentsListString: any = localStorage.getItem('huddleBoardConfig');
     const appointmentsList = JSON.parse(appointmentsListString);
     const mindateapi = appointmentsList.past_calendar_days_count;
-    const maxdateapi = appointmentsList.future_calender_days_count -1;
+    const maxdateapi = appointmentsList.future_calender_days_count - 1;
 
     const temp = direction;
     let newDate = new Date(date);
@@ -492,9 +492,18 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox>
             }
-            <RightBox onClick={() => handlePdf()}>
+            <RightBox onClick={() => handlePdf()}
+              sx={{
+                ':hover': {
+                  backgroundColor: "#F5F7F6",
+
+                }
+              }}
+            >
               <img src={pdfIcon.src} style={{ fontSize: "20px", marginRight: "5px" }} />
-              <TypoSpan variant="caption">PDF</TypoSpan>
+              <TypoSpan variant="caption"
+
+              >PDF</TypoSpan>
             </RightBox>
 
             {/* <RightBox onClick={() => handlePrint()}>
@@ -661,7 +670,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   </TableBody>
                 }
               </Table>
-              <div ref={ref}></div>
+              <div style={{ width: "100vw" }}  ><h6 ref={ref} style={{ textAlign: "center", visibility: "hidden" }} >....</h6></div>
             </TableMainContainer>
           )
           }
