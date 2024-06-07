@@ -2,6 +2,7 @@
 import { getHuddleBoardConfig } from '@/app/redux/actions/auth';
 import { AppDispatch } from '@/app/redux/store';
 import { getAndSetAccessToken } from '@/app/utils/auth';
+import { deleteLocalStorage } from '@/app/utils/helper';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -25,12 +26,15 @@ const Login = () => {
             })
           })
           .catch(() => {
+            deleteLocalStorage();
             window.location.href = '/pageNotFound';
           });
       } else {
+        deleteLocalStorage();
         window.location.href = '/unauthorized';
       }
     } catch (error) {
+      deleteLocalStorage();
       window.location.href = '/pageNotFound';
     }
 
