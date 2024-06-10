@@ -257,9 +257,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
 
   const handlePdf = () => {
+
+    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const appliedFilters = {
       ...filters,
-      file_type: 'pdf'
+      file_type: 'pdf',
+      timezone: timezone
     };
     const url = `${API_URL}download-appointments/?${urlParams(appliedFilters)}`;
     fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken()}` } })
