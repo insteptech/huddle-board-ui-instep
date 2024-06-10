@@ -13,17 +13,32 @@ const Login = () => {
   const router = useRouter()
 
   useEffect(() => {
+
     sessionStorage.clear();
 
-    let slug = searchParam.get("slug");
+    let decodedString = "";
+
+    if (searchParam.has("ref")) {
+      const refParam: string | null = searchParam.get("ref");
+      decodedString = atob(refParam || "");
+      const isValidBase64 = /^[A-Za-z0-9+/=]+$/i.test(decodedString);
+      if (!isValidBase64) {
+        window.location.href = "/unauthorized";
+      }
+    }
+
+    console.log(decodedString)
+
+    const slug = searchParam.get("slug") || decodedString;
+
     try {
       if (slug) {
         getAndSetAccessToken(slug)
           .then(() => {
             dispatch(getHuddleBoardConfig()).then((res) => {
               localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
-              router.push('/appointment')
-            })
+              router.push('/appointment');
+            });
           })
           .catch(() => {
             deleteLocalStorage();
@@ -37,8 +52,8 @@ const Login = () => {
       deleteLocalStorage();
       window.location.href = '/pageNotFound';
     }
-
   }, [searchParam]);
+
 
   return (
     <div className='main_sec'></div>
