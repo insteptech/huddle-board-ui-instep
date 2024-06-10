@@ -70,6 +70,11 @@ const SaveFilterModal = (props: any) => {
             placeholder="AWV+PVD"
             onChange={setFilterName}
             maxLength={200}
+            sx={{
+              '::placeholder': {
+                color: '#ddd',
+              }
+            }}
           />
           <CharacterCountText>200 Characters Limit</CharacterCountText>
           <DialogActionsMain>

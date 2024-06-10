@@ -281,7 +281,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const resetFilters = (isFilterPopOpen: boolean = false) => {
-    const formattedDates = formatDates(new Date(), new Date());
+    const formattedDates = formatDates(date, date);
     const filters = {
       visit_types: [],
       providers_uuids: [],
@@ -375,15 +375,16 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const dateRangeHandleChange = (dates: any) => {
     const formattedDates = formatDates(dates, dates);
-    const filters = {
+    const filter = {
+      ...filters,
       appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,
       page: 1,
       page_size: 10,
     };
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filter));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filter);
   }
 
   const handleAppointmentTimeSort = () => {
@@ -423,6 +424,24 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     const temp = direction;
     let newDate = new Date(date);
+
+    const filtersData = {
+      ...filters,
+      visit_types: selectedVisitType,
+      providers_uuids: selectedProviders,
+      screening: selectedScreening,
+      page: 1,
+      page_size: 10
+    };
+
+    if (selectedVisitType.length !== 0, selectedProviders.length !== 0, selectedScreening.length !== 0) {
+      setMainLoader(true);
+      setIsFilterApplied(true);
+      dispatch(updateFilter(filtersData));
+      dispatch(emptyAppointmentList());
+      loadMoreAppointment(filtersData);
+      setAnchorEl(null);
+    }
 
     if (temp == "left" || temp == "Left" || temp == "LEFT") {
       newDate.setDate(date.getDate() - 1);
@@ -481,7 +500,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 </RightBox>
             }
             <Box>
-              <DatePicker date={date} setDate={setDate} setArrowDisabledRight={setArrowDisabledRight} setArrowDisabledLeft={setArrowDisabledLeft} dateRangeHandleChange={dateRangeHandleChange} />
+              <DatePicker
+                date={date}
+                setDate={setDate}
+                setArrowDisabledRight={setArrowDisabledRight}
+                setArrowDisabledLeft={setArrowDisabledLeft}
+                dateRangeHandleChange={dateRangeHandleChange}
+              />
             </Box>
             {
               arrowDisabledRight ?

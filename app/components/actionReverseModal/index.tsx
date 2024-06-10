@@ -77,7 +77,7 @@ const ActionReverse = (props: any) => {
 
                     <DialogContentTexts id="alert-dialog-slide-description">
                         <DialogContentTextInner>
-                            Are you sure you want to revert the recent action? Click Undo to Return to previous state <span style={{fontWeight:700}}> {displayvalue}</span>
+                            Are you sure you want to revert the recent action? <br />Click 'Undo' to Return to previous state
                         </DialogContentTextInner>
                     </DialogContentTexts>
                 </DialogContent>

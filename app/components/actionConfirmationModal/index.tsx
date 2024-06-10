@@ -76,7 +76,7 @@ const ActionConfirmation = (props: any) => {
 
                     <DialogContentTexts id="alert-dialog-slide-description">
                         <DialogContentTextInner>
-                            Are you sure, you want to select Outcome as <span style={{ fontWeight: 700 }}> {displayvalue}?</span>
+                            You want to select Outcome as "<span style={{ fontWeight: 700 }}>{displayvalue}".</span>
                         </DialogContentTextInner>
                     </DialogContentTexts>
                 </DialogContent>

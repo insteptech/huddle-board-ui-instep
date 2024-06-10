@@ -68,7 +68,7 @@ function FilterButton(props: any) {
     getAppointmentFiltersData();
   };
 
-  const isEmptyFilter = () => {    
+  const isEmptyFilter = () => {
     if (selectedVisitType.length === 0 && selectedScreening.length === 0 && selectedProviders.length === 0) {
       return true;
     } return false;
@@ -110,6 +110,8 @@ function FilterButton(props: any) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+ 
 
   const applyFilters = () => {
     const filtersData = {
@@ -247,7 +249,7 @@ function FilterButton(props: any) {
                   <BoxFilterLeft>Filter by</BoxFilterLeft>
                   <BoxFilterRight>
                     {!isSavedFilterSettingClicked ? <>
-                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => applyFilters()}>Apply</BoxFilterRightMid>
+                      <BoxFilterRightMid sx={{ cursor: "pointer" }} onClick={() => applyFilters()} disabled={isEmptyFilter()}>Apply</BoxFilterRightMid>
                       {!isEmptyFilter() && <BoxFilterRightMid sx={{ color: "#5C6469", cursor: "pointer" }} onClick={() => createFilterModal()}>
                         Create Filter
                       </BoxFilterRightMid>}
