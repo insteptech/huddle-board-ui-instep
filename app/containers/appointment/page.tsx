@@ -695,7 +695,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   </TableBody>
                 }
               </Table>
-              <div style={{ width: "100vw" }}  ><h6 ref={ref} style={{ textAlign: "center", visibility: "hidden" }} >....</h6></div>
+              <div><h6 ref={ref} style={{ textAlign: "center", visibility: "hidden" }} >....</h6></div>
             </TableMainContainer>
           )
           }
