@@ -13,7 +13,7 @@ import { AppState } from '@/app/redux/store';
 const Header = ( ) => { 
   const theme: any = useTheme();
   const huddleBoardConfig:any = localStorage.getItem('huddleBoardConfig');
-  const config = JSON.parse(huddleBoardConfig);
+    const config = huddleBoardConfig ? JSON.parse(huddleBoardConfig) : null;
     
   return (
     <Box sx={{ display: 'flex'    }}>
