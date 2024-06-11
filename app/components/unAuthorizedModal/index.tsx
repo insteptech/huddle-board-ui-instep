@@ -53,7 +53,7 @@ const UnauthorizedModal = (props: any) => {
                 </ModalHeader> */}
                 <DialogContent sx={{ paddingBottom: "0", display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column" , textAlign:"center" }}>
                     <img src={modalSupportIcon.src} style={{padding:"10px 0"}} />
-                    <DialogTitleInner sx={{padding:"10px 0" , fontSize:"24px" , fontWeight:"700"}}>{"Thankyou"}</DialogTitleInner>
+                    <DialogTitleInner sx={{padding:"10px 0" , fontSize:"24px" , fontWeight:"700"}}>{"Thank you"}</DialogTitleInner>
 
                     <DialogContentTexts id="alert-dialog-slide-description">
                         <DialogContentTextInner sx={{padding:"10px 0" , fontSize:"16px" , fontWeight:"600" , color:'black'}}>

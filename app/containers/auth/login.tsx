@@ -27,8 +27,6 @@ const Login = () => {
       }
     }
 
-    console.log(decodedString)
-
     const slug = searchParam.get("slug") || decodedString;
 
     try {

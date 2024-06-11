@@ -1,12 +1,10 @@
 'use client'
-import React, { useEffect, useState, useRef, MouseEvent } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Box, Button } from '@mui/material';
 import { getCurrentDateFormatted } from '@/app/utils/helper';
 import { Calendar } from '@iroomit/react-date-range';
 import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
 import calenderIcon from "../../images/calender.svg"
-import { useSelector } from 'react-redux';
-import { AppState } from '@/app/redux/store';
 
 const DatePicker = (props: any) => {
     const { dateRangeHandleChange, date, setArrowDisabledRight, setDate, setArrowDisabledLeft } = props;

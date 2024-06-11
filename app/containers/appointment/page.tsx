@@ -420,15 +420,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const calenderArrowClick = (direction: string) => {
-
-    const appointmentsListString: any = localStorage.getItem('huddleBoardConfig');
-    const appointmentsList = JSON.parse(appointmentsListString);
-    const mindateapi = appointmentsList.past_calendar_days_count;
-    const maxdateapi = appointmentsList.future_calender_days_count - 1;
-
-    const temp = direction;
-    let newDate = new Date(date);
-
+    const appointmentsListString = localStorage.getItem('huddleBoardConfig');
+    if (!appointmentsListString) return;
+    const { past_calendar_days_count, future_calender_days_count } = JSON.parse(appointmentsListString);
+  
     const filtersData = {
       ...filters,
       visit_types: selectedVisitType,
@@ -437,8 +432,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       page: 1,
       page_size: 10
     };
-
-    if (selectedVisitType.length !== 0, selectedProviders.length !== 0, selectedScreening.length !== 0) {
+  
+    if (selectedVisitType.length !== 0 && selectedProviders.length !== 0 && selectedScreening.length !== 0) {
       setMainLoader(true);
       setIsFilterApplied(true);
       dispatch(updateFilter(filtersData));
@@ -446,45 +441,34 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       loadMoreAppointment(filtersData);
       setAnchorEl(null);
     }
-
-    if (temp == "left" || temp == "Left" || temp == "LEFT") {
+  
+    const newDate = new Date(date);
+    if (direction.toLowerCase() === "left") {
       newDate.setDate(date.getDate() - 1);
-
-    }
-    else {
+    } else {
       newDate.setDate(date.getDate() + 1);
     }
     setDate(newDate);
-
-    console.log(mindateapi);
-
-    const currentDate = new Date()
-    const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);
-    const newDate1Only = newDate1.toISOString().split('T')[0];
-
-    const minDate = new Date(currentDate.getTime() - mindateapi * 24 * 60 * 60 * 1000);
-    const minDateOnly = minDate.toISOString().split('T')[0];
-
-    const maxDate = new Date(currentDate.getTime() + maxdateapi * 24 * 60 * 60 * 1000);
-    const maxDateOnly = maxDate.toISOString().split('T')[0];
-
-    if (newDate1Only == minDateOnly) {
-      setArrowDisabledLeft(true)
-      setArrowDisabledRight(false)
+  
+    const currentDate = new Date();
+    const newDateOnly = newDate.toISOString().split('T')[0];
+  
+    const minDateOnly = new Date(currentDate.getTime() - past_calendar_days_count * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const maxDateOnly = new Date(currentDate.getTime() + future_calender_days_count * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  
+    if (newDateOnly === minDateOnly) {
+      setArrowDisabledLeft(true);
+      setArrowDisabledRight(false);
+    } else if (newDateOnly === maxDateOnly) {
+      setArrowDisabledRight(true);
+      setArrowDisabledLeft(false);
+    } else {
+      setArrowDisabledLeft(false);
+      setArrowDisabledRight(false);
     }
-
-    else if (newDate1Only == maxDateOnly) {
-      setArrowDisabledRight(true)
-      setArrowDisabledLeft(false)
-    }
-    else {
-      setArrowDisabledLeft(false)
-      setArrowDisabledRight(false)
-    }
-
+  
     dateRangeHandleChange(newDate);
-
-  }
+  };
 
   return (
     <>

@@ -165,6 +165,7 @@ function FilterButton(props: any) {
         }
       });
     }
+    setFilterName('')
   }
 
   const updateFilters = () => {
@@ -199,6 +200,7 @@ function FilterButton(props: any) {
 
   const deleteModalClose = () => {
     setDeleteModalOpen(false);
+    setFilterName('');
   }
 
   const deleteFilterDetail = () => {
