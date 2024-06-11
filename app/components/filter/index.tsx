@@ -165,7 +165,8 @@ function FilterButton(props: any) {
         }
       });
     }
-    setFilterName('')
+    setFilterName('');
+    setIsEditModalOpen(false);
   }
 
   const updateFilters = () => {
@@ -215,6 +216,7 @@ function FilterButton(props: any) {
   const closeModal = () => {
     setIsModalOpen(false);
     setFilterName('');
+    setIsEditModalOpen(false);
   }
 
   return (
@@ -313,14 +315,16 @@ function FilterButton(props: any) {
 
                           {visit_type?.map((visit: any, index: number) => (
                             <TableCellTd key={index}>
-                              <CheckboxInner
-                                key={index}
-                                sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
-                                {...label}
-                                onClick={() => handleVisitTypeFilterClick(visit)}
-                                checked={selectedVisitType?.includes(visit) || false}
-                              />
-                              {visit}
+                              <label>
+                                <CheckboxInner
+                                  key={index}
+                                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                                  {...label}
+                                  onClick={() => handleVisitTypeFilterClick(visit)}
+                                  checked={selectedVisitType?.includes(visit) || false}
+                                />
+                                {visit}
+                              </label>
                             </TableCellTd>
                           ))}
                         </TableDataList>
@@ -329,9 +333,9 @@ function FilterButton(props: any) {
                           <TableCellHd>
                             Screening ({patient_screening?.length})
                           </TableCellHd>
-                          {patient_screening?.map(
-                            (patient: any, index: number) => (
-                              <TableCellTd key={index}>
+                          {patient_screening?.map((patient: any, index: number) => (
+                            <TableCellTd key={index}>
+                              <label>
                                 <CheckboxInner
                                   key={index}
                                   sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
@@ -340,9 +344,9 @@ function FilterButton(props: any) {
                                   checked={selectedScreening?.includes(patient) || false}
                                 />
                                 {patient}
-                              </TableCellTd>
-                            )
-                          )}
+                              </label>
+                            </TableCellTd>
+                          ))}
                         </TableDataList>
 
                         <TableDataList>
@@ -351,14 +355,16 @@ function FilterButton(props: any) {
                           </TableCellHd>
                           {provider?.map((pro: any, index: number) => (
                             <TableCellTd key={index}>
-                              <CheckboxInner
-                                key={index}
-                                sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
-                                {...label}
-                                onClick={() => handleProvidersFilterClick(pro)}
-                                checked={selectedProviders?.includes(pro.uuid) || false}
-                              />
-                              {pro.name}
+                              <label>
+                                <CheckboxInner
+                                  key={index}
+                                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 }}}
+                                  {...label}
+                                  onClick={() => handleProvidersFilterClick(pro)}
+                                  checked={selectedProviders?.includes(pro.uuid) || false}
+                                />
+                                {pro.name}
+                              </label>
                             </TableCellTd>
                           ))}
                         </TableDataList>
