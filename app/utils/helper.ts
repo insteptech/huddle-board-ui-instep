@@ -93,3 +93,10 @@ export const deleteLocalStorage = () => {
   localStorage.removeItem(slugKey);
   localStorage.removeItem(huddleBoardConfig);
 }
+
+export const parseDate = (dd:any) => {
+  let day = parseInt(dd, 10); // convert dd to number
+  const month = day > 28? (day > 30? 12 : 11) : (day > 21? 10 : (day > 14? 9 : (day > 7? 8 : 7)));
+  const year = new Date().getFullYear();
+  return new Date(`${month}/${day}/${year}`);
+}

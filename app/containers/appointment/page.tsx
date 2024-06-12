@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, auditLog, getAllAppointments } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -41,7 +41,7 @@ import { AppointmentState, FiltersDataState, emptyAppointmentList, emptySelected
 import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
-import { formatDates, urlParams } from '@/app/utils/helper';
+import { formatDates, parseDate, urlParams } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
 import { accessToken, notAuthenticated } from '@/app/utils/auth';
 
@@ -76,7 +76,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const isFilterDataLoading = useSelector((state: AppState) => state.appointment.isFilterDataLoading);
   const selectedFilterList = useSelector((state: AppState) => state.appointment.selectedFilterList);
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
-  const isAppointmentLoading = useSelector((state: AppState) => state.appointment.isAppointmentLoading);
   const { page } = filters;
   const [date, setDate] = React.useState(new Date());
 
@@ -418,37 +417,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filtersData);
   }
-
-  const calenderArrowClick = (direction: string) => {
-    const filtersData = {
-      ...filters,
-      visit_types: selectedVisitType,
-      providers_uuids: selectedProviders,
-      screening: selectedScreening,
-      page: 1,
-      page_size: 10
-    };
-  
-    if (selectedVisitType.length !== 0 && selectedProviders.length !== 0 && selectedScreening.length !== 0) {
-      setMainLoader(true);
-      setIsFilterApplied(true);
-      dispatch(updateFilter(filtersData));
-      dispatch(emptyAppointmentList());
-      loadMoreAppointment(filtersData);
-      setAnchorEl(null);
-    }
-  
-    const newDate = new Date(date); 
-    dateRangeHandleChange(newDate);
-  };
  
-  const parseDate = (dd:any) => {
-    let day = parseInt(dd, 10); // convert dd to number
-    const month = day > 28? (day > 30? 12 : 11) : (day > 21? 10 : (day > 14? 9 : (day > 7? 8 : 7)));
-    const year = new Date().getFullYear();
-    return new Date(`${month}/${day}/${year}`);
-  }
-
   const handleCalenderButtonClick = (direction: string) => {
     const appointmentsListString = localStorage.getItem('huddleBoardConfig');
     if (!appointmentsListString) return;
@@ -475,10 +444,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     if (minDateOnly.getDate() === selectedDay) {
       setArrowDisabledLeft(true);
-      // setArrowDisabledRight(false);
     } else if (maxDateOnly.getDate() === selectedDay) {
       setArrowDisabledRight(true);
-      // setArrowDisabledLeft(false);
     }
 
     dateRangeHandleChange(selectedDate);
