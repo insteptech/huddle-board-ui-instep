@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import Menu from '@mui/material/Menu';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Box, CircularProgress } from '@mui/material';
@@ -111,7 +111,7 @@ function FilterButton(props: any) {
     setAnchorEl(null);
   };
 
- 
+
 
   const applyFilters = () => {
     const filtersData = {
@@ -218,6 +218,12 @@ function FilterButton(props: any) {
     setFilterName('');
     setIsEditModalOpen(false);
   }
+
+  useEffect(() => {
+    if (selectedFilterList?.length === 0 || selectedFilterList === undefined) {
+      setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked);
+    }
+  }, [selectedFilterList]);
 
   return (
     <>
@@ -358,7 +364,7 @@ function FilterButton(props: any) {
                               <label>
                                 <CheckboxInner
                                   key={index}
-                                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 }}}
+                                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
                                   {...label}
                                   onClick={() => handleProvidersFilterClick(pro)}
                                   checked={selectedProviders?.includes(pro.uuid) || false}
