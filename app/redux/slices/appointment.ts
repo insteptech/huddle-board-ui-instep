@@ -22,7 +22,6 @@ export type AppointmentsState = {
   selectedFilterList: IFilterDataState[];
   selectedFilterDetail: SelectedFilterDetailState | null;
   isAppointmentLoading: boolean;
-  timezone: String
 };
 
 export type SelectedFilterDetailState = {
@@ -42,7 +41,8 @@ export type FiltersDataState = {
   providers_uuids?: string[],
   screening?: string[],
   patient_name?: string,
-  sort_by?: string
+  sort_by?: string,
+  timezone?: String
 }
 
 export type AppointmentFiltersDataState = {
@@ -93,12 +93,12 @@ const initialState: AppointmentsState = {
     page: 1,
     sort_by: 'appointment_timestamp',
     appointment_start_date: formattedDates.start,
-    appointment_end_date: formattedDates.end
+    appointment_end_date: formattedDates.end,
+    timezone: timezone
   },
   selectedFilterList: [],
   selectedFilterDetail: null,
   isAppointmentLoading: false,
-  timezone: timezone
 };
 
 export const appointment = createSlice({
