@@ -225,6 +225,11 @@ function FilterButton(props: any) {
     }
   }, [selectedFilterList]);
 
+  const selectSavedFilter = (list: any) => {
+    onRadioButtonClick(list);
+    getFilterDetail(list)
+  }
+
   return (
     <>
       <Box
@@ -307,7 +312,7 @@ function FilterButton(props: any) {
                               className='radio_sec'
                             >
                               {selectedFilterList?.map((list: any, index: number) => (
-                                <FormControlLabel onClick={() => { getFilterDetail(list) }} key={index} className={selectedSavedFilterUuid === list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ? <Radio onClick={() => onRadioButtonClick(list)} checked={selectedSavedFilterUuid === list.uuid} /> : <List />} label={list.name} />
+                                <FormControlLabel onClick={() => { selectSavedFilter(list) }} key={index} className={selectedSavedFilterUuid === list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ? <Radio onClick={() => selectSavedFilter(list)} checked={selectedSavedFilterUuid === list.uuid} /> : <List />} label={list.name} />
                               ))}
                             </RadioGroup>
                           </RadioMain>
