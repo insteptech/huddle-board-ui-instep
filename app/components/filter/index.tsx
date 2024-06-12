@@ -383,7 +383,7 @@ function FilterButton(props: any) {
           </Grid>
         </Grid>
       </Box>
-      <SaveFilterModal isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter} isEditModalOpen={isEditModalOpen} selectedFilterDetail={selectedFilterDetail} closeModal={closeModal} />
+      <SaveFilterModal setFilterName2={setFilterName} isModalOpen={isModalOpen} modalToggle={modalToggle} filterName={filterName} setFilterName={handleInput} createFilter={createFilter} isEditModalOpen={isEditModalOpen} selectedFilterDetail={selectedFilterDetail} closeModal={closeModal} />
       <DeleteFilterModal isModalOpen={isDeleteModalOpen} modalToggle={deleteModalToggle} deleteModalClose={deleteModalClose} deleteFilterDetail={deleteFilterDetail} />
     </>
   );
