@@ -294,8 +294,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       patient_name: '',
       appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,
-      sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
+      sort_by: 'appointment_timestamp'
     };
+    setIsAppointmentTimeSortAscending(false);
     setMainLoader(true);
     setSelectedVisitType([]);
     setSelectedScreening([]);
