@@ -420,10 +420,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const calenderArrowClick = (direction: string) => {
-    const appointmentsListString = localStorage.getItem('huddleBoardConfig');
-    if (!appointmentsListString) return;
-    const { past_calendar_days_count, future_calender_days_count } = JSON.parse(appointmentsListString);
-  
     const filtersData = {
       ...filters,
       visit_types: selectedVisitType,
@@ -442,33 +438,47 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setAnchorEl(null);
     }
   
-    const newDate = new Date(date);
-    if (direction.toLowerCase() === "left") {
-      newDate.setDate(date.getDate() - 1);
-    } else {
-      newDate.setDate(date.getDate() + 1);
-    }
-    setDate(newDate);
-  
-    const currentDate = new Date();
-    const newDateOnly = newDate.toISOString().split('T')[0];
-  
-    const minDateOnly = new Date(currentDate.getTime() - past_calendar_days_count * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    const maxDateOnly = new Date(currentDate.getTime() + future_calender_days_count * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-  
-    if (newDateOnly === minDateOnly) {
-      setArrowDisabledLeft(true);
-      setArrowDisabledRight(false);
-    } else if (newDateOnly === maxDateOnly) {
-      setArrowDisabledRight(true);
-      setArrowDisabledLeft(false);
-    } else {
-      setArrowDisabledLeft(false);
-      setArrowDisabledRight(false);
-    }
-  
+    const newDate = new Date(date); 
     dateRangeHandleChange(newDate);
   };
+ 
+  const parseDate = (dd:any) => {
+    let day = parseInt(dd, 10); // convert dd to number
+    const month = day > 28? (day > 30? 12 : 11) : (day > 21? 10 : (day > 14? 9 : (day > 7? 8 : 7)));
+    const year = new Date().getFullYear();
+    return new Date(`${month}/${day}/${year}`);
+  }
+
+  const handleCalenderButtonClick = (direction: string) => {
+    const appointmentsListString = localStorage.getItem('huddleBoardConfig');
+    if (!appointmentsListString) return;
+    const { past_calendar_days_count, future_calender_days_count } = JSON.parse(appointmentsListString);
+
+    const currentDate = new Date();
+    const currentDay = currentDate.getDate();
+
+    const selectedDate = new Date(date);
+
+    if (direction.toLowerCase() === "left") {
+      selectedDate.setDate(date.getDate() - 1);
+    } else {
+      selectedDate.setDate(date.getDate() + 1);
+    }
+    setDate(selectedDate);
+    const selectedDay = selectedDate.getDate();
+
+    const minDateOnly = parseDate(currentDay - past_calendar_days_count);
+    const maxDateOnly = parseDate(currentDay + future_calender_days_count);
+
+    if (minDateOnly.getDate() === selectedDay) {
+      setArrowDisabledLeft(true);
+    } else if (maxDateOnly.getDate() === selectedDay) {
+      setArrowDisabledRight(true);
+    }
+
+    dateRangeHandleChange(selectedDate);
+
+  }
 
   return (
     <>
@@ -480,10 +490,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           <RightPrint>
             {
               arrowDisabledLeft ?
-                <RightBox sx={{ visibility: "hidden" }} onClick={() => calenderArrowClick("left")}>
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => handleCalenderButtonClick("left")}>
                   <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
                 </RightBox> :
-                <RightBox onClick={() => calenderArrowClick("left")}>
+                <RightBox onClick={() => handleCalenderButtonClick("left")}>
                   <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
                 </RightBox>
             }
@@ -498,10 +508,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             </Box>
             {
               arrowDisabledRight ?
-                <RightBox sx={{ visibility: "hidden" }} onClick={() => calenderArrowClick("right")}>
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => handleCalenderButtonClick("right")}>
                   <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox> :
-                <RightBox onClick={() => calenderArrowClick("right")}>
+                <RightBox onClick={() => handleCalenderButtonClick("right")}>
                   <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox>
             }
