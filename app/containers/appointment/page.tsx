@@ -472,8 +472,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     if (minDateOnly.getDate() === selectedDay) {
       setArrowDisabledLeft(true);
+      setArrowDisabledRight(false);
     } else if (maxDateOnly.getDate() === selectedDay) {
       setArrowDisabledRight(true);
+      setArrowDisabledLeft(false);
     }
 
     dateRangeHandleChange(selectedDate);
