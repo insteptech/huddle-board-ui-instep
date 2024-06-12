@@ -221,7 +221,7 @@ function FilterButton(props: any) {
 
   useEffect(() => {
     if (selectedFilterList === undefined) {
-      setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked);
+      setIsSavedFilterSettingClicked(false);
     }
   }, [selectedFilterList]);
 
