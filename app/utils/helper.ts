@@ -63,23 +63,17 @@ export const getCurrentDateFormatted = (date?: any) => {
 }
 
 export const formatDates = (startDate: any, endDate: any) => {
-
+  // Helper function to format date
   const formatDate = (date: any, isEndOfDay: any) => {
     let incomingDate = new Date(date);
-    if (isEndOfDay) {
-      incomingDate.setHours(23, 59, 59, 999);
-    } else {
-      incomingDate.setHours(0, 0, 0, 0);
-    }
+    const year = incomingDate?.getFullYear();
+    const month = String(incomingDate?.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(incomingDate?.getDate()).padStart(2, '0');
+    const hours = isEndOfDay ? '23' : '00';
+    const minutes = isEndOfDay ? '59' : '00';
+    const seconds = isEndOfDay ? '59' : '00';
 
-    const year = incomingDate.getUTCFullYear();
-    const month = String(incomingDate.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const day = String(incomingDate.getUTCDate()).padStart(2, '0');
-    const hours = String(incomingDate.getUTCHours()).padStart(2, '0');
-    const minutes = String(incomingDate.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(incomingDate.getUTCSeconds()).padStart(2, '0');
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}Z`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
   const startFormatted = formatDate(startDate, false);
@@ -90,18 +84,6 @@ export const formatDates = (startDate: any, endDate: any) => {
     end: endFormatted
   };
 }
-
-
-// const date = new Date(Date.UTC(2020, 11, 20, 3, 23, 16, 738));
-
-// console.log(
-//   new Intl.DateTimeFormat('en-GB', {
-//     dateStyle: 'full',
-//     timeStyle: 'long',
-//     timeZone: 'Australia/Sydney',
-//   }).format(date),
-// );
-
 
 export const deleteLocalStorage = () => {
   const { accessToken, slugKey, refreshToken, huddleBoardConfig } = sessionKeys;

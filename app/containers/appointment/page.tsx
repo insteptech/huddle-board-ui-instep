@@ -285,6 +285,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const resetFilters = (isFilterPopOpen: boolean = false) => {
     const formattedDates = formatDates(date, date);
+    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const filters = {
       visit_types: [],
       providers_uuids: [],
@@ -294,7 +296,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       patient_name: '',
       appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,
-      sort_by: 'appointment_timestamp'
+      sort_by: 'appointment_timestamp',
+      timezone: timezone
     };
     setIsAppointmentTimeSortAscending(false);
     setMainLoader(true);
