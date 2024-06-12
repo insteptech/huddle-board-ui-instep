@@ -91,7 +91,6 @@ export const getCurrentDateFormatted = (date?: any) => {
 export const formatDates = (startDate: any, endDate: any) => {
   const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-
 // Define the start of the day in IST
 const startDateTimeIST = moment.tz(startDate, timezone).startOf('day');
 
@@ -102,9 +101,6 @@ const endDateTimeIST = moment.tz(startDate, timezone).endOf('day');
 const startDateTimeUTC = startDateTimeIST.clone().tz("UTC");
 const endDateTimeUTC = endDateTimeIST.clone().tz("UTC");
 
-console.log("Start dateTime in IST (UTC):", startDateTimeUTC.format());
-console.log("End dateTime in IST (UTC):", endDateTimeUTC.format());
- 
   return {
     start: startDateTimeUTC.format(),
     end: endDateTimeUTC.format()

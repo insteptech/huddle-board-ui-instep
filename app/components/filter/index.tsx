@@ -205,9 +205,6 @@ function FilterButton(props: any) {
   }
 
   const deleteFilterDetail = () => {
-    if (selectedFilter?.uuid === undefined) {
-      return
-    }
     dispatch(deleteSelectedFilterDetail(selectedFilter.uuid)).then((response: any) => {
       toast.success("Filter deleted successfully");
       dispatch(getSelectedFilterList());
