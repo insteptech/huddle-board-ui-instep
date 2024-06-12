@@ -31,7 +31,7 @@ const SaveTransition = React.forwardRef(function Transition(
 });
 
 const SaveFilterModal = (props: any) => {
-  const { isModalOpen, modalToggle, filterName, setFilterName, setFilterName2 ,createFilter, isEditModalOpen, selectedFilterDetail, closeModal } = props;
+  const { isModalOpen, modalToggle, filterName, setFilterName, setFilterName2, createFilter, isEditModalOpen, selectedFilterDetail, closeModal } = props;
 
   return (
     <React.Fragment>
@@ -64,10 +64,10 @@ const SaveFilterModal = (props: any) => {
           <InputTitleInner>Filter name</InputTitleInner>
           {
             isEditModalOpen ? <TextFieldInput
-              value={filterName || null ||selectedFilterDetail?.name}
+              value={filterName || null || selectedFilterDetail?.name}
               id="fullWidth"
               placeholder="AWV+PVD"
-              onChange={(event)=>setFilterName2(event?.target.value)}
+              onChange={(event) => setFilterName2(event?.target.value)}
               maxLength={200}
               sx={{
                 '::placeholder': {

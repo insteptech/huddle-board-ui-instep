@@ -220,7 +220,7 @@ function FilterButton(props: any) {
   }
 
   useEffect(() => {
-    if (selectedFilterList?.length === 0 || selectedFilterList === undefined) {
+    if (selectedFilterList === undefined) {
       setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked);
     }
   }, [selectedFilterList]);
@@ -307,7 +307,7 @@ function FilterButton(props: any) {
                               className='radio_sec'
                             >
                               {selectedFilterList?.map((list: any, index: number) => (
-                                <FormControlLabel onClick={() => { getFilterDetail(list) }} key={index} className={selectedSavedFilterUuid === list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ? <Radio onClick={() => onRadioButtonClick(list)} /> : <List />} label={list.name} />
+                                <FormControlLabel onClick={() => { getFilterDetail(list) }} key={index} className={selectedSavedFilterUuid === list.uuid ? 'radio_sec_inner selectedSavedFilter' : 'radio_sec_inner'} value={list.uuid} control={isSavedFilterSettingClicked ? <Radio onClick={() => onRadioButtonClick(list)} checked={selectedSavedFilterUuid === list.uuid} /> : <List />} label={list.name} />
                               ))}
                             </RadioGroup>
                           </RadioMain>
