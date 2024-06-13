@@ -886,6 +886,10 @@ export const BoxContentLogin = styled('div')(({ div }: any) => ({
   width: '50%',
   textAlign: 'center',
 
+  '@media (max-width: 1280px)': {
+    width: '80%'
+  }
+
 }));
 export const ButtonLogin = styled('button')(({ div }: any) => ({
   fontSize: '14px',
