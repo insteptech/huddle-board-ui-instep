@@ -287,7 +287,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const formattedDates = formatDates(date, date);
     const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    const filters = {
+    const filtersData = {
+      ...filters,
       visit_types: [],
       providers_uuids: [],
       screening: [],
@@ -296,17 +297,15 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       patient_name: '',
       appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,
-      sort_by: 'appointment_timestamp',
       timezone: timezone
     };
-    setIsAppointmentTimeSortAscending(false);
     setMainLoader(true);
     setSelectedVisitType([]);
     setSelectedScreening([]);
     setSelectedProviders([]);
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filtersData);
     setPatientNameSearch('');
     setSelectedSavedFilterUuid('');
     if (!isFilterPopOpen) {
@@ -329,8 +328,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         ...filters,
         page: 1,
         page_size: 10,
-        patient_name: '',
-        sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
+        patient_name: ''
       };
       setIsFilterApplied(false);
       dispatch(updateFilter(filtersData));

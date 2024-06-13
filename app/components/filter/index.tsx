@@ -122,9 +122,6 @@ function FilterButton(props: any) {
     setAnchorEl(null);
   };
 
-  console.log(filterName, selectedFilterDetail)
-
-
   const applyFilters = () => {
     const filtersData = {
       ...filters,
