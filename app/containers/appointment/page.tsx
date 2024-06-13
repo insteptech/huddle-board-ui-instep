@@ -363,7 +363,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     }
 
-    if (e?.target?.value?.length >= 2) {
+    if (e?.target?.value?.length > 2) {
+
+      const newVal = e.target.value;
+
       const filtersData = {
         ...filters,
         visit_types: selectedVisitType,
@@ -371,12 +374,15 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         screening: selectedScreening,
         page: 1,
         page_size: 10,
-        patient_name: e.target.value
+        patient_name: newVal
       };
+
+      dispatch(emptyAppointmentList());
       setIsFilterApplied(true);
       dispatch(updateFilter(filtersData));
-      dispatch(emptyAppointmentList());
       loadMoreAppointment(filtersData);
+
+
     }
   }
 
