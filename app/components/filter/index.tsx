@@ -45,7 +45,7 @@ function FilterButton(props: any) {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [filterName, setFilterName] = React.useState('');
+
   const [isSavedFilterSettingClicked, setIsSavedFilterSettingClicked] = React.useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = React.useState(false);
   const [selectedFilter, setSelectedFilter] = React.useState<any>({});
@@ -53,13 +53,24 @@ function FilterButton(props: any) {
 
   const dispatch = useDispatch<AppDispatch>();
   const selectedFilterDetail = useSelector((state: AppState) => state.appointment.selectedFilterDetail);
+  const [filterName, setFilterName] = React.useState(isEditModalOpen ? selectedFilterDetail?.name : " ");
+
 
   const modalToggle = () => {
     setIsModalOpen(!isModalOpen);
   }
+  useEffect(() => {
+    if (isEditModalOpen) {
+      setFilterName(selectedFilterDetail?.name || '');
+    } else {
+      setFilterName('');
+    }
+  }, [selectedFilterDetail, isEditModalOpen]);
+
 
   const handleInput = (data: any) => {
-    setFilterName(data.target.value);
+
+    setFilterName(data?.target.value);
   }
 
   const handleClick = (event: any) => {
@@ -111,6 +122,7 @@ function FilterButton(props: any) {
     setAnchorEl(null);
   };
 
+  console.log(filterName, selectedFilterDetail)
 
 
   const applyFilters = () => {
@@ -215,9 +227,13 @@ function FilterButton(props: any) {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setFilterName('');
+    if (isEditModalOpen) {
+      setFilterName(selectedFilterDetail?.name || "");
+    } else {
+      setFilterName("");
+    }
     setIsEditModalOpen(false);
-  }
+  };
 
   useEffect(() => {
     if (selectedFilterList === undefined) {

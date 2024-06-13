@@ -20,6 +20,7 @@ import {
   DialogContentTexts,
   CharacterCountText,
 } from "../../styles/customStyle";
+import { useEffect } from "react";
 
 const SaveTransition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -62,38 +63,24 @@ const SaveFilterModal = (props: any) => {
 
         <Container>
           <InputTitleInner>Filter name</InputTitleInner>
-          {
-            isEditModalOpen ? <TextFieldInput
-              value={filterName || null || selectedFilterDetail?.name}
-              id="fullWidth"
-              placeholder="AWV+PVD"
-              onChange={(event) => setFilterName2(event?.target.value)}
-              maxLength={200}
-              sx={{
-                '::placeholder': {
-                  color: '#ddd',
-                }
-              }}
-            /> :
-              <TextFieldInput
-                value={filterName}
-                id="fullWidth"
-                placeholder="AWV+PVD"
-                onChange={setFilterName}
-                maxLength={200}
-                sx={{
-                  '::placeholder': {
-                    color: '#ddd',
-                  }
-                }}
-              />
-          }
+          <TextFieldInput
+            value={filterName}
+            id="fullWidth"
+            placeholder="AWV+PVD"
+            onChange={setFilterName}
+            maxLength={200}
+            sx={{
+              '::placeholder': {
+                color: '#ddd',
+              }
+            }}
+          />
           <CharacterCountText>200 Characters Limit</CharacterCountText>
           <DialogActionsMain>
             <ButtonCancel onClick={() => closeModal()}>Cancel</ButtonCancel>
             <ButtonSave
               onClick={() => createFilter(isEditModalOpen)}
-              disabled={filterName.length === 0}
+              disabled={filterName?.length === 0}
             >
               {isEditModalOpen ? "Update" : "Save"}
             </ButtonSave>
