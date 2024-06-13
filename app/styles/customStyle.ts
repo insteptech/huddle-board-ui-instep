@@ -2,6 +2,7 @@ import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, T
 import TableRow from "@mui/material/TableRow";
 import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
+import { cursorTo } from "readline";
 
 interface StyledButtonProps {
   buttonstate: string;
@@ -828,7 +829,7 @@ export const ContentBottomBold = styled('h4')(({ div }: any) => ({
   fontWeight: '600',
   lineHeight: '20px',
   color: '#0D426A',
-  marginBottom: '2rem',
+  marginBottom: '5px',
 }));
 
 
@@ -916,4 +917,25 @@ export const CharacterCountText = styled(Typography)(({ div }: any) => ({
   lineHeight: '20px',
   color: '#8B8D97',
   textAlign: 'end'
+}));
+
+export const ContentBottomMail = styled(Typography)(({ div }: any) => ({
+  fontSize: '18px',
+  fontWeight: '400',
+  lineHeight: '19.8px',
+  color: '#000',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+}));
+
+export const ContentBottomEmailLink = styled(Typography)(({ div }: any) => ({
+
+  color: '#2ABDF0',
+  fontWeight: '700',
+  "&:hover": {
+    cursor: 'pointer',
+  },
+
 }));
