@@ -322,21 +322,24 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const searchAppointmentPatientName = (e: any) => {
     setPatientNameSearch(e.target.value);
-
+   
     if (!e?.target?.value) {
       const filtersData = {
         ...filters,
         page: 1,
         page_size: 10,
-        patient_name: ''
+        patient_name: e.target.value
       };
-      setIsFilterApplied(false);
-      dispatch(updateFilter(filtersData));
-      dispatch(emptyAppointmentList());
-      loadMoreAppointment(filtersData);
+      setTimeout(() => {
+        dispatch(emptyAppointmentList());
+        setIsFilterApplied(false);
+        loadMoreAppointment(filtersData);
+        dispatch(updateFilter(filtersData));
+      }, 500)
+
     }
 
-    if (e?.target?.value?.length > 1) {
+    if (e?.target?.value?.length >= 2) {
       const filtersData = {
         ...filters,
         visit_types: [],
@@ -419,7 +422,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(emptyAppointmentList());
     loadMoreAppointment(filtersData);
   }
- 
+
   const handleCalenderButtonClick = (direction: string) => {
     const appointmentsListString = localStorage.getItem('huddleBoardConfig');
     if (!appointmentsListString) return;

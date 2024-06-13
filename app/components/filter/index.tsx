@@ -77,6 +77,7 @@ function FilterButton(props: any) {
     setAnchorEl(event.currentTarget);
     setIsFilterApplied(true);
     getAppointmentFiltersData();
+    setIsSavedFilterSettingClicked(false);
   };
 
   const isEmptyFilter = () => {
