@@ -320,9 +320,33 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(emptySelectedFilter());
   }
 
+  useEffect(() => {
+    if (selectedVisitType.length === 0 && selectedProviders.length === 0 && selectedScreening.length === 0) {
+      const formattedDates = formatDates(date, date);
+      const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      const filtersData = {
+        ...filters,
+        visit_types: [],
+        providers_uuids: [],
+        screening: [],
+        page: 1,
+        page_size: 10,
+        appointment_start_date: formattedDates.start,
+        appointment_end_date: formattedDates.end,
+        timezone: timezone
+      };
+
+      dispatch(updateFilter(filtersData));
+      loadMoreAppointment(filtersData);
+      dispatch(emptyAppointmentList());
+      setSelectedSavedFilterUuid('');
+    }
+  }, [selectedVisitType, selectedProviders, selectedScreening])
+
   const searchAppointmentPatientName = (e: any) => {
     setPatientNameSearch(e.target.value);
-   
+
     if (!e?.target?.value) {
       const filtersData = {
         ...filters,
@@ -342,9 +366,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     if (e?.target?.value?.length >= 2) {
       const filtersData = {
         ...filters,
-        visit_types: [],
-        providers_uuids: [],
-        screening: [],
+        visit_types: selectedVisitType,
+        providers_uuids: selectedProviders,
+        screening: selectedScreening,
         page: 1,
         page_size: 10,
         patient_name: e.target.value
