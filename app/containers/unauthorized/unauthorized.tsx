@@ -52,9 +52,8 @@ const Unauthorized = () => {
         <ContentBottom>The huddle board is a powerful tool to help clinical and non-clinical staff more effectively<br /> manage their time and deliver exceptional patient care.</ContentBottom>
         <ContentBottomBold>Contact DoctusTech support to add it to your subscription today.</ContentBottomBold>
         <ContentBottomMail >Mail us at:
-
-          <ContentBottomEmailLink key="Email" component="a" href="mailto:support@doctustech.com">
-            support@doctustech.com
+          <ContentBottomEmailLink key="Email" href="mailto:support@doctustech.com">
+            &nbsp;support@doctustech.com
           </ContentBottomEmailLink>
         </ContentBottomMail>
         {/* <ButtonLogin onClick={() => setOpen(!open)}>Contact Support</ButtonLogin> */}

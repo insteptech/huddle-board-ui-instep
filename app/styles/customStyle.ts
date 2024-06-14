@@ -930,12 +930,12 @@ export const ContentBottomMail = styled(Typography)(({ div }: any) => ({
 
 }));
 
-export const ContentBottomEmailLink = styled(Typography)(({ div }: any) => ({
-
+export const ContentBottomEmailLink = styled(Link)(({ div }: any) => ({
   color: '#2ABDF0',
   fontWeight: '700',
   "&:hover": {
     cursor: 'pointer',
   },
-
+  textDecoration: 'none',
+  fontSize: '18px'
 }));
