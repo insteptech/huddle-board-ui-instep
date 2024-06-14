@@ -363,7 +363,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     }
 
-    if (e?.target?.value?.length > 2) {
+    if (e?.target?.value?.length > 1) {
 
       const newVal = e.target.value;
 
