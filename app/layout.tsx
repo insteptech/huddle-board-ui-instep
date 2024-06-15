@@ -27,13 +27,15 @@ export default function MainLayout({
 }>) {
   return (
     <AppRouterCacheProvider>
-          
       <ReduxProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <html lang="en">
-            <body className={inter.className}>
-              <RootLayout><ToastContainer />{children}</RootLayout>
+            <body>
+              <RootLayout>
+                <ToastContainer />
+                {children}
+              </RootLayout>
             </body>
           </html>
         </ThemeProvider>
