@@ -37,7 +37,7 @@ import {
     Text,
     StyledMuiButton,
     StyledPatient,
-    TestButton
+    TestButton,TableRowInside
 } from '@/app/styles/customStyle';
 
 import { getOutComeBtnState } from '@/app/utils/appointment';
@@ -143,12 +143,12 @@ const Row = (props: any) => {
                                     :
                                     <Table size="small" aria-label="purchases">
                                         <TableHead>
-                                            <TableRow>
+                                            <TableRowInside>
                                                 <TableMidData>Screening</TableMidData>
                                                 <TableMidData>Action</TableMidData>
                                                 <TableMidData>Reason</TableMidData>
                                                 <TableMidData sx={{ width: '430px' }}>Outcome</TableMidData>
-                                            </TableRow>
+                                            </TableRowInside>
                                         </TableHead>
 
                                         {
@@ -167,7 +167,7 @@ const Row = (props: any) => {
                                                 (
                                                     <TableBody>
                                                         {!isDetailLoading && appointmentDetail.map((detail: any) => (
-                                                            <TableRow key={detail.uuid}>
+                                                            <TableRowInside  key={detail.uuid}>
                                                                 <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
                                                                 <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                                                                 <TableMidData sx={{ width: '380px', }}><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
@@ -185,7 +185,7 @@ const Row = (props: any) => {
                                                                     }
 
                                                                 </TableMidData>
-                                                            </TableRow>
+                                                            </TableRowInside>
                                                         ))}
                                                     </TableBody>
                                                 )
