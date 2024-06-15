@@ -138,9 +138,12 @@ export const TableMid = styled(TableCell)(({ div }: any) => ({
 }));
 
 export const TableMidData = styled(TableCell)(({ div }: any) => ({
-  border: '1px solid #B1C6E2',
-  background: '#EBF4FF',
+  borderRight: '1px solid #B1C6E2',
+  borderBottom: 'none',
   padding: '12px',
+  "&:last-child": {
+    borderRight: 'none',
+  }
 }));
 
 export const ActionBtn = styled(Typography)(({ div }: any) => ({
@@ -964,6 +967,11 @@ export const ContentBottomEmailLink = styled(Link)(({ div }: any) => ({
   fontSize: '18px'
 }));
 
-export const TableRowInside = styled('div')(({ div }: any) => ({
-  
+export const TableRowInside = styled(TableRow)(({ div }: any) => ({
+  border: '1px solid #B1C6E2',
+  background: '#EBF4FF',
+}));
+
+export const TableMidin = styled('div')(({ div }: any) => ({
+  display: 'flex', alignItems: 'Center', justifyContent: 'space-around',
 }));

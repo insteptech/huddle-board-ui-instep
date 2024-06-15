@@ -38,7 +38,7 @@ import {
     StyledMuiButton,
     StyledPatient,
     TestButton,
-    TableRowInside
+    TableRowInside,TableMidin
 } from '@/app/styles/customStyle';
 
 import { getOutComeBtnState } from '@/app/utils/appointment';
@@ -172,7 +172,8 @@ const Row = (props: any) => {
                                                                 <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
                                                                 <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                                                                 <TableMidData sx={{ width: '380px', }}><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
-                                                                <TableMidData sx={{ width: '430px', display: 'flex', alignItems: 'Center', justifyContent: 'center', }}>
+                                                                <TableMidData sx={{ width: '430px'}}>
+                                                                <TableMidin>
                                                                     <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
                                                                         Clinician Agrees
                                                                     </StyledMuiButton>
@@ -182,9 +183,10 @@ const Row = (props: any) => {
                                                                     {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateButtonState('test_ordered', getOutComeBtnState(detail, 'test_ordered'), detail)}>
                                                                         Test Ordered
                                                                     </StyledMuiButton> :
-                                                                        <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '5px', }} /></Tooltip>Test Not Needed</TestButton>
+                                                                        <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '3px',width:'20px' }} /></Tooltip>Test Not Needed</TestButton>
                                                                     }
 
+                                                                </TableMidin>
                                                                 </TableMidData>
                                                             </TableRowInside>
                                                         ))}
