@@ -29,7 +29,7 @@ const Unauthorized = () => {
   return (
     <BoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
       <BoxContentLogin>
-        <BoxImgLog> <img src={Logo.src} /> </BoxImgLog>
+        <BoxImgLog> <img  src={Logo.src} /> </BoxImgLog>
         <ContentOnTop>Unfortunately, your current subscription doesn’t<br /> include our Huddle Board feature. </ContentOnTop>
         <MidContentSection>
           <MidContentLeft>

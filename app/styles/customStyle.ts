@@ -758,6 +758,10 @@ export const BoxSection = styled('div')(({ div }: any) => ({
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100%',
 
+  '@media (max-width: 1280px)': {
+    top: '0px'
+  }
+
 }));
 
 
@@ -809,39 +813,46 @@ export const BoxMid = styled('div')(({ div }: any) => ({
 
 
 export const ContentOnTop = styled('h4')(({ div }: any) => ({
-  fontSize: '24px',
+  fontSize: '1.5rem',
   fontWeight: '600',
-  lineHeight: '26.4px',
+  lineHeight: '1.65rem',
   color: '#0D426A',
   marginBottom: '30px',
+
+  '@media (max-width: 1280px)': {
+    marginBottom: '20px',
+  }
 }));
 
 export const ContentBottom = styled(Typography)(({ div }: any) => ({
-  fontSize: '18px',
+  fontSize: '1.125rem',
   fontWeight: '400',
-  lineHeight: '19.8px',
+  lineHeight: '1.238rem',
   color: '#000',
   marginBottom: '20px',
 }));
 
 export const ContentBottomBold = styled('h4')(({ div }: any) => ({
-  fontSize: '20px',
+  fontSize: '1.25rem',
   fontWeight: '600',
-  lineHeight: '20px',
+  lineHeight: '1.25rem',
   color: '#0D426A',
   marginBottom: '5px',
 }));
 
 
 export const ListLoginItem = styled(ListItem)(({ div }: any) => ({
-  fontSize: '18px',
+  fontSize: '1.125rem',
   fontWeight: '400',
-  lineHeight: '21.6px',
+  lineHeight: '1.35rem',
   color: '#000',
   marginBottom: '20px',
   display: 'list-item',
   padding: '0px',
   paddingLeft: '5px',
+  '@media (max-width: 1280px)': {
+    marginBottom: '15px',
+  }
 }));
 
 export const ListLogin = styled(List)(({ div }: any) => ({
@@ -857,6 +868,9 @@ export const MidContentSection = styled('div')(({ div }: any) => ({
 
   display: 'flex',
   margin: '2rem 0',
+  '@media (max-width: 1280px)': {
+    margin: '1rem 0',
+  }
 
 }));
 
@@ -866,6 +880,13 @@ export const MidContentLeft = styled('div')(({ div }: any) => ({
 
   'img': {
     width: '100%',
+  },
+
+  '@media (max-width: 1280px)': {
+  
+    'img': {
+    maxWidth: '300px',
+  }
   }
 
 }));
@@ -909,6 +930,9 @@ export const ButtonLogin = styled('button')(({ div }: any) => ({
 export const BoxImgLog = styled('div')(({ div }: any) => ({
 
   marginBottom: '3rem',
+  '@media (max-width: 1280px)': {
+    marginBottom: '1rem',
+  }
 }));
 
 export const CharacterCountText = styled(Typography)(({ div }: any) => ({
@@ -920,9 +944,9 @@ export const CharacterCountText = styled(Typography)(({ div }: any) => ({
 }));
 
 export const ContentBottomMail = styled(Typography)(({ div }: any) => ({
-  fontSize: '18px',
+  fontSize: '1.125rem',
   fontWeight: '400',
-  lineHeight: '19.8px',
+  lineHeight: '1.238rem',
   color: '#000',
   display: 'flex',
   alignItems: 'center',
