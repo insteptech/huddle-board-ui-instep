@@ -963,3 +963,7 @@ export const ContentBottomEmailLink = styled(Link)(({ div }: any) => ({
   textDecoration: 'none',
   fontSize: '18px'
 }));
+
+export const TableRowInside = styled('div')(({ div }: any) => ({
+  
+}));

@@ -37,7 +37,8 @@ import {
     Text,
     StyledMuiButton,
     StyledPatient,
-    TestButton,TableRowInside
+    TestButton,
+    TableRowInside
 } from '@/app/styles/customStyle';
 
 import { getOutComeBtnState } from '@/app/utils/appointment';
