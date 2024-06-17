@@ -38,7 +38,8 @@ import {
     StyledMuiButton,
     StyledPatient,
     TestButton,
-    TableRowInside,TableMidin
+    TableRowInside,
+    TableMidIn
 } from '@/app/styles/customStyle';
 
 import { getOutComeBtnState } from '@/app/utils/appointment';
@@ -136,8 +137,7 @@ const Row = (props: any) => {
                                 appointment.gap_count === 0 ? <Table>
                                     <TableHead>
                                         <TableRow>
-                                            <TableMidData sx={{ textAlign: "center", fontWeight: "600", padding: "25px 0" }}>No Screening Data Available</TableMidData>
-
+                                            <TableMidData sx={{ textAlign: "center", fontWeight: "600", padding: "25px 0", backgroundColor: "#EBF4FF", border: "1px solid #B1C6E2 !important" }}>No Screening Data Available</TableMidData>
                                         </TableRow>
                                     </TableHead>
                                 </Table>
@@ -173,7 +173,7 @@ const Row = (props: any) => {
                                                                 <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                                                                 <TableMidData sx={{ width: '380px', }}><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
                                                                 <TableMidData sx={{ width: '430px'}}>
-                                                                <TableMidin>
+                                                                <TableMidIn>
                                                                     <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
                                                                         Clinician Agrees
                                                                     </StyledMuiButton>
@@ -186,7 +186,7 @@ const Row = (props: any) => {
                                                                         <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '3px',width:'20px' }} /></Tooltip>Test Not Needed</TestButton>
                                                                     }
 
-                                                                </TableMidin>
+                                                                </TableMidIn>
                                                                 </TableMidData>
                                                             </TableRowInside>
                                                         ))}

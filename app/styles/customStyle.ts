@@ -68,7 +68,7 @@ export const StyledText = styled(Typography)(({ div }: any) => ({
   color: '#475467',
 }));
 
-export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
+export const StyledTableRow = styled(TableRow)({
   margin: '20px',
   boxShadow: '0px 2px 5px 0px #0000000D',
   background: '#fff',
@@ -77,7 +77,7 @@ export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
     boxShadow: '0px 4px 4px 0px #00000040',
     cursor: 'pointer'
   },
-}));
+})
 
 export const StaticTypo = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
@@ -743,7 +743,6 @@ export const BoxSec = styled('div')(({ div }: any) => ({
   backgroundPosition: 'bottom center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100%',
-
 }));
 
 export const BoxSection = styled('div')(({ div }: any) => ({
@@ -767,8 +766,6 @@ export const BoxSection = styled('div')(({ div }: any) => ({
 
 }));
 
-
-
 export const BoxTopContent = styled('div')(({ div }: any) => ({
   fontSize: '60px',
   fontWeight: '600',
@@ -777,25 +774,13 @@ export const BoxTopContent = styled('div')(({ div }: any) => ({
   textAlign: 'center',
 }));
 
-
 export const BoxContent = styled('div')(({ div }: any) => ({
-
   textAlign: 'center',
 }));
 
 export const BoxImg = styled('div')(({ div }: any) => ({
-
   marginBottom: '10rem',
 }));
-
-
-
-
-
-
-
-
-
 
 export const BoldContent = styled('div')(({ div }: any) => ({
   fontSize: '120px',
@@ -803,7 +788,6 @@ export const BoldContent = styled('div')(({ div }: any) => ({
   lineHeight: '12px',
   color: '#0D426A',
   marginBottom: '4rem',
-
 }));
 
 export const BoxMid = styled('div')(({ div }: any) => ({
@@ -813,7 +797,6 @@ export const BoxMid = styled('div')(({ div }: any) => ({
   color: '#101828',
   marginBottom: '30px',
 }));
-
 
 export const ContentOnTop = styled('h4')(({ div }: any) => ({
   fontSize: '1.5rem',
@@ -865,56 +848,40 @@ export const ListLogin = styled(List)(({ div }: any) => ({
   marginLeft: '3rem',
 }));
 
-
-
 export const MidContentSection = styled('div')(({ div }: any) => ({
-
   display: 'flex',
   margin: '2rem 0',
   '@media (max-width: 1280px)': {
     margin: '1rem 0',
   }
-
 }));
 
 export const MidContentLeft = styled('div')(({ div }: any) => ({
-
   width: '40%',
-
   'img': {
     width: '100%',
   },
-
   '@media (max-width: 1280px)': {
-  
     'img': {
     maxWidth: '300px',
   }
   }
-
 }));
 
 export const MidContentRight = styled('div')(({ div }: any) => ({
-
   width: '60%',
-
 }));
 
 export const Listlogin = styled('div')(({ div }: any) => ({
-
   width: 'auto',
-
 }));
 
 export const BoxContentLogin = styled('div')(({ div }: any) => ({
-
   width: '50%',
   textAlign: 'center',
-
   '@media (max-width: 1280px)': {
     width: '80%'
   }
-
 }));
 export const ButtonLogin = styled('button')(({ div }: any) => ({
   fontSize: '14px',
@@ -931,7 +898,6 @@ export const ButtonLogin = styled('button')(({ div }: any) => ({
 
 
 export const BoxImgLog = styled('div')(({ div }: any) => ({
-
   marginBottom: '3rem',
   '@media (max-width: 1280px)': {
     marginBottom: '1rem',
@@ -954,7 +920,6 @@ export const ContentBottomMail = styled(Typography)(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-
 }));
 
 export const ContentBottomEmailLink = styled(Link)(({ div }: any) => ({
@@ -972,6 +937,8 @@ export const TableRowInside = styled(TableRow)(({ div }: any) => ({
   background: '#EBF4FF',
 }));
 
-export const TableMidin = styled('div')(({ div }: any) => ({
-  display: 'flex', alignItems: 'Center', justifyContent: 'space-around',
+export const TableMidIn = styled('div')(({ div }: any) => ({
+  display: 'flex', 
+  alignItems: 'Center', 
+  justifyContent: 'space-around',
 }));
