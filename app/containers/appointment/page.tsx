@@ -602,7 +602,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
 
           {(isPatientNotFound || isClearFilter) && (
-            <TableOtherContainer sx={{ m: "30px 0", height: windowHeight - 300 }}>
+            <TableOtherContainer sx={{ m: "10px 0 0 0", height: windowHeight - 300 }}>
               <Table sx={{ height: "100%" }} aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>
@@ -644,7 +644,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           )}
 
           {!isPatientNotFound && !isClearFilter && (
-            <TableMainContainer sx={{ m: "30px 0", height: windowHeight - 250 }}>
+            <TableMainContainer sx={{ height: windowHeight - 250 }}>
               <Table aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>

@@ -44,9 +44,7 @@ export const TableMainContainer = styled(TableContainer)(({ theme }: any) => ({
   boxShadow: 'none',
   backgroundColor: 'transparent',
   overflow: 'auto',
-  margin: '10px 0 0 0 !important',
-
-
+  margin: '10px 0 0 0',
 }));
 
 export const TableOtherContainer = styled(TableContainer)(({ theme }: any) => ({
