@@ -115,6 +115,9 @@ export const StyledCopy = styled('div')(({ div }: any) => ({
 export const IconProgress = styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
+  '@media (max-width: 980px)': {
+    padding: '10px 5px'
+  }
 }));
 
 export const ProviderCell = styled(Typography)(({ div }: any) => ({
@@ -266,7 +269,7 @@ export const FilterMenu = styled('div')(({ div }: any) => ({
 
 export const TableDiv = styled('div')(({ div }: any) => ({
   background: '#fff',
-  padding: '10px 0',
+  padding: '10px 0 0 0',
   margin: '25px 0',
 }));
 
@@ -861,8 +864,8 @@ export const MidContentLeft = styled('div')(({ div }: any) => ({
   },
   '@media (max-width: 1280px)': {
     'img': {
-    maxWidth: '300px',
-  }
+      maxWidth: '300px',
+    }
   }
 }));
 
@@ -936,7 +939,7 @@ export const TableRowInside = styled(TableRow)(({ div }: any) => ({
 }));
 
 export const TableMidIn = styled('div')(({ div }: any) => ({
-  display: 'flex', 
-  alignItems: 'Center', 
-  justifyContent: 'space-around',
+  display: 'flex',
+  alignItems: 'Center',
+  justifyContent: 'space-evenly',
 }));

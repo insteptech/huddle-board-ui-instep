@@ -312,7 +312,7 @@ function FilterButton(props: any) {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableData>
-                        {selectedFilterList?.length > 0 && <TableDataList sx={{ width: '160px' }}>
+                        {selectedFilterList?.length > 0 && <TableDataList>
                           <TableCellHd sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             Saved Filter{" "}
                             <SettingsOutlinedIcon style={{ fontSize: "12px", cursor: "pointer" }} onClick={() => setIsSavedFilterSettingClicked(!isSavedFilterSettingClicked)} />
