@@ -18,7 +18,9 @@ import {
   ButtonCancel,
   TextFieldInput,
   DialogContentTexts,
+  CharacterCountText,
 } from "../../styles/customStyle";
+import { useEffect } from "react";
 
 const SaveTransition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -30,7 +32,7 @@ const SaveTransition = React.forwardRef(function Transition(
 });
 
 const SaveFilterModal = (props: any) => {
-  const { isModalOpen, modalToggle, filterName, setFilterName, createFilter, isEditModalOpen, selectedFilterDetail, closeModal } = props;
+  const { isModalOpen, modalToggle, filterName, setFilterName, setFilterName2, createFilter, isEditModalOpen, selectedFilterDetail, closeModal } = props;
 
   return (
     <React.Fragment>
@@ -40,18 +42,18 @@ const SaveFilterModal = (props: any) => {
         open={isModalOpen}
         TransitionComponent={SaveTransition}
         keepMounted
-        onClose={()=>closeModal()}
+        onClose={() => closeModal()}
         aria-describedby="alert-dialog-slide-description"
       >
         <ModalHeader>
           <ModalHeaderIcon>
-          <img src={renameFilter.src}/>
+            <img src={renameFilter.src} />
           </ModalHeaderIcon>
-          <CloseIcon sx={{ cursor: "pointer" }} onClick={()=>closeModal()} />
+          <CloseIcon sx={{ cursor: "pointer" }} onClick={() => closeModal()} />
         </ModalHeader>
 
         <DialogContent>
-          <DialogTitleInner>{isEditModalOpen ? "Rename filter" :"Save a filter"}</DialogTitleInner>
+          <DialogTitleInner>{isEditModalOpen ? "Rename filter" : "Save a filter"}</DialogTitleInner>
           <DialogContentTexts id="alert-dialog-slide-description">
             <DialogContentTextInner>
               Using a set of filters regularly, save it to reuse.
@@ -62,18 +64,25 @@ const SaveFilterModal = (props: any) => {
         <Container>
           <InputTitleInner>Filter name</InputTitleInner>
           <TextFieldInput
-            value={filterName || selectedFilterDetail?.name}
+            value={filterName}
             id="fullWidth"
             placeholder="AWV+PVD"
             onChange={setFilterName}
+            maxLength={200}
+            sx={{
+              '::placeholder': {
+                color: '#ddd',
+              }
+            }}
           />
+          <CharacterCountText>200 Characters Limit</CharacterCountText>
           <DialogActionsMain>
-            <ButtonCancel onClick={()=>closeModal()}>Cancel</ButtonCancel>
+            <ButtonCancel onClick={() => closeModal()}>Cancel</ButtonCancel>
             <ButtonSave
-              onClick={()=>createFilter(isEditModalOpen)}
-              disabled={filterName.length === 0}
+              onClick={() => createFilter(isEditModalOpen)}
+              disabled={filterName?.length === 0}
             >
-              {isEditModalOpen ? "Update" :"Save"}
+              {isEditModalOpen ? "Update" : "Save"}
             </ButtonSave>
           </DialogActionsMain>
         </Container>

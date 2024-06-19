@@ -1,31 +1,35 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail } from '../actions/appointment';
+import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail, getAllAppointments } from '../actions/appointment';
 import { sortArraysInObject, sortObjectsByName } from '@/app/utils/appointment';
+import { formatDates } from '@/app/utils/helper';
+
+
+const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export type AppointmentsState = {
-    appointmentsData: {
-        results?: AppointmentState[],
-        count?: number,
-        next?: string | null,
-        previous?: string | null
-    };
-    appointmentDetail: AppointmentDetail[];
-    selectedPatientDetail: string | null;
-    isDetailLoading: boolean;
-    appointmentFiltersData: AppointmentFiltersDataState | null;
-    isFilterDataLoading: boolean;
-    filtersData: FiltersDataState;
-    selectedFilterList: IFilterDataState[];
-    selectedFilterDetail: SelectedFilterDetailState | null;
-    isAppointmentLoading: boolean;
+  appointmentsData: {
+    results?: AppointmentState[],
+    count?: number,
+    next?: string | null,
+    previous?: string | null
+  };
+  appointmentDetail: AppointmentDetail[];
+  selectedPatientDetail: string | null;
+  isDetailLoading: boolean;
+  appointmentFiltersData: AppointmentFiltersDataState | null;
+  isFilterDataLoading: boolean;
+  filtersData: FiltersDataState;
+  selectedFilterList: IFilterDataState[];
+  selectedFilterDetail: SelectedFilterDetailState | null;
+  isAppointmentLoading: boolean;
 };
 
 export type SelectedFilterDetailState = {
   uuid: string;
   name: string;
-  visit_type: [{uuid: string}];
-  screening: [{uuid: string}];
-  providers: [{uuid: string}];
+  visit_type: [{ uuid: string }];
+  screening: [{ uuid: string }];
+  providers: [{ uuid: string }];
 }
 
 export type FiltersDataState = {
@@ -37,7 +41,8 @@ export type FiltersDataState = {
   providers_uuids?: string[],
   screening?: string[],
   patient_name?: string,
-  sort_by?: string
+  sort_by?: string,
+  timezone?: String
 }
 
 export type AppointmentFiltersDataState = {
@@ -52,15 +57,15 @@ export type IFilterDataState = {
 }
 
 export type AppointmentState = {
-    uuid: String,
-    patient_name: String,
-    appointment_timestamp: String,
-    visit_type: String,
-    gap_count: Number,
-    selected_gap_count: Number,
-    screening: String[],
-    providers_uuids: String,
-    mrn: String
+  uuid: String,
+  patient_name: String,
+  appointment_timestamp: String,
+  visit_type: String,
+  gap_count: Number,
+  selected_gap_count: Number,
+  screening: String[],
+  providers_uuids: String,
+  mrn: String
 }
 
 export type AppointmentDetail = {
@@ -74,22 +79,26 @@ export type AppointmentDetail = {
   description: String,
   screening_uuid: String
 }
+const formattedDates = formatDates(new Date(), new Date());
 
 const initialState: AppointmentsState = {
-    appointmentsData: {},
-    appointmentDetail: [],
-    selectedPatientDetail: null,
-    isDetailLoading: false,
-    appointmentFiltersData: null,
-    isFilterDataLoading: false,
-    filtersData: {
-      page_size: 10,
-      page: 1,
-      sort_by: 'appointment_timestamp'
-    },
-    selectedFilterList: [],
-    selectedFilterDetail: null,
-    isAppointmentLoading: false
+  appointmentsData: {},
+  appointmentDetail: [],
+  selectedPatientDetail: null,
+  isDetailLoading: false,
+  appointmentFiltersData: null,
+  isFilterDataLoading: false,
+  filtersData: {
+    page_size: 10,
+    page: 1,
+    sort_by: 'appointment_timestamp',
+    appointment_start_date: formattedDates.start,
+    appointment_end_date: formattedDates.end,
+    timezone: timezone
+  },
+  selectedFilterList: [],
+  selectedFilterDetail: null,
+  isAppointmentLoading: false,
 };
 
 export const appointment = createSlice({
@@ -97,14 +106,17 @@ export const appointment = createSlice({
   initialState,
   reducers: {
     locationData(state, action) {
-      console.log('state:--',state, 'action:---',action);
+      console.log('state:--', state, 'action:---', action);
     },
-    updateFilter(state, {payload}) {
-      state.filtersData = {...state.filtersData, ...payload};
+    updateFilter(state, { payload }) {
+      state.filtersData = { ...state.filtersData, ...payload };
     },
     emptyAppointmentList(state) {
       state.appointmentsData = {};
     },
+    emptySelectedFilter(state) {
+      state.selectedFilterDetail = null
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getAppointmentsList.pending, (state, action) => {
@@ -147,7 +159,7 @@ export const appointment = createSlice({
       console.log(state, action, 'rejected');
       state.isFilterDataLoading = false;
     });
-    builder.addCase(getFiltersData.fulfilled, (state, { payload }) => {      
+    builder.addCase(getFiltersData.fulfilled, (state, { payload }) => {
       state.appointmentFiltersData = sortArraysInObject(payload);
       state.isFilterDataLoading = false;
     });
@@ -167,16 +179,19 @@ export const appointment = createSlice({
     builder.addCase(getSelectedFilterDetail.fulfilled, (state, { payload }) => {
       state.selectedFilterDetail = payload;
     });
+    builder.addCase(getAllAppointments.fulfilled, (state, { payload }) => {
+      state.appointmentsData.results = updateAppointment(current(state)?.appointmentsData?.results, current(state)?.appointmentDetail[0], payload);
+    });
   },
 });
 
-const appointmentsList = (previousAppointments: any, payload: any) => {    
+const appointmentsList = (previousAppointments: any, payload: any) => {
   var clonesPreviousAppointments = new Array(previousAppointments)[0] || [];
   if (clonesPreviousAppointments && payload?.results) {
     var dummyArray = payload.results;
     clonesPreviousAppointments = clonesPreviousAppointments.concat(dummyArray);
 
-    const uniqueAppointments = clonesPreviousAppointments.filter((obj: { uuid: any; }, index: any, self: any[]) => 
+    const uniqueAppointments = clonesPreviousAppointments.filter((obj: { uuid: any; }, index: any, self: any[]) =>
       index === self.findIndex((t: { uuid: any; }) => (
         t.uuid === obj.uuid
       ))
@@ -191,12 +206,24 @@ const appointmentsList = (previousAppointments: any, payload: any) => {
     return initialData;
   }
   return {
-    results:[],
+    results: [],
     count: 0,
-    next:'',
-    previous:''
+    next: '',
+    previous: ''
   }
 };
 
-export const { locationData, updateFilter, emptyAppointmentList } = appointment.actions;
+const updateAppointment = (allAppointment: any, selectedAppointment: any, payload: any) => {
+  const updatedAppointment = payload?.results?.find((e: any) => e.uuid === selectedAppointment?.appointment_id);
+  let appointments: any[] = [];
+  allAppointment.forEach((obj: any) => {
+    if (obj.uuid === selectedAppointment?.appointment_id) {
+      obj = updatedAppointment;
+    }
+    appointments.push(obj);
+  });
+  return appointments;
+}
+
+export const { locationData, updateFilter, emptyAppointmentList, emptySelectedFilter } = appointment.actions;
 export default appointment.reducer;

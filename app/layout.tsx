@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../app/styles/theme';
@@ -9,8 +8,6 @@ import dynamic from 'next/dynamic';
 import ReduxProvider from '@/app/redux/provider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const RootLayout = dynamic(() => import('./components/rootLayout').then((mod) => mod), {
   ssr: false,
@@ -27,13 +24,15 @@ export default function MainLayout({
 }>) {
   return (
     <AppRouterCacheProvider>
-          
       <ReduxProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <html lang="en">
-            <body className={inter.className}>
-              <RootLayout><ToastContainer />{children}</RootLayout>
+            <body>
+              <RootLayout>
+                <ToastContainer />
+                {children}
+              </RootLayout>
             </body>
           </html>
         </ThemeProvider>

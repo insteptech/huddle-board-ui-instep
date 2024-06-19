@@ -1,7 +1,8 @@
-import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox } from "@mui/material";
+import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox, List, ListItem } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
+import { cursorTo } from "readline";
 
 interface StyledButtonProps {
   buttonstate: string;
@@ -43,12 +44,7 @@ export const TableMainContainer = styled(TableContainer)(({ theme }: any) => ({
   boxShadow: 'none',
   backgroundColor: 'transparent',
   overflow: 'auto',
-  height: '615px',
-  margin: '10px 0 0 0 !important',
-
-  '@media(max-width: 1600px)' : {
-    height: '515px',
-   }
+  margin: '10px 0 0 0',
 }));
 
 export const TableOtherContainer = styled(TableContainer)(({ theme }: any) => ({
@@ -70,7 +66,7 @@ export const StyledText = styled(Typography)(({ div }: any) => ({
   color: '#475467',
 }));
 
-export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
+export const StyledTableRow = styled(TableRow)({
   margin: '20px',
   boxShadow: '0px 2px 5px 0px #0000000D',
   background: '#fff',
@@ -79,7 +75,7 @@ export const StyledTableRow = styled(TableRow)(({ div }: any) => ({
     boxShadow: '0px 4px 4px 0px #00000040',
     cursor: 'pointer'
   },
-}));
+})
 
 export const StaticTypo = styled(Typography)(({ div }: any) => ({
   fontSize: '14px',
@@ -100,7 +96,7 @@ export const LinkText = styled(Link)(({ div }: any) => ({
 }));
 
 export const StyledPatient = styled('div')(({ div }: any) => ({
-  textDecoration: 'underline',
+  textDecoration: 'none',
 }));
 
 export const StyledName = styled('div')(({ div }: any) => ({
@@ -140,9 +136,12 @@ export const TableMid = styled(TableCell)(({ div }: any) => ({
 }));
 
 export const TableMidData = styled(TableCell)(({ div }: any) => ({
-  border: '1px solid #B1C6E2',
-  background: '#EBF4FF',
+  borderRight: '1px solid #B1C6E2',
+  borderBottom: 'none',
   padding: '12px',
+  "&:last-child": {
+    borderRight: 'none',
+  }
 }));
 
 export const ActionBtn = styled(Typography)(({ div }: any) => ({
@@ -163,10 +162,6 @@ export const Text = styled(Typography)(({ div }: any) => ({
   lineHeight: '16px',
   textAlign: 'left',
   color: '#242629',
-  whiteSpace: 'nowrap',
-  width: '200px',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
   cursor: 'pointer'
 }));
 
@@ -192,8 +187,8 @@ export const StyledMuiButton = styled(Button) <StyledButtonProps>`
     display: inline-block;
     border-radius: 3px;
     text-align: center;
+    margin: 5px 0;
     margin-right: 10px;
-    margin-bottom: 10px;
     &:hover{
       background-color: ${(props) =>
     props.buttonstate == 'active' ? '#0D426A' :
@@ -208,6 +203,12 @@ export const StyledMuiButton = styled(Button) <StyledButtonProps>`
       props.buttonstate == 'enable' ? '1px solid #5C6469' :
         props.buttonstate == 'disable' ? '1px solid #C8CED2' : '1px solid #5C6469'};
     }
+
+    &:last-child{
+      margin-right: 0px;
+    }
+
+
 `;
 
 export const BorderLinearProgress = styled(LinearProgress)(({ theme, value }: any) => ({
@@ -333,13 +334,18 @@ export const TypoSpan = styled(Typography)(({ div }: any) => ({
   color: '#344054',
 }));
 
-export const BoxFilterRightMid = styled(Typography)(({ div }: any) => ({
+export const BoxFilterRightMid = styled(Button)(({ div }: any) => ({
   fontSize: '14px',
   fontWeight: '600',
   lineHeight: '17.05px',
   textAlign: 'left',
   color: '#17236D',
-  margin: '0 10px',
+  margin: '0px',
+  minWidth: 'auto',
+
+  "&:hover": {
+    background: '#fff',
+  },
 }));
 
 export const TableCellHd = styled('div')(({ div }: any) => ({
@@ -448,8 +454,7 @@ export const TestButton = styled('div')(({ div }: any) => ({
   fontWeight: '400',
   lineHeight: '16px',
   color: '#5C6469',
-  marginRight: '10px',
-  marginBottom: '10px',
+  marginRight: '0px'
 }));
 
 export const ModalHeader = styled('div')(({ div }: any) => ({
@@ -546,7 +551,7 @@ export const DialogActionsMain = styled('div')(({ div }: any) => ({
   alignItems: 'Center',
   justifyContent: 'space-between',
   gap: '10px',
-  margin: '30px 0 20px 0',
+  margin: '20px 0 20px 0',
 }));
 
 export const SearchClearIcon = styled('div')(({ div }: any) => ({
@@ -606,6 +611,23 @@ export const ButtonDelete = styled(Button)(({ div }: any) => ({
 
 }));
 
+
+export const ButtonConfirm = styled(Button)(({ div }: any) => ({
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '24px',
+  border: '1px solid #2abdf0',
+  padding: '10px 18px',
+  borderRadius: '8px',
+  background: '#2abdf0',
+  color: '#fff !important',
+  width: '50%',
+  "&:hover": {
+    background: '#2abdf0',
+  },
+
+}));
+
 export const TextFieldInput = styled('input')(({ div }: any) => ({
   fontSize: '16px',
   fontWeight: '400',
@@ -648,7 +670,7 @@ export const DataRangeBox = styled('div')(({ div }: any) => ({
   },
   '.rdrDefinedRangesWrapper button': {
     borderBottom: 'none',
-    color:'#2D3748',
+    color: '#2D3748',
     'span': {
       fontSize: '14px',
       fontWeight: '400',
@@ -679,12 +701,20 @@ export const CalenderSection = styled('div')(({ div }: any) => ({
   '.rdrMonth button span': {
     borderRadius: '50%!important',
     margin: 'auto',
-    width:'30px',
-    height:'30px',
+    width: '30px',
+    height: '30px',
     fontSize: '14px',
-  fontWeight: '400',
-  lineHeight: '21px',
+    fontWeight: '400',
+    lineHeight: '21px',
   },
+
+  '.rdrDay .rdrSelected': {
+    backgroundColor: '#2abdf0 !important'
+  },
+  '.rdrDayEndPreview': {
+    borderColor: '#2abdf0'
+  }
+
 }));
 
 export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({
@@ -700,37 +730,213 @@ export const AppointmentLoaderBox = styled('div')(({ div }: any) => ({
 export const BoxSec = styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
-  background:'#fff',
+  background: '#fff',
   justifyContent: 'center',
   position: 'absolute',
   left: '0',
   right: '0',
   bottom: '0',
-  top: '0',
-  margin: '10rem'
+  top: '-150px',
+  backgroundColor: '#F3F7FC',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: '100%',
 }));
 
-export const BoxContent = styled('div')(({ div }: any) => ({
-  fontSize: '50px',
-  fontWeight: '400',
-  lineHeight: '36px',
-  color: '#101828',
+export const BoxSection = styled('div')(({ div }: any) => ({
+  display: 'flex',
+  alignItems: 'center',
+  background: '#fff',
+  justifyContent: 'center',
+  position: 'absolute',
+  left: '0',
+  right: '0',
+  bottom: '0',
+  top: '-50px',
+  backgroundColor: '#F3F7FC',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: '100%',
+
+  '@media (max-width: 1280px)': {
+    top: '0px'
+  }
+
+}));
+
+export const BoxTopContent = styled('div')(({ div }: any) => ({
+  fontSize: '60px',
+  fontWeight: '600',
+  lineHeight: '60px',
+  color: '#0D426A',
   textAlign: 'center',
 }));
 
-export const BoldContent = styled('div')(({ div }: any) => ({
-  fontSize: '100px',
-  fontWeight: '800',
-  lineHeight: '80px',
-  color: '#101828',
-  marginBottom:'30px',
-
+export const BoxContent = styled('div')(({ div }: any) => ({
+  textAlign: 'center',
 }));
 
-export const BoxMid = styled('div')(({ div }: any) => ({  
+export const BoxImg = styled('div')(({ div }: any) => ({
+  marginBottom: '10rem',
+}));
+
+export const BoldContent = styled('div')(({ div }: any) => ({
+  fontSize: '120px',
+  fontWeight: '700',
+  lineHeight: '12px',
+  color: '#0D426A',
+  marginBottom: '4rem',
+}));
+
+export const BoxMid = styled('div')(({ div }: any) => ({
   fontSize: '100px',
   fontWeight: '800',
   lineHeight: '80px',
   color: '#101828',
-  marginBottom:'30px',
+  marginBottom: '30px',
+}));
+
+export const ContentOnTop = styled('h4')(({ div }: any) => ({
+  fontSize: '1.5rem',
+  fontWeight: '600',
+  lineHeight: '1.65rem',
+  color: '#0D426A',
+  marginBottom: '30px',
+
+  '@media (max-width: 1280px)': {
+    marginBottom: '20px',
+  }
+}));
+
+export const ContentBottom = styled(Typography)(({ div }: any) => ({
+  fontSize: '1.125rem',
+  fontWeight: '400',
+  lineHeight: '1.238rem',
+  color: '#000',
+  marginBottom: '20px',
+}));
+
+export const ContentBottomBold = styled('h4')(({ div }: any) => ({
+  fontSize: '1.25rem',
+  fontWeight: '600',
+  lineHeight: '1.25rem',
+  color: '#0D426A',
+  marginBottom: '5px',
+}));
+
+
+export const ListLoginItem = styled(ListItem)(({ div }: any) => ({
+  fontSize: '1.125rem',
+  fontWeight: '400',
+  lineHeight: '1.35rem',
+  color: '#000',
+  marginBottom: '20px',
+  display: 'list-item',
+  padding: '0px',
+  paddingLeft: '5px',
+  '@media (max-width: 1280px)': {
+    marginBottom: '15px',
+  }
+}));
+
+export const ListLogin = styled(List)(({ div }: any) => ({
+  listStyleType: 'disc',
+  padding: '0',
+  marginBottom: '0',
+  marginLeft: '3rem',
+}));
+
+export const MidContentSection = styled('div')(({ div }: any) => ({
+  display: 'flex',
+  margin: '2rem 0',
+  '@media (max-width: 1280px)': {
+    margin: '1rem 0',
+  }
+}));
+
+export const MidContentLeft = styled('div')(({ div }: any) => ({
+  width: '40%',
+  'img': {
+    width: '100%',
+  },
+  '@media (max-width: 1280px)': {
+    'img': {
+    maxWidth: '300px',
+  }
+  }
+}));
+
+export const MidContentRight = styled('div')(({ div }: any) => ({
+  width: '60%',
+}));
+
+export const Listlogin = styled('div')(({ div }: any) => ({
+  width: 'auto',
+}));
+
+export const BoxContentLogin = styled('div')(({ div }: any) => ({
+  width: '50%',
+  textAlign: 'center',
+  '@media (max-width: 1280px)': {
+    width: '80%'
+  }
+}));
+export const ButtonLogin = styled('button')(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '600',
+  lineHeight: '18px',
+  textAlign: 'center',
+  padding: '10px 20px',
+  borderRadius: '3px',
+  cursor: 'pointer',
+  background: '#0D426A',
+  color: '#fff',
+  border: 'none',
+}));
+
+
+export const BoxImgLog = styled('div')(({ div }: any) => ({
+  marginBottom: '3rem',
+  '@media (max-width: 1280px)': {
+    marginBottom: '1rem',
+  }
+}));
+
+export const CharacterCountText = styled(Typography)(({ div }: any) => ({
+  fontSize: '10px',
+  fontWeight: '400',
+  lineHeight: '20px',
+  color: '#8B8D97',
+  textAlign: 'end'
+}));
+
+export const ContentBottomMail = styled(Typography)(({ div }: any) => ({
+  fontSize: '1.125rem',
+  fontWeight: '400',
+  lineHeight: '1.238rem',
+  color: '#000',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+export const ContentBottomEmailLink = styled(Link)(({ div }: any) => ({
+  color: '#2ABDF0',
+  fontWeight: '700',
+  "&:hover": {
+    cursor: 'pointer',
+  },
+  textDecoration: 'none',
+  fontSize: '18px'
+}));
+
+export const TableRowInside = styled(TableRow)(({ div }: any) => ({
+  border: '1px solid #B1C6E2',
+  background: '#EBF4FF',
+}));
+
+export const TableMidIn = styled('div')(({ div }: any) => ({
+  display: 'flex', 
+  alignItems: 'Center', 
+  justifyContent: 'space-around',
 }));

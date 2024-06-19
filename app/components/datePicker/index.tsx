@@ -1,39 +1,39 @@
 'use client'
-import React, { useEffect } from 'react'
-
+import React, { useEffect, useState, useRef } from 'react';
 import { Box, Button } from '@mui/material';
-import { useState } from 'react';
 import { getCurrentDateFormatted } from '@/app/utils/helper';
 import { Calendar } from '@iroomit/react-date-range';
 import { CalenderSection, DataRangeBox } from '@/app/styles/customStyle';
 import calenderIcon from "../../images/calender.svg"
 
 const DatePicker = (props: any) => {
-
-    const { dateRangeHandleChange,date, setArrowDisabledRight,setDate, setArrowDisabledLeft } = props;
+    const { dateRangeHandleChange, date, setArrowDisabledRight, setDate, setArrowDisabledLeft } = props;
     const [anchorEl, setAnchorEl] = useState(false);
     const [minDate, setMinDate] = useState(new Date());
     const [maxDate, setMaxDate] = useState(new Date());
+    const anchorRef = useRef<any>(null);
 
+    const huddleBoardConfig = localStorage.getItem('huddleBoardConfig');
+    const config = huddleBoardConfig ? JSON.parse(huddleBoardConfig) : null;
 
-    
+    const minDateFromConfig = config?.past_calendar_days_count;
+    const maxDateFromConfig = config?.future_calender_days_count;
 
     const handleDateChange = (newDate: Date) => {
+
         const currentDate = new Date()
-        
+
         dateRangeHandleChange(newDate);
         setDate(newDate);
 
         const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
         const newDate1Only = newDate1.toISOString().split('T')[0];
 
-        const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
+        const minDate = new Date(currentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
         const minDateOnly = minDate.toISOString().split('T')[0];
 
-        const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+        const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
         const maxDateOnly = maxDate.toISOString().split('T')[0];
-
-        
 
         if (newDate1Only == minDateOnly) {
             setArrowDisabledLeft(true)
@@ -52,10 +52,22 @@ const DatePicker = (props: any) => {
 
     useEffect(() => {
         const currentDate = new Date();
-        const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);;
-        const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+        const minDate = new Date(currentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
+        const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
+
         setMinDate(minDate);
         setMaxDate(maxDate);
+
+        const handleClickOutside = (event: any) => {
+            if (anchorRef.current && !anchorRef.current.contains(event.target)) {
+                setAnchorEl(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const handleClick = () => {
@@ -63,8 +75,14 @@ const DatePicker = (props: any) => {
     };
 
     return (
-        <CalenderSection>
+        <CalenderSection ref={anchorRef}>
             <Button
+                sx={{
+                    backgroundColor: "#2ABDF0", ':hover': {
+                        backgroundColor: "#18A2D1",
+
+                    }
+                }}
                 className=""
                 aria-controls="simple-menu"
                 aria-haspopup="true"

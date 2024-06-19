@@ -1,3 +1,8 @@
+import * as moment from 'moment';
+import 'moment-timezone';
+
+import { sessionKeys } from "./auth";
+
 export const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
 export const cookieName = { jwtToken: 'jwt-token' };
@@ -29,7 +34,7 @@ export const deleteCookie = (name: string) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
-export const getTime = (timestamp:string) => {
+export const getTime = (timestamp: string) => {
   const date = new Date(timestamp);
   const hours = date.getHours();
   const minutes = date.getMinutes();
@@ -40,45 +45,79 @@ export const getTime = (timestamp:string) => {
   return formattedTime;
 }
 
-export const urlParams = (params:any) =>{
+export const urlParams = (params: any) => {
   const query = Object.entries(params)
-    .filter(([key, value]:any) => {
-        return Array.isArray(value) ? value.length > 0 : value !== '';
+    .filter(([key, value]: any) => {
+      return Array.isArray(value) ? value.length > 0 : value !== '';
     })
-    .map(([key, value]:any) => `${encodeURIComponent(key)}=${Array.isArray(value) ? JSON.stringify(value) : encodeURIComponent(value)}`)
-    .join('&');    
-    return query;
+    .map(([key, value]: any) => `${encodeURIComponent(key)}=${Array.isArray(value) ? JSON.stringify(value) : encodeURIComponent(value)}`)
+    .join('&');
+  return query;
 }
 
-export const getCurrentDateFormatted = (date?: any) => {  
+export const getCurrentDateFormatted = (date?: any) => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const currentDate = new Date(date);
   const day = String(currentDate.getDate()).padStart(2, '0');
   const month = months[currentDate.getMonth()];
   const year = currentDate.getFullYear();
-  
+
   return `${day} ${month} ${year}`;
 }
 
+// export const formatDates = (startDate: any, endDate: any) => {
+//   // Helper function to format date
+//   const formatDate = (date: any, isEndOfDay: any) => {
+//     let incomingDate = new Date(date);
+//     const year = incomingDate?.getFullYear();
+//     const month = String(incomingDate?.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+//     const day = String(incomingDate?.getDate()).padStart(2, '0');
+//     const hours = isEndOfDay ? '23' : '00';
+//     const minutes = isEndOfDay ? '59' : '00';
+//     const seconds = isEndOfDay ? '59' : '00';
+
+//     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+//   }
+
+//   const startFormatted = formatDate(startDate, false);
+//   const endFormatted = formatDate(endDate, true);
+
+//   return {
+//     start: startFormatted,
+//     end: endFormatted
+//   };
+// }
+
 export const formatDates = (startDate: any, endDate: any) => {
-  // Helper function to format date
-  const formatDate = (date: any, isEndOfDay: any) => {
-    let incomingDate = new Date(date);
-    const year = incomingDate?.getFullYear();
-    const month = String(incomingDate?.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const day = String(incomingDate?.getDate()).padStart(2, '0');
-    const hours = isEndOfDay ? '23' : '00';
-    const minutes = isEndOfDay ? '59' : '00';
-    const seconds = isEndOfDay ? '59' : '00';
+  const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
+// Define the start of the day in IST
+const startDateTimeIST = moment.tz(startDate, timezone).startOf('day');
 
-  const startFormatted = formatDate(startDate, false);
-  const endFormatted = formatDate(endDate, true);
+// Define the end of the day in IST
+const endDateTimeIST = moment.tz(startDate, timezone).endOf('day');
+
+// Convert IST dateTimes to UTC
+const startDateTimeUTC = startDateTimeIST.clone().tz("UTC");
+const endDateTimeUTC = endDateTimeIST.clone().tz("UTC");
 
   return {
-    start: startFormatted,
-    end: endFormatted
+    start: startDateTimeUTC.format(),
+    end: endDateTimeUTC.format()
   };
+}
+
+export const deleteLocalStorage = () => {
+  const { accessToken, slugKey, refreshToken, huddleBoardConfig } = sessionKeys;
+  localStorage.removeItem(accessToken);
+  localStorage.removeItem(refreshToken);
+  localStorage.removeItem(slugKey);
+  localStorage.removeItem(huddleBoardConfig);
+}
+
+export const parseDate = (dd: any) => {
+  let day = parseInt(dd, 10); // convert dd to number
+  const month = day > 28 ? (day > 30 ? 12 : 11) : (day > 21 ? 10 : (day > 14 ? 9 : (day > 7 ? 8 : 7)));
+  const year = new Date().getFullYear();
+  return new Date(`${month}/${day}/${year}`);
 }

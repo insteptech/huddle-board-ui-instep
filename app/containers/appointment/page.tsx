@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -37,15 +37,13 @@ import {
   SearchClearIcon,
   TableMidData
 } from '../../styles/customStyle';
-import { AppointmentState, FiltersDataState, emptyAppointmentList, updateFilter } from '@/app/redux/slices/appointment';
+import { AppointmentState, FiltersDataState, emptyAppointmentList, emptySelectedFilter, updateFilter } from '@/app/redux/slices/appointment';
 import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
-import { formatDates } from '@/app/utils/helper';
+import { formatDates, parseDate, urlParams } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
-import { accessToken } from '@/app/utils/auth';
-
-const url = `${API_URL}download-appointments/?file_type=pdf`;
+import { accessToken, notAuthenticated } from '@/app/utils/auth';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -78,7 +76,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const isFilterDataLoading = useSelector((state: AppState) => state.appointment.isFilterDataLoading);
   const selectedFilterList = useSelector((state: AppState) => state.appointment.selectedFilterList);
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
-  const isAppointmentLoading = useSelector((state: AppState) => state.appointment.isAppointmentLoading);
   const { page } = filters;
   const [date, setDate] = React.useState(new Date());
 
@@ -87,36 +84,61 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening || []);
   const [selectedProviders, setSelectedProviders] = useState<any>(filters.providers_uuids || []);
   const [selectedAppointmentUuid, setSelectedAppointmentUuid] = useState<string>('');
+  const [selectedAppointmentGap, setSelectedAppointmentGap] = useState<number>();
   const [selectedSavedFilterUuid, setSelectedSavedFilterUuid] = useState<string>('');
   const [isAppointmentTimeSortAscending, setIsAppointmentTimeSortAscending] = useState(false);
   const [isPatientNameSortAscending, setIsPatientNameSortAscending] = useState(false);
   const [loaderAppoint, setLoaderAppoint] = useState<any>(false);
   const [mainLoader, setMainLoader] = useState<any>(true);
 
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [reverseModal, setReverseModal] = useState(false);
+
+  const [actionValue, setActionValue] = useState({
+    value: "",
+    data: "",
+    detail: {}
+  })
 
   const { ref, inView } = useInView();
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowHeight(window.innerHeight);
+    }
+    setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   const loadMoreAppointment = (filter: FiltersDataState) => {
-
     dispatch(getAppointmentsList(filter)).then((response: any) => {
       setMainLoader(false);
       dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
       if (response?.payload?.results.length === 0) {
         setIsClearFilter(true);
-
       } else {
         setIsClearFilter(false);
-
       }
     })
   };
 
   useEffect(() => {
+    if (!notAuthenticated()) {
+      window.location.href = '/unauthorized';
+    }
     dispatch(getAppointmentsList(filters))
-      .then(() => {
+      .then((response: any) => {
         setIsPatientNotFound(false);
         dispatch(updateFilter({ page: Number(page) + 1 }));
         setMainLoader(false);
+        if (response?.payload?.results.length === 0) {
+          setIsClearFilter(true);
+        } else {
+          setIsClearFilter(false);
+        }
       })
       .catch((error) => {
         setMainLoader(false);
@@ -135,7 +157,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(getAppointmentDetail({ appointment_id: id })).then(() => {
       setLoaderAppoint(false);
     })
-
   };
 
   const getAction = (value: string) => {
@@ -151,17 +172,65 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
   };
 
+  const getAction2 = (value: string) => {
+    switch (value) {
+      case 'clinician_agrees':
+        return { clinician_agrees: false, clinician_disagrees: false, test_ordered: false };
+      case 'clinician_disagrees':
+        return { clinician_disagrees: false, clinician_agrees: false, test_ordered: false };
+      case 'test_ordered':
+        return { test_ordered: false };
+      default:
+        return {};
+    }
+  };
+
+
+  const updateButtonState = (value: any, data: any, detail: any) => {
+    if (data == "disable") {
+      toast.error("cannot select")
+      return;
+    }
+    if (data == "enable") {
+      setConfirmationModal(true)
+      setActionValue({
+        value: value,
+        data: data,
+        detail: detail
+      })
+    }
+    if (data == "active") {
+      setReverseModal(true)
+      setActionValue({
+        value: value,
+        data: data,
+        detail: detail
+      })
+    }
+  }
+
   const updateOutCome = (value: any, data: any, detail: any) => {
+    setReverseModal(false);
+    setConfirmationModal(false)
+
     const { appointment_id, uuid } = detail;
     const payload = {
       appointment_id: appointment_id,
       screening_id: uuid,
-      action: getAction(value)
+      action: data == "enable" ? getAction(value) : getAction2(value)
     }
 
     dispatch(updateAppointmentDetail(payload)).then(() => {
       toast.success("Successfully Updated");
       appointmentDetails(appointment_id);
+      const formattedDates = formatDates(filters.appointment_start_date, filters.appointment_end_date);
+      const payload = {
+        page: 1,
+        page_size: 200,
+        appointment_start_date: formattedDates.start,
+        appointment_end_date: formattedDates.end,
+      };
+      dispatch(getAllAppointments(payload));
     }).catch(() => {
       toast.error("Update failed");
     })
@@ -183,7 +252,19 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   //     });
   // }
 
+
+
+
   const handlePdf = () => {
+
+    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const appliedFilters = {
+      ...filters,
+      file_type: 'pdf',
+      timezone: timezone
+    };
+    const url = `${API_URL}download-appointments/?${urlParams(appliedFilters)}`;
     fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken()}` } })
       .then(res => res.blob())
       .then(res => {
@@ -203,24 +284,28 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const resetFilters = (isFilterPopOpen: boolean = false) => {
-    const filters = {
+    const formattedDates = formatDates(date, date);
+    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const filtersData = {
+      ...filters,
       visit_types: [],
       providers_uuids: [],
       screening: [],
       page: 1,
       page_size: 10,
       patient_name: '',
-      appointment_start_date: '',
-      appointment_end_date: '',
-      sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp'
+      appointment_start_date: formattedDates.start,
+      appointment_end_date: formattedDates.end,
+      timezone: timezone
     };
     setMainLoader(true);
     setSelectedVisitType([]);
     setSelectedScreening([]);
     setSelectedProviders([]);
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filtersData);
     setPatientNameSearch('');
     setSelectedSavedFilterUuid('');
     if (!isFilterPopOpen) {
@@ -232,24 +317,72 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       key: 'selection'
     });
     setIsFilterApplied(false);
+    dispatch(emptySelectedFilter());
   }
 
-  const searchAppointmentPatientName = (e: any) => {
-    setPatientNameSearch(e.target.value);
+  useEffect(() => {
+    if (selectedVisitType.length === 0 && selectedProviders.length === 0 && selectedScreening.length === 0) {
+      const formattedDates = formatDates(date, date);
+      const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    if (e?.target?.value?.length > 3) {
-      const filters = {
+      const filtersData = {
+        ...filters,
         visit_types: [],
         providers_uuids: [],
         screening: [],
         page: 1,
         page_size: 10,
+        appointment_start_date: formattedDates.start,
+        appointment_end_date: formattedDates.end,
+        timezone: timezone
+      };
+
+      dispatch(updateFilter(filtersData));
+      loadMoreAppointment(filtersData);
+      dispatch(emptyAppointmentList());
+      setSelectedSavedFilterUuid('');
+    }
+  }, [selectedVisitType, selectedProviders, selectedScreening])
+
+  const searchAppointmentPatientName = (e: any) => {
+    setPatientNameSearch(e.target.value);
+
+    if (!e?.target?.value) {
+      const filtersData = {
+        ...filters,
+        page: 1,
+        page_size: 10,
         patient_name: e.target.value
       };
-      setIsFilterApplied(true);
-      dispatch(updateFilter(filters));
+      setTimeout(() => {
+        dispatch(emptyAppointmentList());
+        setIsFilterApplied(false);
+        loadMoreAppointment(filtersData);
+        dispatch(updateFilter(filtersData));
+      }, 500)
+
+    }
+
+    if (e?.target?.value?.length > 1) {
+
+      const newVal = e.target.value;
+
+      const filtersData = {
+        ...filters,
+        visit_types: selectedVisitType,
+        providers_uuids: selectedProviders,
+        screening: selectedScreening,
+        page: 1,
+        page_size: 10,
+        patient_name: newVal
+      };
+
       dispatch(emptyAppointmentList());
-      loadMoreAppointment(filters);
+      setIsFilterApplied(true);
+      dispatch(updateFilter(filtersData));
+      loadMoreAppointment(filtersData);
+
+
     }
   }
 
@@ -259,7 +392,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       const { payload } = response || {};
       if (!payload) return;
 
-      const filters = {
+      const filtersData = {
+        ...filters,
         visit_types: payload.visit_type,
         providers_uuids: payload.providers,
         screening: payload.screening,
@@ -271,119 +405,91 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setSelectedVisitType(payload.visit_type);
       setSelectedScreening(payload.screening);
       setSelectedProviders(payload.providers);
-      dispatch(updateFilter(filters));
+      dispatch(updateFilter(filtersData));
       dispatch(emptyAppointmentList());
-      loadMoreAppointment(filters);
+      loadMoreAppointment(filtersData);
     })
   }
 
   const dateRangeHandleChange = (dates: any) => {
     const formattedDates = formatDates(dates, dates);
-    const filters = {
+    const filter = {
+      ...filters,
       appointment_start_date: formattedDates.start,
       appointment_end_date: formattedDates.end,
       page: 1,
       page_size: 10,
     };
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filter));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filter);
   }
 
   const handleAppointmentTimeSort = () => {
     setIsAppointmentTimeSortAscending(!isAppointmentTimeSortAscending);
-    const filters = {
+    const filtersData = {
+      ...filters,
       sort_by: isAppointmentTimeSortAscending ? 'appointment_timestamp' : '-appointment_timestamp',
       page: 1,
       page_size: 10,
     };
-    dispatch(updateFilter(filters));
+
+
+    dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filtersData);
   }
 
   const handlePatientNameSort = () => {
     setIsPatientNameSortAscending(!isPatientNameSortAscending);
-    const filters = {
+    const filtersData = {
+      ...filters,
       sort_by: isPatientNameSortAscending ? 'patient__patient_first_name' : '-patient__patient_first_name',
       page: 1,
       page_size: 10,
     };
-    dispatch(updateFilter(filters));
+    dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters);
+    loadMoreAppointment(filtersData);
   }
 
-  const leftCalenderArrowClickHandle = () => {
+  const handleCalenderButtonClick = (direction: string) => {
+    const appointmentsListString = localStorage.getItem('huddleBoardConfig');
+    if (!appointmentsListString) return;
+    const { past_calendar_days_count, future_calender_days_count } = JSON.parse(appointmentsListString);
 
-    let newDate = new Date(date);
-    newDate.setDate(date.getDate() - 1);
-    setDate(newDate);
+    const currentDate = new Date();
+    const currentDay = currentDate.getDate();
 
-    const currentDate = new Date()
-    const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
-    const newDate1Only = newDate1.toISOString().split('T')[0];
+    const selectedDate = new Date(date);
 
-    const minDate = new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000);
-    const minDateOnly = minDate.toISOString().split('T')[0];
+    if (direction.toLowerCase() === "left") {
+      selectedDate.setDate(date.getDate() - 1);
+    } else {
+      selectedDate.setDate(date.getDate() + 1);
+    }
+    setDate(selectedDate);
+    const selectedDay = selectedDate.getDate();
 
-    const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
-    const maxDateOnly = maxDate.toISOString().split('T')[0];
+    const minDateOnly = parseDate(currentDay - past_calendar_days_count);
+    const maxDateOnly = parseDate(currentDay + future_calender_days_count);
+    setArrowDisabledRight(false);
+    setArrowDisabledLeft(false);
 
-    if (newDate1Only == minDateOnly) {
-        setArrowDisabledLeft(true)
-        setArrowDisabledRight(false)
+
+    if (minDateOnly.getDate() === selectedDay) {
+      setArrowDisabledLeft(true);
+    } else if (maxDateOnly.getDate() === selectedDay) {
+      setArrowDisabledRight(true);
     }
 
-    else if (newDate1Only == maxDateOnly) {
-        setArrowDisabledRight(true)
-        setArrowDisabledLeft(false)
-    }
-    else {
-        setArrowDisabledLeft(false)
-        setArrowDisabledRight(false)
-    }
-
-    dateRangeHandleChange(newDate);
-
-  }
-
-  const rightCalenderArrowClickHandle = () => {
-    let newDate = new Date(date);
-    newDate.setDate(date.getDate() + 1);
-    setDate(newDate);
-
-    const currentDate = new Date()
-    const newDate1 = new Date(newDate.getTime() + 0 * 24 * 60 * 60 * 1000);
-    const newDate1Only = newDate1.toISOString().split('T')[0];
-
-    const minDate = new Date(currentDate.getTime() - 14 * 24 * 60 * 60 * 1000);
-    const minDateOnly = minDate.toISOString().split('T')[0];
-
-    const maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
-    const maxDateOnly = maxDate.toISOString().split('T')[0];
-
-    if (newDate1Only == minDateOnly) {
-        setArrowDisabledLeft(true)
-        setArrowDisabledRight(false)
-    }
-
-    else if (newDate1Only == maxDateOnly) {
-        setArrowDisabledRight(true)
-        setArrowDisabledLeft(false)
-    }
-    else {
-        setArrowDisabledLeft(false)
-        setArrowDisabledRight(false)
-    }
-
-    dateRangeHandleChange(newDate);
+    dateRangeHandleChange(selectedDate);
 
   }
 
   return (
     <>
-      <Container maxWidth='xl'>
+      <Container maxWidth={false}>
         <MainBoxTop>
           <HeadingTag variant="h1" sx={{ margin: "0" }}>
             My Schedule
@@ -391,28 +497,43 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           <RightPrint>
             {
               arrowDisabledLeft ?
-                <RightBox sx={{ visibility: "hidden" }} onClick={() => leftCalenderArrowClickHandle()}>
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => handleCalenderButtonClick("left")}>
                   <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
                 </RightBox> :
-                <RightBox onClick={() => leftCalenderArrowClickHandle()}>
+                <RightBox onClick={() => handleCalenderButtonClick("left")}>
                   <img src={arrowLeft.src} style={{ fontSize: "15px" }} />
                 </RightBox>
             }
             <Box>
-              <DatePicker date={date} setDate={setDate} setArrowDisabledRight={setArrowDisabledRight} setArrowDisabledLeft={setArrowDisabledLeft} dateRangeHandleChange={dateRangeHandleChange} />
+              <DatePicker
+                date={date}
+                setDate={setDate}
+                setArrowDisabledRight={setArrowDisabledRight}
+                setArrowDisabledLeft={setArrowDisabledLeft}
+                dateRangeHandleChange={dateRangeHandleChange}
+              />
             </Box>
             {
               arrowDisabledRight ?
-                <RightBox sx={{ visibility: "hidden" }} onClick={() => rightCalenderArrowClickHandle()}>
-                  <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
+                <RightBox sx={{ visibility: "hidden" }} onClick={() => handleCalenderButtonClick("right")}>
+                  <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox> :
-                <RightBox onClick={() => rightCalenderArrowClickHandle()}>
-                  <img src={arrowRight.src} style={{ fontSize: "15px" }} onClick={() => rightCalenderArrowClickHandle()} />
+                <RightBox onClick={() => handleCalenderButtonClick("right")}>
+                  <img src={arrowRight.src} style={{ fontSize: "15px" }} />
                 </RightBox>
             }
-            <RightBox onClick={() => handlePdf()}>
+            <RightBox onClick={() => handlePdf()}
+              sx={{
+                ':hover': {
+                  backgroundColor: "#F5F7F6",
+
+                }
+              }}
+            >
               <img src={pdfIcon.src} style={{ fontSize: "20px", marginRight: "5px" }} />
-              <TypoSpan variant="caption">PDF</TypoSpan>
+              <TypoSpan variant="caption"
+
+              >PDF</TypoSpan>
             </RightBox>
 
             {/* <RightBox onClick={() => handlePrint()}>
@@ -445,6 +566,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 selectedSavedFilterUuid={selectedSavedFilterUuid}
                 setIsFilterApplied={setIsFilterApplied}
                 setMainLoader={setMainLoader}
+                isFilterApplied={isFilterApplied}
               />
             </FilterMenu>
             <TableTop>
@@ -480,8 +602,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
 
           {(isPatientNotFound || isClearFilter) && (
-            <TableOtherContainer sx={{ m: "30px 0" }}>
-              <Table aria-label="collapsible table">
+            <TableOtherContainer sx={{ m: "10px 0 0 0", height: windowHeight - 300 }}>
+              <Table sx={{ height: "100%" }} aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>
                     <StyledTableCell>
@@ -498,7 +620,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>
-                    <StyledTableCell>Providers</StyledTableCell>
+                    <StyledTableCell>Provider</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </Table_Head>
@@ -508,7 +630,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                       ?
                       <TableRow>
                         <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
-                          <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px", justifyContent: "center" }}>
+                          <LoaderBox sx={{ width: "100%", margin: "0px", height: windowHeight - 400, justifyContent: "center" }}>
                             <CircularProgress />
                             Loading Appointments
                           </LoaderBox>
@@ -522,7 +644,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           )}
 
           {!isPatientNotFound && !isClearFilter && (
-            <TableMainContainer sx={{ m: "30px 0" }}>
+            <TableMainContainer sx={{ height: windowHeight - 250 }}>
               <Table aria-label="collapsible table">
                 <Table_Head sx={{ backgroundColor: "#17236D", color: "#fff" }}>
                   <TableRow>
@@ -536,7 +658,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>
-                    <StyledTableCell>Providers</StyledTableCell>
+                    <StyledTableCell>Provider</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </Table_Head>
@@ -544,7 +666,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                   mainLoader ? <TableBody>
                     <TableRow>
                       <TableMidData style={{ border: "none", backgroundColor: "white" }} colSpan={12} >
-                        <LoaderBox sx={{ width: "100%", margin: "0px", height: "515px", justifyContent: "center" }}>
+                        <LoaderBox sx={{ width: "100%", margin: "0px", height: windowHeight - 400, justifyContent: "center" }}>
                           <CircularProgress />
                           Loading Appointments
                         </LoaderBox>
@@ -564,13 +686,21 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                           isDetailLoading={isDetailLoading}
                           setLoaderAppoint={setLoaderAppoint}
                           loaderAppoint={loaderAppoint}
+                          updateButtonState={updateButtonState}
+                          confirmationModal={confirmationModal}
+                          reverseModal={reverseModal}
+                          setConfirmationModal={setConfirmationModal}
+                          setReverseModal={setReverseModal}
+                          actionValue={actionValue}
+                          setSelectedAppointmentGap={setSelectedAppointmentGap}
+                          selectedAppointmentGap={selectedAppointmentGap}
                         />
                       )
                     )}
                   </TableBody>
                 }
               </Table>
-              <div ref={ref}></div>
+              <div><h6 ref={ref} style={{ textAlign: "center", visibility: "hidden" }} >....</h6></div>
             </TableMainContainer>
           )
           }

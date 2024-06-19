@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import { deleteLocalStorage } from './helper';
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -11,7 +12,7 @@ export const decodeToken = function (token: any) {
   return decoded;
 };
 
-export function isAuthenticated(token?: string|null) {
+export function isAuthenticated(token?: string | null) {
   if (!token) {
     return false;
   }
@@ -19,7 +20,7 @@ export function isAuthenticated(token?: string|null) {
 
   let currentDate = new Date();
   currentDate.setHours(currentDate.getHours() + 2);
-var a = Math.round(new Date(currentDate).getTime() + 1) / 1000;
+  var a = Math.round(new Date(currentDate).getTime() + 1) / 1000;
 
   // try {
   //   const { exp }: any = decodeToken(token);
@@ -32,17 +33,17 @@ var a = Math.round(new Date(currentDate).getTime() + 1) / 1000;
   // return false;
 }
 
-export function isTokenExpired(token?:string|null) {
+export function isTokenExpired(token?: string | null) {
   if (!token) {
-      return true; // Token is missing
+    return true; // Token is missing
   }
 
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace('-', '+').replace('_', '/');
   const decodedToken = JSON.parse(atob(base64));
-  
+
   if (!decodedToken.exp) {
-      return true; // Token doesn't have an expiration time
+    return true; // Token doesn't have an expiration time
   }
 
   // JWT expiration time is in seconds, so convert it to milliseconds
@@ -54,14 +55,14 @@ export function isTokenExpired(token?:string|null) {
 
   // Check if the token is expired (within 2 hours or 7200000 milliseconds)
   if (timeDifference < 7200000) {
-      return true; // Token is expired
+    return true; // Token is expired
   } else {
-      return false; // Token is still valid
+    return false; // Token is still valid
   }
 }
 
 
-export const sessionKeys = {accessToken:"access_token", slugKey:"slug", refreshToken:"refresh_token"};
+export const sessionKeys = { accessToken: "access_token", slugKey: "slug", refreshToken: "refresh_token", huddleBoardConfig: "huddleBoardConfig" };
 
 export const getAndSetAccessToken = async (slug: any) => {
   const { accessToken, slugKey, refreshToken } = sessionKeys;
@@ -84,9 +85,9 @@ export const getAndSetAccessToken = async (slug: any) => {
         return;
       }
     }).catch((err) => {
-      window.location.href= '/pageNotFound';
+      deleteLocalStorage();
+      window.location.href = '/pageNotFound';
     })
-  
   };
 
   const refreshTokens = async () => {
@@ -107,3 +108,16 @@ export const getAndSetAccessToken = async (slug: any) => {
 };
 
 export const accessToken = () => { return localStorage.getItem(sessionKeys.accessToken); }
+
+export const notAuthenticated: any = () => {
+  const { accessToken, slugKey, refreshToken } = sessionKeys;
+
+  const refresh = localStorage.getItem(refreshToken);
+  const access = localStorage.getItem(accessToken);
+  const userSlug = localStorage.getItem(slugKey);
+  const huddleBoardConfig = localStorage.getItem('huddleBoardConfig');
+
+  if (refresh && access && userSlug && huddleBoardConfig) {
+    return true
+  } else false;
+};

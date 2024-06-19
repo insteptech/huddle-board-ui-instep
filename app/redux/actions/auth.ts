@@ -14,3 +14,7 @@ export const getToken = createAsyncThunk('getToken', async (payload: IGetAccessT
   const result = await axiosInstance.post('slug-token/', payload);
   return result.data;
 });
+
+export const getHuddleBoardConfig = createAsyncThunk('getHuddleBoardConfig', async () => {
+  return await axiosWrapper({ method: "get", url: `huddle-board-config` })
+});

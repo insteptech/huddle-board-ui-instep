@@ -1,21 +1,25 @@
 'use client'
 import React from 'react';
+import FourBackground from "../../images/FourBackground.svg"
+import Logo from "../../images/Logo.svg"
 
 import {
-  BoxSec,
   BoxContent,
-  BoldContent
+  BoldContent, 
+  BoxTopContent, 
+  BoxImg,
+  BoxSection,
 } from '../../styles/customStyle';
 
 const PageNotFound = () => {
-
   return (
-    <BoxSec className='page-not-found'>
-        <BoxContent>
-            <BoldContent>404</BoldContent>
-            Page Not Found
-          </BoxContent>
-      </BoxSec>  
+    <BoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
+      <BoxContent>
+        <BoxImg> <img src={Logo.src} /> </BoxImg>
+        <BoldContent>404</BoldContent>
+        <BoxTopContent>Not Found</BoxTopContent>
+      </BoxContent>
+    </BoxSection>
   );
 };
 
