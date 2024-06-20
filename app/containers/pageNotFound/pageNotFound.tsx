@@ -7,7 +7,7 @@ import {
   BoxContent,
   BoldContent, 
   BoxTopContent, 
-  BoxImg,
+  BoxContimg,
   BoxSection,
 } from '../../styles/customStyle';
 
@@ -15,7 +15,7 @@ const PageNotFound = () => {
   return (
     <BoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
       <BoxContent>
-        <BoxImg> <img src={Logo.src} /> </BoxImg>
+        <BoxContimg> <img src={Logo.src} /> </BoxContimg>
         <BoldContent>404</BoldContent>
         <BoxTopContent>Not Found</BoxTopContent>
       </BoxContent>

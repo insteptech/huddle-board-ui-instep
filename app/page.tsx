@@ -2,7 +2,7 @@ import type { Metadata, NextPage } from 'next';
 import Container from "@mui/material/Container";
 import dynamic from 'next/dynamic';
 
-const Login = dynamic(() => import('./containers/auth/login').then((mod) => mod), {
+const SignUp = dynamic(() => import('./containers/auth/signUp').then((mod) => mod), {
   ssr: false,
 });
 
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 const Home: NextPage = () => {
   return (
     <div>
-      <Container maxWidth="xl">
-          <Login />
+      <Container maxWidth="xxl">
+        <SignUp />
       </Container>
     </div>
   );
