@@ -44,6 +44,7 @@ import { API_URL } from '@/app/redux/config/axiosInstance';
 import { formatDates, parseDate, urlParams } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
 import { accessToken, notAuthenticated } from '@/app/utils/auth';
+import IdleModal from '@/app/components/idleModal';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -78,7 +79,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const { page } = filters;
   const [date, setDate] = React.useState(new Date());
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening || []);
@@ -90,10 +90,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [isPatientNameSortAscending, setIsPatientNameSortAscending] = useState(false);
   const [loaderAppoint, setLoaderAppoint] = useState<any>(false);
   const [mainLoader, setMainLoader] = useState<any>(true);
-
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [reverseModal, setReverseModal] = useState(false);
-
+  const [idleModalOpen, setIdleModalOpen] = useState(false);
   const [actionValue, setActionValue] = useState({
     value: "",
     data: "",
@@ -102,6 +101,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const { ref, inView } = useInView();
   const [windowHeight, setWindowHeight] = useState(0);
+  const [idleTime, setIdleTime] = useState(0);
+
+
 
   useEffect(() => {
     function handleResize() {
@@ -111,6 +113,41 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+
+  useEffect(() => {
+    let timer = null;
+    const resetIdleTime = () => {
+      setIdleTime(0);
+    };
+
+    const incrementIdleTime = () => {
+      setIdleTime(prevIdleTime => prevIdleTime + 1);
+    };
+
+    timer = setInterval(incrementIdleTime, 60000);
+
+    const events = ['mousemove', 'keydown', 'mousedown', 'touchstart'];
+    const resetIdleOnActivity = () => {
+      resetIdleTime();
+    };
+    events.forEach(event => {
+      document.addEventListener(event, resetIdleOnActivity);
+    });
+
+    return () => {
+      clearInterval(timer);
+      events.forEach(event => {
+        document.removeEventListener(event, resetIdleOnActivity);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (idleTime > 1) {
+      setIdleModalOpen(true);
+    }
+  }, [idleTime]);
 
 
   const loadMoreAppointment = (filter: FiltersDataState) => {
@@ -251,6 +288,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   //       }
   //     });
   // }
+
+  
 
 
 
@@ -713,6 +752,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           )} */}
         </TableDiv>
       </Container>
+
+      <IdleModal setIdleTime={setIdleTime} idleModalOpen={idleModalOpen} setIdleModalOpen={setIdleModalOpen} />
     </>
   );
 

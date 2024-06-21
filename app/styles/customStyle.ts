@@ -581,6 +581,39 @@ export const ButtonCancel = styled('button')(({ div }: any) => ({
   },
 }));
 
+
+export const ButtonLogggedIn = styled('button')(({ div }: any) => ({
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '24px',
+  border: '1px solid #D0D5DD',
+  padding: '10px 18px',
+  borderRadius: '8px',
+  width: '50%',
+  cursor: 'pointer',
+  background: '#fff',
+  color: '#344054',
+  "&:hover": {
+    background: '#F9FAFB',
+  },
+}));
+
+export const ButtonLogout = styled('button')(({ div }: any) => ({
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '24px',
+  border: '1px solid #7F56D9',
+  padding: '10px 18px',
+  borderRadius: '8px',
+  width: '50%',
+  cursor: 'pointer',
+  background: '#0D426A',
+  color: '#fff',
+  "&:hover": {
+    background: '#0D426A',
+  },
+}));
+
 export const ButtonSave = styled(Button)(({ div }: any) => ({
   fontSize: '16px',
   fontWeight: '600',
