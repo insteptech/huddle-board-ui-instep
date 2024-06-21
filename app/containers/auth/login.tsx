@@ -21,6 +21,7 @@ import {
   LoginContent, LoginId,
   VcCode,
   VerficationPolicy,
+  VerificationMaximum,
   Logincode
 } from "@/app/styles/customStyle";
 import { Box, Button } from '@mui/material';
@@ -34,6 +35,10 @@ const Login = () => {
   const [otp, setOtp] = React.useState('');
   const [email, setEmail] = useState("")
   const [otpSent, setOtpSent] = useState(false);
+  const [maskedEmail, setMaskedEmail] = useState("");
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 
   const handleEmail = (event: any) => {
 
@@ -41,57 +46,19 @@ const Login = () => {
       toast.error("Enter Email Address");
       return
     }
+
+    if (!emailRegex.test(email)) {
+      toast.error("Enter a valid Email Address");
+      return;
+    }
+    let [username, domain] = email.split('@');
+    let maskedUsername = username.charAt(0) + '*'.repeat(username.length - 2) + username.charAt(username.length - 1);
+    let maskedDomain = domain.charAt(0) + '*'.repeat(domain.length - 2) + domain.charAt(domain.length - 1);
+    let maskedEmail = maskedUsername + '@' + maskedDomain;
+    setMaskedEmail(maskedEmail)
+
     setOtpSent(true)
   }
-
-  // useEffect(() => {
-
-  //   sessionStorage.clear();
-
-  //   let decodedString = "";
-
-  //   // if (!searchParam.has("ref" || "slug")) {
-  //   //   window.location.href = "/";
-  //   //   return 
-  //   // }
-
-  //   if (searchParam.has("ref")) {
-  //     const refParam: string | null = searchParam.get("ref");
-  //     decodedString = atob(refParam || "");
-  //     const isValidBase64 = /^[A-Za-z0-9+/=]+$/i.test(decodedString);
-  //     if (!isValidBase64) {
-  //       window.location.href = "/unauthorized";
-  //     }
-  //   }
-
-  //   const slug = searchParam.get("slug") || decodedString;
-
-  //   try {
-  //     if (slug) {
-  //       getAndSetAccessToken(slug)
-  //         .then(() => {
-  //           dispatch(getHuddleBoardConfig()).then((res: any) => {
-  //             localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
-  //             router.push('/appointment');
-  //           });
-  //         })
-  //         .catch(() => {
-  //           deleteLocalStorage();
-  //           window.location.href = '/pageNotFound';
-  //         });
-  //     } else {
-  //       deleteLocalStorage();
-  //       window.location.href = '/unauthorized';
-  //     }
-  //   } catch (error) {
-  //     deleteLocalStorage();
-  //     window.location.href = '/pageNotFound';
-  //   }
-
-  // }, [searchParam]);
-
-
-
 
   return (
     <div className='main_sec'>
@@ -111,7 +78,7 @@ const Login = () => {
                 <LoginTitle>Verify Code</LoginTitle>
                 <LoginContent >
                   <Logincode>The code has been sent to the email address you provided.</Logincode>
-                  <LoginId>t****d@d***********h.com</LoginId>
+                  <LoginId>{maskedEmail}</LoginId>
 
                   <Box
                     sx={{
@@ -123,9 +90,6 @@ const Login = () => {
                     <OTP separator={<span></span>} value={otp} onChange={setOtp} length={6} />
 
                   </Box>
-
-
-
                 </LoginContent>
                 <LoginActions>
 
@@ -133,7 +97,9 @@ const Login = () => {
                 </LoginActions>
 
                 <VcCode>Didn't receive the verification code?</VcCode>
-                <VerficationPolicy>Receive code via phone call</VerficationPolicy>
+
+                <VerificationMaximum>
+                  You have exceeded the maximum number of OTP resend attempts. Please try again after some time</VerificationMaximum>
               </LoginForm>
 
 
@@ -157,19 +123,7 @@ const Login = () => {
             </MainLoginright>
         }
 
-
-
-
-
-
       </MainLogin>
-
-
-
-
-
-
-
     </div>
   );
 };

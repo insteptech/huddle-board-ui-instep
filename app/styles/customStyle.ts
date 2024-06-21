@@ -1172,6 +1172,13 @@ export const VerficationPolicy = styled('a')(({ div }: any) => ({
 
 }));
 
+export const VerificationMaximum = styled('p')(({ div }: any) => ({
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '21px ',
+  color: '#D43131',
+}))
+
 export const Logincode = styled('p')(({ div }: any) => ({
 
   fontSize: '12px',
