@@ -108,7 +108,7 @@ const Row = (props: any) => {
                         appointment.selected_gap_count === 0 ?
                             <IconProgress>
                                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                                    <BorderLinearProgress variant="determinate" value={0} />
+                                    <BorderLinearProgress sx={{ minWidth: "40px", maxWidth: "80px" }} variant="determinate" value={0} />
                                 </Stack>
                                 <ProviderCell>{`${appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
                                 <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid)}>
@@ -118,7 +118,7 @@ const Row = (props: any) => {
                             :
                             <IconProgress>
                                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
-                                    <BorderLinearProgress variant="determinate" value={(appointment.selected_gap_count / appointment.gap_count) * 100} />
+                                    <BorderLinearProgress sx={{ minWidth: "40px", maxWidth: "80px" }} variant="determinate" value={(appointment.selected_gap_count / appointment.gap_count) * 100} />
                                 </Stack>
                                 <ProviderCell>{`${selectedAppointmentGap || appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
                                 <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid, appointment.selected_gap_count)}>
@@ -168,25 +168,25 @@ const Row = (props: any) => {
                                                 (
                                                     <TableBody>
                                                         {!isDetailLoading && appointmentDetail.map((detail: any) => (
-                                                            <TableRowInside  key={detail.uuid}>
+                                                            <TableRowInside key={detail.uuid}>
                                                                 <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
                                                                 <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
                                                                 <TableMidData sx={{ width: '380px', }}><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
-                                                                <TableMidData sx={{ width: '430px'}}>
-                                                                <TableMidIn>
-                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
-                                                                        Clinician Agrees
-                                                                    </StyledMuiButton>
-                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_disagrees')} onClick={() => updateButtonState('clinician_disagrees', getOutComeBtnState(detail, 'clinician_disagrees'), detail)}>
-                                                                        Clinician Disagrees
-                                                                    </StyledMuiButton>
-                                                                    {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateButtonState('test_ordered', getOutComeBtnState(detail, 'test_ordered'), detail)}>
-                                                                        Test Ordered
-                                                                    </StyledMuiButton> :
-                                                                        <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '3px',width:'20px' }} /></Tooltip>Test Not Needed</TestButton>
-                                                                    }
+                                                                <TableMidData sx={{ width: '430px' }}>
+                                                                    <TableMidIn>
+                                                                        <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
+                                                                            Clinician Agrees
+                                                                        </StyledMuiButton>
+                                                                        <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_disagrees')} onClick={() => updateButtonState('clinician_disagrees', getOutComeBtnState(detail, 'clinician_disagrees'), detail)}>
+                                                                            Clinician Disagrees
+                                                                        </StyledMuiButton>
+                                                                        {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateButtonState('test_ordered', getOutComeBtnState(detail, 'test_ordered'), detail)}>
+                                                                            Test Ordered
+                                                                        </StyledMuiButton> :
+                                                                            <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '3px', width: '20px' }} /></Tooltip>Test Not Needed</TestButton>
+                                                                        }
 
-                                                                </TableMidIn>
+                                                                    </TableMidIn>
                                                                 </TableMidData>
                                                             </TableRowInside>
                                                         ))}
