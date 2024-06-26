@@ -510,8 +510,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setDate(selectedDate);
     const selectedDay = selectedDate.getDate();
 
-    const minDateOnly = parseDate(currentDay - past_calendar_days_count);
-    const maxDateOnly = parseDate(currentDay + future_calender_days_count);
+    const minDateOnly = new Date(currentDate); 
+    minDateOnly.setDate(currentDay - past_calendar_days_count);
+  
+    const maxDateOnly = new Date(currentDate); 
+    maxDateOnly.setDate(currentDay + future_calender_days_count);
     setArrowDisabledRight(false);
     setArrowDisabledLeft(false);
 
@@ -523,6 +526,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
 
     dateRangeHandleChange(selectedDate);
+
+    console.log( minDateOnly , maxDateOnly , currentDay , future_calender_days_count , selectedDate)
 
   }
 
