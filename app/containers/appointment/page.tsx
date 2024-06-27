@@ -584,6 +584,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               <PrintOutlinedIcon style={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">Print</TypoSpan>
             </RightBox> */}
+            
           </RightPrint>
         </MainBoxTop>
 

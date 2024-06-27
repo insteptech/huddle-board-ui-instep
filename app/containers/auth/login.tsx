@@ -12,6 +12,7 @@ import rightbg from "../../images/rightbg.svg"
 import TextField from '@mui/material/TextField';
 import { useDispatch } from 'react-redux';
 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   MainLogin, MainLoginleft, MainLoginright, HeadingLeft, ParaLeft,
   LoginForm, LoginLabel,
@@ -22,9 +23,9 @@ import {
   VcCode,
   VerficationPolicy,
   VerificationMaximum,
-  Logincode
+  Logincode,
 } from "@/app/styles/customStyle";
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import OTP from '@/app/components/otpInpuBox';
 import { toast } from 'react-toastify';
 
@@ -38,7 +39,6 @@ const Login = () => {
   const [maskedEmail, setMaskedEmail] = useState("");
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
 
   const handleEmail = (event: any) => {
 
@@ -60,10 +60,33 @@ const Login = () => {
     setOtpSent(true)
   }
 
+  const handleReverse = () => {
+    setOtpSent(!otpSent)
+    setEmail("")
+  }
+
   return (
     <div className='main_sec'>
       <MainLogin>
         <MainLoginleft sx={{ backgroundImage: `url(${Leftbg.src})`, }}>
+          {
+            otpSent ?
+
+              <IconButton
+                onClick={() => handleReverse()}
+                sx={{
+                  position: "absolute",
+                  top: "10%",
+                  borderRadius: "50%",
+                  border: "1.5px solid #757575",
+                  padding: "2px",
+                }} >
+                <ArrowBackIcon
+                  fontSize='medium'
+                />
+              </IconButton>
+              : null
+          }
           <img src={Logino.src} />
           <HeadingLeft> We Make HCC Coding Education Easy.</HeadingLeft>
           <ParaLeft>DoctusTech App is the best way for clinicians to learn HCC<br /> Coding. 8 out of 10 doctors prefer DoctusTech to any other<br /> method of HCC Training.</ParaLeft>
@@ -101,10 +124,7 @@ const Login = () => {
                 <VerificationMaximum>
                   You have exceeded the maximum number of OTP resend attempts. Please try again after some time</VerificationMaximum>
               </LoginForm>
-
-
             </MainLoginright>
-
             :
             <MainLoginright sx={{ backgroundImage: `url(${rightbg.src})`, }}>
               <LoginForm>
