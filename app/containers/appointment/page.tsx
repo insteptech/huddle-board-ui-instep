@@ -144,7 +144,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }, []);
 
   useEffect(() => {
-    if (idleTime > 1) {
+    if (idleTime > 10) {
       setIdleModalOpen(true);
     }
   }, [idleTime]);
