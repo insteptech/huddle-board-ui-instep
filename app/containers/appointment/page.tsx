@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments, auditLog } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -173,7 +173,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
         : auditState === "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED" ?
           (
-            dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output:"Frontend Date Filter Selected", misc_info: "Frontend Date Filter Selected" }])),
+            dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Date Filter Selected", misc_info: "Frontend Date Filter Selected" }])),
             console.log("filter Reset")
           )
           : auditState === "FRONTEND_TILE_CLICK_PATIENT_NAME_SORTING" ?
@@ -214,7 +214,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     if (!loginAuthentication() && !notAuthenticated()) {
       window.location.href = '/unauthorized';
     }
-    
+
     dispatch(getAppointmentsList(filters))
       .then((response: any) => {
         setIsPatientNotFound(false);
@@ -222,7 +222,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         setMainLoader(false);
         if (response?.payload?.results.length === 0) {
           setIsClearFilter(true);
-  
+
         } else {
           setIsClearFilter(false);
         }
@@ -808,7 +808,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               Loading Appointments
             </AppointmentLoaderBox>
           )} */}
-          
+
         </TableDiv>
       </Container>
 
