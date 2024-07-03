@@ -150,7 +150,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }, [idleTime]);
 
 
-  const loadMoreAppointment = (filter: FiltersDataState) => {
+  const loadMoreAppointment = (filter: FiltersDataState, auditState?: any) => {
     dispatch(getAppointmentsList(filter)).then((response: any) => {
       setMainLoader(false);
       dispatch(updateFilter({ page: filter && filter.page ? filter.page + 1 : page }));
@@ -160,6 +160,34 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         setIsClearFilter(false);
       }
     })
+
+    auditState === "FRONTEND_FILTER_CLICK_FILTER_APPLIED_SUCCESS" ? (
+      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filters Applied", misc_info: "Frontend Filters Applied" }])),
+      console.log("filter applied")
+    )
+      : auditState === "FRONTEND_FILTER_CLICK_FILTER_RESET" ?
+        (
+          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Reset", misc_info: "Frontend Filter Reset" }])),
+          console.log("filter Reset")
+        )
+
+        : auditState === "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED" ?
+          (
+            dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output:"Frontend Date Filter Selected", misc_info: "Frontend Date Filter Selected" }])),
+            console.log("filter Reset")
+          )
+          : auditState === "FRONTEND_TILE_CLICK_PATIENT_NAME_SORTING" ?
+            (
+              dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Patient Sorted According to name", misc_info: "Frontend Patient Sorted According to name" }])),
+              console.log("filter Reset")
+            )
+            : auditState === "FRONTEND_TILE_CLICK_PATIENT_TIME_SORTING" ?
+              (
+                dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Patient Sorted According to time", misc_info: "Frontend Patient Sorted According to time" }])),
+                console.log("filter Reset")
+              )
+
+              : null;
   };
 
   // useEffect(() => {
@@ -186,6 +214,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     if (!loginAuthentication() && !notAuthenticated()) {
       window.location.href = '/unauthorized';
     }
+    
     dispatch(getAppointmentsList(filters))
       .then((response: any) => {
         setIsPatientNotFound(false);
@@ -193,6 +222,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         setMainLoader(false);
         if (response?.payload?.results.length === 0) {
           setIsClearFilter(true);
+  
         } else {
           setIsClearFilter(false);
         }
@@ -270,6 +300,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setReverseModal(false);
     setConfirmationModal(false)
 
+
     const { appointment_id, uuid } = detail;
     const payload = {
       appointment_id: appointment_id,
@@ -280,6 +311,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     dispatch(updateAppointmentDetail(payload)).then(() => {
       toast.success("Successfully Updated");
       appointmentDetails(appointment_id);
+      dispatch(auditLog([{ event_type: `FRONTEND_TILE_CLICK_ACTION`, output: `FRONTEND_TILE_CLICK_ACTION`, misc_info: `FRONTEND_TILE_CLICK_ACTION${value}` }]))
+
       const formattedDates = formatDates(filters.appointment_start_date, filters.appointment_end_date);
       const payload = {
         page: 1,
@@ -290,6 +323,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       dispatch(getAllAppointments(payload));
     }).catch(() => {
       toast.error("Update failed");
+      dispatch(auditLog([{ event_type: `FRONTEND_TILE_CLICK_ACTION`, output: `FRONTEND_TILE_CLICK_ACTION`, misc_info: `FRONTEND_TILE_CLICK_ACTION${value}` }]))
+
     })
   }
 
@@ -329,6 +364,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         aElement.setAttribute('target', '_blank');
         aElement.click();
         URL.revokeObjectURL(href);
+        dispatch(auditLog([{ event_type: "FRONTEND_PRINT_CLICK", output: "Frontend Print Document Successful ", misc_info: "Frontend Print Document Successful" }]))
       });
   };
 
@@ -359,7 +395,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setSelectedProviders([]);
     dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filtersData);
+    loadMoreAppointment(filters, "FRONTEND_FILTER_CLICK_FILTER_RESET");
     setPatientNameSearch('');
     setSelectedSavedFilterUuid('');
     if (!isFilterPopOpen) {
@@ -415,6 +451,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         dispatch(updateFilter(filtersData));
       }, 500)
 
+      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Search Removed Successfully", misc_info: "Frontend Filter Search Removed Successfully" }]))
     }
 
     if (e?.target?.value?.length > 1) {
@@ -435,6 +472,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setIsFilterApplied(true);
       dispatch(updateFilter(filtersData));
       loadMoreAppointment(filtersData);
+      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Search Applied Successfully", misc_info: "Frontend Filter Search Applied Successfully" }]))
 
     }
   }
@@ -475,7 +513,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     };
     dispatch(updateFilter(filter));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filter);
+    loadMoreAppointment(filters, "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED");
   }
 
   const handleAppointmentTimeSort = () => {
@@ -490,7 +528,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filtersData);
+    loadMoreAppointment(filtersData, "FRONTEND_TILE_CLICK_PATIENT_TIME_SORTING");
   }
 
   const handlePatientNameSort = () => {
@@ -503,7 +541,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     };
     dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filtersData);
+    loadMoreAppointment(filtersData, "FRONTEND_TILE_CLICK_PATIENT_NAME_SORTING");
   }
 
   const handleCalenderButtonClick = (direction: string) => {
@@ -518,8 +556,11 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     if (direction.toLowerCase() === "left") {
       selectedDate.setDate(date.getDate() - 1);
+      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL ", output: "Frontend Date filter selected using left arrow", misc_info: "Frontend Date filter selected using left arrow" }]))
     } else {
       selectedDate.setDate(date.getDate() + 1);
+      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL ", output: "Frontend Date filter selected using right arrow", misc_info: "Frontend Date filter selected using right arrow" }]))
+
     }
     setDate(selectedDate);
     const selectedDay = selectedDate.getDate();
@@ -767,6 +808,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               Loading Appointments
             </AppointmentLoaderBox>
           )} */}
+          
         </TableDiv>
       </Container>
 

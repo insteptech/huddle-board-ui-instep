@@ -15,8 +15,7 @@ import List from '@mui/material/List';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TuneIconimage from "../../images/filterIcon.png"
-
-
+import { auditLog } from '@/app/redux/actions/appointment';
 import {
   BoxFilter,
   FilterButtons,
@@ -136,7 +135,7 @@ function FilterButton(props: any) {
     setIsFilterApplied(true);
     dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filtersData);
+    loadMoreAppointment(filtersData, "FRONTEND_FILTER_CLICK_FILTER_APPLIED_SUCCESS");
     setAnchorEl(null);
   }
 
@@ -156,13 +155,18 @@ function FilterButton(props: any) {
       provider: selectedProviders
     };
 
-    if (isEdit) {
-      dispatch(updateAppointmentFilter({ action: payload, uuid: selectedFilterDetail?.uuid })).then((e) => {
+    if  (isEdit) {
+      dispatch(updateAppointmentFilter({  action: payload, uuid: selectedFilterDetail?.uuid  })).then((e)  => {
         if (e?.payload) {
           toast.success(e?.payload?.message);
           setIsModalOpen(false);
           dispatch(getSelectedFilterList());
           resetFilters(true);
+          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Created Successfully", misc_info: "Frontend Filter Created Successfully" }]))
+        }
+
+        else {
+          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Created Successfully", misc_info: "Frontend Filter Created Successfully" }]))
         }
       });
     } else {
@@ -170,8 +174,13 @@ function FilterButton(props: any) {
         if (e?.payload) {
           toast.success(e?.payload?.message);
           setIsModalOpen(false);
-          dispatch(getSelectedFilterList());
+          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_CREATED", output: "Frontend Filter Created Successfully", misc_info: "Frontend Filter Created Successfully" }])),
+            dispatch(getSelectedFilterList());
           resetFilters(true);
+        }
+
+        else {
+          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_CREATED", output: "Frontend Filter Creation Failure", misc_info: "Frontend Filter Creation Failure" }]))
         }
       });
     }
@@ -220,6 +229,8 @@ function FilterButton(props: any) {
       dispatch(getSelectedFilterList());
       resetFilters(true);
       setDeleteModalOpen(false);
+      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Deleted Successfully", misc_info: "Frontend Filter Deleted Successfully" }]))
+
     })
   }
 
