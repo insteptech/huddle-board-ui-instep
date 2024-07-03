@@ -803,6 +803,28 @@ export const BoxSection = styled('div')(({ div }: any) => ({
 
 }));
 
+
+export const ExpiredBoxSection = styled('div')(({ div }: any) => ({
+  display: 'flex',
+  alignItems: 'center',
+  background: '#fff',
+  justifyContent: 'center',
+  position: 'absolute',
+  left: '0',
+  right: '0',
+  bottom: '0',
+  top: '-150px',
+  backgroundColor: '#F3F7FC',
+  backgroundPosition: 'bottom center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: '100%',
+
+  '@media (max-width: 1280px)': {
+    top: '0px'
+  }
+
+}));
+
 export const BoxTopContent = styled('div')(({ div }: any) => ({
   fontSize: '60px',
   fontWeight: '600',
@@ -840,6 +862,32 @@ export const BoxMid = styled('div')(({ div }: any) => ({
   lineHeight: '80px',
   color: '#101828',
   marginBottom: '30px',
+}));
+
+export const ExpiredBoxContent = styled('div')(({ div }: any) => ({
+  fontSize: '60px',
+  fontWeight: '400',
+  lineHeight: '36px',
+  color: '#101828',
+  textAlign: 'center',
+}));
+
+export const ExpiredBoldContent = styled('div')(({ div }: any) => ({
+  fontSize: '60x',
+  fontWeight: '700',
+  lineHeight: '60px',
+  color: '#0D426A',
+  marginBottom: '4rem',
+
+}));
+
+export const ExpiredBoxTopContent = styled('div')(({ div }: any) => ({
+  fontSize: '24px',
+  fontWeight: '500',
+  lineHeight: '26.4px',
+  color: '#0D426A',
+  textAlign: 'center',
+  width: '537px'
 }));
 
 export const ContentOnTop = styled('h4')(({ div }: any) => ({

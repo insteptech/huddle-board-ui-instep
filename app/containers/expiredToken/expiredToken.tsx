@@ -4,22 +4,22 @@ import FourBackground from "../../images/FourBackground.svg"
 import Logo from "../../images/Logo.svg"
 
 import {
-    BoxContent,
-    BoldContent,
-    BoxTopContent,
+    ExpiredBoxContent,
+    ExpiredBoldContent,
+    ExpiredBoxTopContent,
     BoxContimg,
-    BoxSection,
+    ExpiredBoxSection,
 } from '../../styles/customStyle';
 
 const ExpiredToken = () => {
     return (
-        <BoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
-            <BoxContent>
+        <ExpiredBoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
+            <ExpiredBoxContent>
                 <BoxContimg> <img src={Logo.src} /> </BoxContimg>
-                <BoldContent>Token Is Expired</BoldContent>
-                <BoxTopContent> Back to Login</BoxTopContent>
-            </BoxContent>
-        </BoxSection>
+                <ExpiredBoldContent>Session Expired</ExpiredBoldContent>
+                <ExpiredBoxTopContent> Unfortunately, your session has expired and to access huddle board again please login the same way you previously did.</ExpiredBoxTopContent>
+            </ExpiredBoxContent>
+        </ExpiredBoxSection>
     );
 };
 

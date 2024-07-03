@@ -162,26 +162,26 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     })
   };
 
-  useEffect(() => {
-    const refreshToken = localStorage.getItem('refresh_token');
-    const accessToken = localStorage.getItem('access_token');
-  
-    if (!refreshToken || !accessToken) {
-      window.location.href = "/tokenExpired";
-      return; 
-    }
+  // useEffect(() => {
+  //   const refreshToken = localStorage.getItem('refresh_token');
+  //   const accessToken = localStorage.getItem('access_token');
 
-    if (isTokenExpired(refreshToken)) {
-      window.location.href = "/tokenExpired";
-      return; 
-    }
-  
-    if (isTokenExpired(accessToken)) {
-      window.location.href = "/tokenExpired";
-      return; 
-  }
-  },[]);
-  
+  //   if (!refreshToken || !accessToken) {
+  //     window.location.href = "/tokenExpired";
+  //     return; 
+  //   }
+
+  //   if (isTokenExpired(refreshToken)) {
+  //     window.location.href = "/tokenExpired";
+  //     return; 
+  //   }
+
+  //   if (isTokenExpired(accessToken)) {
+  //     window.location.href = "/tokenExpired";
+  //     return; 
+  // }
+  // },[]);
+
   useEffect(() => {
     if (!loginAuthentication() && !notAuthenticated()) {
       window.location.href = '/unauthorized';
