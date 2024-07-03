@@ -16,20 +16,48 @@ import {
   ButtonLogin,
   BoxSection,
   BoxImgLog,
-  ContentBottomMail,
-  ContentBottomEmailLink
 } from '../../styles/customStyle';
 import UnauthorizedModal from '@/app/components/unAuthorizedModal';
+import { useDispatch } from 'react-redux';
+import { contactSupport } from '@/app/redux/actions/auth';
+import { AppDispatch } from '@/app/redux/store';
+import local from 'next/font/local';
+import { toast } from 'react-toastify';
 
 const Unauthorized = () => {
 
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+
+
+  const handleSubscriptionClick = () => {
+    const refEmail: any = localStorage.getItem('refEmail');
+    const payload = {
+      email: refEmail
+    }
+
+    if (refEmail === "") {
+      toast.error('Already Contacted Support');
+      return
+    }
+
+    dispatch(contactSupport(payload))
+      .then((result: any) => {
+        setOpen(!open)
+        toast.success('Successfull');
+        localStorage.setItem('refEmail', "")
+      })
+      .catch((error) => {
+        toast.error('Error contacting support');
+      });
+  }
+
 
 
   return (
     <BoxSection sx={{ backgroundImage: `url(${FourBackground.src})`, }} className='page-not-found'>
       <BoxContentLogin>
-        <BoxImgLog> <img  src={Logo.src} /> </BoxImgLog>
+        <BoxImgLog> <img src={Logo.src} /> </BoxImgLog>
         <ContentOnTop>Unfortunately, your current subscription doesn’t<br /> include our Huddle Board feature. </ContentOnTop>
         <MidContentSection>
           <MidContentLeft>
@@ -51,12 +79,7 @@ const Unauthorized = () => {
         </MidContentSection>
         <ContentBottom>The huddle board is a powerful tool to help clinical and non-clinical staff more effectively<br /> manage their time and deliver exceptional patient care.</ContentBottom>
         <ContentBottomBold>Contact DoctusTech support to add it to your subscription today.</ContentBottomBold>
-        <ContentBottomMail >Mail us at:
-          <ContentBottomEmailLink key="Email" href="mailto:support@doctustech.com">
-            &nbsp;support@doctustech.com
-          </ContentBottomEmailLink>
-        </ContentBottomMail>
-        {/* <ButtonLogin onClick={() => setOpen(!open)}>Contact Support</ButtonLogin> */}
+        <ButtonLogin onClick={() => handleSubscriptionClick()}>Contact Support</ButtonLogin>
 
       </BoxContentLogin>
       <UnauthorizedModal open={open} setOpen={setOpen} />

@@ -4,9 +4,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import CloseIcon from "@mui/icons-material/Close";
-import featuredIcon from "../../images/featuredicon.svg"
 import IdleModalIcon from "../../images/IdleModalIcon.png"
 import { Container } from "@mui/material";
 import {
@@ -19,6 +16,7 @@ import {
     ButtonLogout,
     ButtonLogggedIn,
 } from "@/app/styles/customStyle";
+import { getAndSetAccessToken, refreshTokens } from "@/app/utils/auth";
 
 const DeleteTransition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -31,20 +29,20 @@ const DeleteTransition = React.forwardRef(function Transition(
 
 const IdleModal = (props: any) => {
 
-    const { idleModalOpen, setIdleModalOpen, setIdleTime, actionValue } = props;
-    const [displayvalue, setDisplayValue] = useState("");
+    const { idleModalOpen, setIdleModalOpen, setIdleTime } = props;
 
     const logoutUser = () => {
         setIdleModalOpen(false);
+        localStorage.clear();
         window.location.href = '/auth/login';
     }
 
     const stayLoggedIn = () => {
+        const slug = localStorage.getItem('slug');
         setIdleModalOpen(false);
         setIdleTime(0)
+        refreshTokens();
     }
-
-
 
     return (
         <React.Fragment>

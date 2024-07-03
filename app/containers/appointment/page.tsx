@@ -43,7 +43,7 @@ import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
 import { formatDates, parseDate, urlParams } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
-import { accessToken, notAuthenticated } from '@/app/utils/auth';
+import { accessToken, loginAuthentication, notAuthenticated, isTokenExpired } from '@/app/utils/auth';
 import IdleModal from '@/app/components/idleModal';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
@@ -144,7 +144,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }, []);
 
   useEffect(() => {
-    if (idleTime > 10) {
+    if (idleTime > 1) {
       setIdleModalOpen(true);
     }
   }, [idleTime]);
@@ -163,7 +163,27 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   };
 
   useEffect(() => {
-    if (!notAuthenticated()) {
+    const refreshToken = localStorage.getItem('refresh_token');
+    const accessToken = localStorage.getItem('access_token');
+  
+    if (!refreshToken || !accessToken) {
+      window.location.href = "/tokenExpired";
+      return; 
+    }
+
+    if (isTokenExpired(refreshToken)) {
+      window.location.href = "/tokenExpired";
+      return; 
+    }
+  
+    if (isTokenExpired(accessToken)) {
+      window.location.href = "/tokenExpired";
+      return; 
+  }
+  },[]);
+  
+  useEffect(() => {
+    if (!loginAuthentication() && !notAuthenticated()) {
       window.location.href = '/unauthorized';
     }
     dispatch(getAppointmentsList(filters))
@@ -288,11 +308,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   //       }
   //     });
   // }
-
-  
-
-
-
 
   const handlePdf = () => {
 
@@ -421,7 +436,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       dispatch(updateFilter(filtersData));
       loadMoreAppointment(filtersData);
 
-
     }
   }
 
@@ -510,10 +524,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setDate(selectedDate);
     const selectedDay = selectedDate.getDate();
 
-    const minDateOnly = new Date(currentDate); 
+    const minDateOnly = new Date(currentDate);
     minDateOnly.setDate(currentDay - past_calendar_days_count);
-  
-    const maxDateOnly = new Date(currentDate); 
+
+    const maxDateOnly = new Date(currentDate);
     maxDateOnly.setDate(currentDay + future_calender_days_count);
     setArrowDisabledRight(false);
     setArrowDisabledLeft(false);
@@ -526,9 +540,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
 
     dateRangeHandleChange(selectedDate);
-
-    console.log( minDateOnly , maxDateOnly , currentDay , future_calender_days_count , selectedDate)
-
   }
 
   return (
@@ -584,7 +595,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               <PrintOutlinedIcon style={{ fontSize: "20px", marginRight: "5px" }} />
               <TypoSpan variant="caption">Print</TypoSpan>
             </RightBox> */}
-            
+
           </RightPrint>
         </MainBoxTop>
 
@@ -766,3 +777,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 };
 
 export default CollapsibleTable;
+function expiredTokenCheck() {
+  throw new Error('Function not implemented.');
+}
+

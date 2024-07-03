@@ -1160,6 +1160,27 @@ export const VcCode = styled('span')(({ div }: any) => ({
 
 }));
 
+export const ResendCode = styled('span')(({ div }: any) => ({
+
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '21px ',
+  color: '#2abdf0',
+  margin: '5px 0',
+  width: '100%',
+  display: 'block',
+  cursor: "pointer"
+
+}));
+
+export const LoginWarning = styled('span')(({ div }: any) => ({
+
+  fontSize: '14px',
+  fontWeight: '400',
+  lineHeight: '21px ',
+  color: '#D43131',
+
+}));
 
 export const VerficationPolicy = styled('a')(({ div }: any) => ({
 
@@ -1167,8 +1188,6 @@ export const VerficationPolicy = styled('a')(({ div }: any) => ({
   fontWeight: '400',
   lineHeight: '21px ',
   color: '#2ABDF0',
-
-
 
 }));
 
@@ -1214,8 +1233,6 @@ export const LoginPolicy = styled(Typography)(({ div }: any) => ({
 
 
 export const LoginContent = styled('div')(({ div }: any) => ({
-
-
   marginBottom: '25px',
 
   '.MuiFormControl-root': {

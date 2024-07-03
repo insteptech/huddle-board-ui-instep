@@ -5,15 +5,20 @@ import AppBar from '@mui/material/AppBar';
 import { LogoIcon } from '../../images';
 import { useTheme } from '@mui/material';
 import { Typography_Grid, StaticTypo, LinkText } from '../../styles/customStyle';
-import { useSelector } from 'react-redux';
-import { AppState } from '@/app/redux/store';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 
 
 const Header = () => {
   const theme: any = useTheme();
   const huddleBoardConfig: any = localStorage.getItem('huddleBoardConfig');
-  const config = huddleBoardConfig ? JSON.parse(huddleBoardConfig) : "dummy";
+  const config = huddleBoardConfig && huddleBoardConfig !== undefined || 'undefined' ? JSON.parse(huddleBoardConfig) : "dummy";
+  const router = useRouter()
+
+  const logout = () => {
+    localStorage.clear();
+    window.location.href = "/auth/login";
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -24,7 +29,7 @@ const Header = () => {
           <StaticTypo variant="caption" display="block" gutterBottom>
             {config?.user_full_name}
           </StaticTypo>
-          {/* <LinkText sx={{textDecoration:'none', borderLeft:'2px solid #C8CED2', paddingLeft: '10px',}} > Logout</LinkText> */}
+          <LinkText onClick={() => logout()} sx={{ cursor: "pointer", textDecoration: 'none', borderLeft: '2px solid #C8CED2', paddingLeft: '10px', }} > Logout</LinkText>
         </Typography_Grid>
       </AppBar>
     </Box>

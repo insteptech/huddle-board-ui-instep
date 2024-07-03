@@ -1,5 +1,4 @@
 'use client'
-import { Typography } from '@mui/material';
 import { getHuddleBoardConfig } from '@/app/redux/actions/auth';
 import { AppDispatch } from '@/app/redux/store';
 import { getAndSetAccessToken } from '@/app/utils/auth';
@@ -10,7 +9,6 @@ import Logino from "../../images/Logino.svg"
 import { useDispatch } from 'react-redux';
 import {
   MainLogin
-
 } from '@/app/styles/customStyle';
 
 const SignUp = () => {
@@ -19,11 +17,8 @@ const SignUp = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter()
 
-
   useEffect(() => {
-
     sessionStorage.clear();
-
     let decodedString = "";
 
     if (!searchParam.has("ref") && !searchParam.has("slug") && !searchParam.has("")) {
@@ -31,12 +26,14 @@ const SignUp = () => {
       return;
     }
 
-
     if (searchParam.has("ref")) {
       const refParam: string | null = searchParam.get("ref");
       decodedString = atob(refParam || "");
-      const isValidBase64 = /^[A-Za-z0-9+/=]+$/i.test(decodedString);
+      console.log(decodedString, "decodedString")
+      const isValidBase64 = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(decodedString);
+
       if (!isValidBase64) {
+        localStorage.setItem('refEmail', decodedString)
         window.location.href = "/unauthorized";
       }
     }
@@ -64,9 +61,7 @@ const SignUp = () => {
       deleteLocalStorage();
       window.location.href = '/pageNotFound';
     }
-
   }, [searchParam]);
-
 
   return (
     <div>

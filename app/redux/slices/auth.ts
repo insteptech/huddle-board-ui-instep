@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signInCall, getHuddleBoardConfig } from '../actions/auth';
+import { signInCall, getHuddleBoardConfig, contactSupport } from '../actions/auth';
 
 export type AuthState = {
   loggedInUser: { token: ''; user: null; permissions: null };
@@ -33,6 +33,17 @@ export const auth = createSlice({
     builder.addCase(getHuddleBoardConfig.fulfilled, (state, { payload }) => {
       state.huddleBoardConfig = payload;
     });
+
+    builder.addCase(contactSupport.pending, (state, action) => {
+      console.log(state, action, 'pending');
+    });
+    builder.addCase(contactSupport.fulfilled, (state, action) => {
+      console.log('Contact support fulfilled:', action.payload);
+    });
+    builder.addCase(contactSupport.rejected, (state, action) => {
+      console.error('Contact support rejected:', action.error);
+    });
+    
   },
 });
 

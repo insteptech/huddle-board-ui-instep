@@ -1,17 +1,13 @@
 'use client'
-import { getHuddleBoardConfig } from '@/app/redux/actions/auth';
+import { getHuddleBoardConfig, signInWithOtp, verifyOTP } from '@/app/redux/actions/auth';
 import { AppDispatch } from '@/app/redux/store';
-import { getAndSetAccessToken } from '@/app/utils/auth';
-import { deleteLocalStorage } from '@/app/utils/helper';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Logino from "../../images/Logino.svg"
-import doted from "../../images/doted.svg"
 import Leftbg from "../../images/loginleftbg.svg"
 import rightbg from "../../images/rightbg.svg"
 import TextField from '@mui/material/TextField';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   MainLogin, MainLoginleft, MainLoginright, HeadingLeft, ParaLeft,
@@ -24,6 +20,8 @@ import {
   VerficationPolicy,
   VerificationMaximum,
   Logincode,
+  ResendCode,
+  LoginWarning
 } from "@/app/styles/customStyle";
 import { Box, Button, IconButton } from '@mui/material';
 import OTP from '@/app/components/otpInpuBox';
@@ -37,10 +35,22 @@ const Login = () => {
   const [email, setEmail] = useState("")
   const [otpSent, setOtpSent] = useState(false);
   const [maskedEmail, setMaskedEmail] = useState("");
-
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const [counter, setCounter] = useState(0);
+  const [isInvalidEmail, setIsInvlidEmail] = useState(false)
 
-  const handleEmail = (event: any) => {
+
+  useEffect(() => {
+    localStorage.clear();
+
+    if (email === "") {
+      setIsInvlidEmail(false)
+    }
+  }, [email])
+
+
+  const handleEmail = async (event: any) => {
+    localStorage.clear();
 
     if (!email) {
       toast.error("Enter Email Address");
@@ -51,18 +61,65 @@ const Login = () => {
       toast.error("Enter a valid Email Address");
       return;
     }
+
+    const payload = {
+      email: email
+    }
     let [username, domain] = email.split('@');
+    let [newdomain, provider] = domain.split('.');
+
     let maskedUsername = username.charAt(0) + '*'.repeat(username.length - 2) + username.charAt(username.length - 1);
-    let maskedDomain = domain.charAt(0) + '*'.repeat(domain.length - 2) + domain.charAt(domain.length - 1);
-    let maskedEmail = maskedUsername + '@' + maskedDomain;
+    let maskedDomain = newdomain.charAt(0) + '*'.repeat(newdomain.length - 2) + newdomain.charAt(newdomain.length - 1);
+    let maskedEmail = maskedUsername + '@' + maskedDomain + '.' + provider;
     setMaskedEmail(maskedEmail)
 
-    setOtpSent(true)
+    dispatch(signInWithOtp(payload))
+      .then(response => {
+        if (response?.payload?.message) {
+          setCounter(counter + 1)
+          setOtpSent(true);
+        }
+        if (response?.payload?.error) {
+          setIsInvlidEmail(true)
+        }
+      })
   }
 
   const handleReverse = () => {
     setOtpSent(!otpSent)
     setEmail("")
+    setOtp('')
+  }
+
+  const handleOtpVerification = () => {
+    const payload = {
+      email: email,
+      otp: otp
+    }
+
+    dispatch(verifyOTP(payload))
+      .then(response => {
+        if (response?.meta?.requestStatus === "fulfilled") {
+
+          const refresh = localStorage.setItem("refresh_token", response?.payload?.refresh);
+          const access = localStorage.setItem("access_token", response?.payload?.access);
+          const emails = localStorage.setItem("email", email);
+
+          if (access !== null && refresh !== null && emails !== null) {
+            dispatch(getHuddleBoardConfig()).then((res: any) => {
+              localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
+              router.push('/appointment');
+            });
+          }
+          toast.success("OTP verification successful")
+          localStorage.setItem('huddleBoardConfig', JSON.stringify(response.payload));
+
+        }
+      })
+      .catch(error => {
+        console.error("OTP Verification Failed", error);
+        toast.error("Failed to sign in with OTP");
+      });
   }
 
   return (
@@ -71,7 +128,6 @@ const Login = () => {
         <MainLoginleft sx={{ backgroundImage: `url(${Leftbg.src})`, }}>
           {
             otpSent ?
-
               <IconButton
                 onClick={() => handleReverse()}
                 sx={{
@@ -95,7 +151,6 @@ const Login = () => {
 
         {
           otpSent ?
-
             <MainLoginright sx={{ backgroundImage: `url(${rightbg.src})`, textAlign: 'center' }}>
               <LoginForm>
                 <LoginTitle>Verify Code</LoginTitle>
@@ -116,13 +171,19 @@ const Login = () => {
                 </LoginContent>
                 <LoginActions>
 
-                  <Button variant="contained">SIGN IN</Button>
+                  <Button onClick={handleOtpVerification} variant="contained">SIGN IN</Button>
                 </LoginActions>
 
                 <VcCode>Didn't receive the verification code?</VcCode>
 
-                <VerificationMaximum>
-                  You have exceeded the maximum number of OTP resend attempts. Please try again after some time</VerificationMaximum>
+
+                {
+                  counter === 4 ?
+                    <VerificationMaximum>You have exceeded the maximum number of OTP resend attempts. Please try again after some time</VerificationMaximum>
+                    :
+                    <ResendCode onClick={handleEmail}>Resent verification code</ResendCode>
+                }
+
               </LoginForm>
             </MainLoginright>
             :
@@ -131,14 +192,35 @@ const Login = () => {
                 <LoginTitle>Welcome to DT Huddleboard</LoginTitle>
                 <LoginContent >
                   <LoginLabel>Please sign-in to your account</LoginLabel>
-                  <TextField onChange={(event) => setEmail(event.target.value)} id="outlined-basic" label="Enter your email address" variant="outlined" />
+                  <TextField
+                    sx={{
+                      'fieldset ,MuiInputBase-formControl:hover fieldset ': isInvalidEmail ? {
+                        borderColor: 'red !important'
+                      } : null,
+                      'label': isInvalidEmail ? {
+                        borderColor: 'red',
+                        color: 'red'
+                      } : null,
+                      '.Mui-focused fieldset': isInvalidEmail ? {
+                        borderColor: 'red !important'
+                      } : null,
+                      'label.Mui-focused': isInvalidEmail ? {
+                        color: 'red'
+                      } : null
+                    }}
+
+                    onChange={(event) => setEmail(event.target.value)} id="outlined-basic" label="Enter your email address" variant="outlined" />
                 </LoginContent>
                 <LoginActions>
 
-                  <Button variant="contained" onClick={handleEmail}>Next</Button>
+                  <Button variant="contained" onClick={handleEmail} disabled={isInvalidEmail}>Next</Button>
                 </LoginActions>
 
                 <LoginPolicy>I agree that I have read and accepted the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy.</a></LoginPolicy>
+
+                {isInvalidEmail ? <LoginWarning>
+                  You are currently experiencing difficulty logging in via email. Please try logging in through the EHR flow instead.
+                </LoginWarning> : null}
               </LoginForm>
             </MainLoginright>
         }

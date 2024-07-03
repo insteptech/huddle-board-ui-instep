@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { deleteLocalStorage } from './helper';
+import { access } from 'fs';
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -120,4 +121,33 @@ export const notAuthenticated: any = () => {
   if (refresh && access && userSlug && huddleBoardConfig) {
     return true
   } else false;
+};
+
+
+export const loginAuthentication: any = () => {
+  const { accessToken, refreshToken } = sessionKeys;
+  const email = localStorage.getItem("email");
+  const refresh = localStorage.getItem(refreshToken);
+  const access = localStorage.getItem(accessToken);
+  const huddleBoardConfig = localStorage.getItem('huddleBoardConfig');
+
+  if (refresh && access && email && huddleBoardConfig) {
+    return true
+  } else false;
+};
+
+export const refreshTokens = async () => {
+  const refresh = localStorage.getItem("refresh_token");
+  const payload = {
+    'refresh': refresh
+  }
+
+  const response = await axios.post(`${API_URL}token/refresh/`, (payload));
+  if (response && response.data) {
+    console.log(response)
+    const { access: newAccessToken, refresh: newRefreshToken } = response.data;
+    localStorage.setItem("refresh_token", newAccessToken);
+    localStorage.setItem("access_token", newRefreshToken);
+    return;
+  }
 };
