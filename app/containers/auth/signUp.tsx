@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import {
   MainLogin
 } from '@/app/styles/customStyle';
+import { auditLog } from '@/app/redux/actions/appointment';
 
 const SignUp = () => {
 
@@ -49,20 +50,28 @@ const SignUp = () => {
           .then(() => {
             dispatch(getHuddleBoardConfig()).then((res: any) => {
               localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
+              dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_SUCCESS", output: "FRONTEND_LOGIN_SUCCESS", misc_info: "FRONTEND Login Using Slug Success" }]))
+
               router.push('/appointment');
             });
           })
           .catch(() => {
             deleteLocalStorage();
             window.location.href = '/unauthorized';
+            dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using Slug Failed" }]))
+
           });
       } else {
         deleteLocalStorage();
         window.location.href = '/unauthorized';
+        dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using Slug Failed" }]))
+
       }
     } catch (error) {
       deleteLocalStorage();
       window.location.href = '/pageNotFound';
+      dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using Slug Failed" }]))
+
     }
   }, [searchParam]);
 
