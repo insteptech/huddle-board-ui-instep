@@ -131,7 +131,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         const existingItem = newEventData.find((existingItem) => existingItem.id === item.id);
         if (!existingItem) {
           try {
-            handleAddEventData(item.event_type, item.output,item.misc_info )
+            dispatch(auditLog([{ event_type: item.event_type, output: item.output, misc_info: item.misc_info }]))
             await addOtherData(item);
             const updatedEventData = await getAllEventData();
             setNewEventData(updatedEventData);
@@ -487,8 +487,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         loadMoreAppointment(filtersData);
         dispatch(updateFilter(filtersData));
       }, 500)
-
-      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Search Removed Successfully", misc_info: "Frontend Filter Search Removed Successfully" }]))
+      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter Search Removed Successfully", "Frontend Filter Search Removed Successfully")
     }
 
     if (e?.target?.value?.length > 1) {
@@ -509,8 +508,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       setIsFilterApplied(true);
       dispatch(updateFilter(filtersData));
       loadMoreAppointment(filtersData);
-      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Search Applied Successfully", misc_info: "Frontend Filter Search Applied Successfully" }]))
-
+      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter Search Applied Successfully", "Frontend Filter Search Applied Successfully")
     }
   }
 
