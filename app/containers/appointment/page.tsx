@@ -45,7 +45,7 @@ import { formatDates, parseDate, urlParams } from '@/app/utils/helper';
 import DatePicker from '@/app/components/datePicker';
 import { accessToken, loginAuthentication, notAuthenticated, isTokenExpired } from '@/app/utils/auth';
 import IdleModal from '@/app/components/idleModal';
-import { addEventData, addOtherData, EventData, getAllEventData } from '../../utils/indexeddb';
+import { addEventData, addOtherData, EventData, getAllEventData, getAllOtherData } from '../../utils/indexeddb';
 import { useCallback } from 'react';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
@@ -133,7 +133,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           try {
             dispatch(auditLog([{ event_type: item.event_type, output: item.output, misc_info: item.misc_info }]))
             await addOtherData(item);
-            const updatedEventData = await getAllEventData();
+            const updatedEventData = await getAllOtherData();
             setNewEventData(updatedEventData);
           } catch (error) {
             console.error('Error processing event data:', error);
