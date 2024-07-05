@@ -29,7 +29,7 @@ const DeleteTransition = React.forwardRef(function Transition(
 
 const IdleModal = (props: any) => {
 
-    const { idleModalOpen, setIdleModalOpen, setIdleTime } = props;
+    const { idleModalOpen, setIdleModalOpen, setIdleTime, idleTime } = props;
 
     const logoutUser = () => {
         setIdleModalOpen(false);
@@ -43,6 +43,8 @@ const IdleModal = (props: any) => {
         setIdleTime(0)
         refreshTokens();
     }
+
+    const newIdleTime = 1;
 
     return (
         <React.Fragment>
@@ -64,7 +66,7 @@ const IdleModal = (props: any) => {
 
                     <DialogContentTexts id="alert-dialog-slide-description">
                         <DialogContentTextInner>
-                            You have been inactive for 1 hour. For your security, you will be automatically logged out.
+                            You have been inactive for {newIdleTime} hour. For your security, you will be automatically logged out.
                         </DialogContentTextInner>
                     </DialogContentTexts>
                 </DialogContent>

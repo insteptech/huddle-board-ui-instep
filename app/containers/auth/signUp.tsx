@@ -50,7 +50,7 @@ const SignUp = () => {
           .then(() => {
             dispatch(getHuddleBoardConfig()).then((res: any) => {
               localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
-              dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_SUCCESS", output: "FRONTEND_LOGIN_SUCCESS", misc_info: "FRONTEND Login Using Slug Success" }]))
+              handleAddEventData("FRONTEND_LOGIN_SUCCESS", "FRONTEND_LOGIN_SUCCESS", "FRONTEND Login Using Slug Success")
 
               router.push('/appointment');
             });
@@ -58,19 +58,18 @@ const SignUp = () => {
           .catch(() => {
             deleteLocalStorage();
             window.location.href = '/unauthorized';
-            dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using Slug Failed" }]))
-
+            handleAddEventData("FRONTEND_LOGIN_FAILURE", "FRONTEND_LOGIN_FAILURE", "FRONTEND Login Using Slug Failed")
           });
       } else {
         deleteLocalStorage();
         window.location.href = '/unauthorized';
-        dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using Slug Failed" }]))
+        handleAddEventData("FRONTEND_LOGIN_FAILURE", "FRONTEND_LOGIN_FAILURE", "FRONTEND Login Using Slug Failed")
 
       }
     } catch (error) {
       deleteLocalStorage();
       window.location.href = '/pageNotFound';
-      dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using Slug Failed" }]))
+      handleAddEventData("FRONTEND_LOGIN_FAILURE", "FRONTEND_LOGIN_FAILURE", "FRONTEND Login Using Slug Failed")
 
     }
   }, [searchParam]);
@@ -85,3 +84,7 @@ const SignUp = () => {
 };
 
 export default SignUp;
+function handleAddEventData(arg0: string, arg1: string, arg2: string) {
+  throw new Error('Function not implemented.');
+}
+

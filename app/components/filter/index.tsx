@@ -155,18 +155,18 @@ function FilterButton(props: any) {
       provider: selectedProviders
     };
 
-    if  (isEdit) {
-      dispatch(updateAppointmentFilter({  action: payload, uuid: selectedFilterDetail?.uuid  })).then((e)  => {
+    if (isEdit) {
+      dispatch(updateAppointmentFilter({ action: payload, uuid: selectedFilterDetail?.uuid })).then((e) => {
         if (e?.payload) {
           toast.success(e?.payload?.message);
           setIsModalOpen(false);
           dispatch(getSelectedFilterList());
           resetFilters(true);
-          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Created Successfully", misc_info: "Frontend Filter Created Successfully" }]))
+          handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter updated Successfully", "Frontend Filter updated Successfully")
         }
 
         else {
-          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Created Successfully", misc_info: "Frontend Filter Created Successfully" }]))
+          handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter updated Successfully", "Frontend Filter updated Successfully")
         }
       });
     } else {
@@ -174,13 +174,13 @@ function FilterButton(props: any) {
         if (e?.payload) {
           toast.success(e?.payload?.message);
           setIsModalOpen(false);
-          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_CREATED", output: "Frontend Filter Created Successfully", misc_info: "Frontend Filter Created Successfully" }])),
+          handleAddEventData("FRONTEND_FILTER_CLICK_CREATED", "Frontend Filter created Successfully", "Frontend Filter created Successfully"),
             dispatch(getSelectedFilterList());
           resetFilters(true);
         }
 
         else {
-          dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_CREATED", output: "Frontend Filter Creation Failure", misc_info: "Frontend Filter Creation Failure" }]))
+          handleAddEventData("FRONTEND_FILTER_CLICK_CREATED", "Frontend Filter creation failed", "Frontend Filter creation failed")
         }
       });
     }
@@ -229,8 +229,7 @@ function FilterButton(props: any) {
       dispatch(getSelectedFilterList());
       resetFilters(true);
       setDeleteModalOpen(false);
-      dispatch(auditLog([{ event_type: "FRONTEND_FILTER_CLICK_GENERAL", output: "Frontend Filter Deleted Successfully", misc_info: "Frontend Filter Deleted Successfully" }]))
-
+      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter Deleted Successfully", "Frontend Filter Deleted Successfully")
     })
   }
 
@@ -420,3 +419,7 @@ function FilterButton(props: any) {
 }
 
 export default FilterButton;
+
+function handleAddEventData(arg0: string, arg1: string, arg2: string) {
+  throw new Error('Function not implemented.');
+}
