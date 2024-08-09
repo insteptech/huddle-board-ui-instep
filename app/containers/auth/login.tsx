@@ -127,7 +127,7 @@ const Login = () => {
   return (
     <div className='main_sec'>
       <MainLogin>
-        <MainLoginleft sx={{ backgroundImage: `url(${Leftbg.src})`, }}>
+        <MainLoginleft sx={{ backgroundImage: `url(${Leftbg.src})`, backgroundPosition: "", backgroundSize: "70%" }}>
           {
             otpSent ?
               <IconButton

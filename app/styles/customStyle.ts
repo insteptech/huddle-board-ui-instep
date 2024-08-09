@@ -1131,7 +1131,7 @@ export const MainLoginright = styled('div')(({ div }: any) => ({
 
 export const HeadingLeft = styled('h2')(({ div }: any) => ({
 
-  fontSize: '24px',
+  fontSize: '24px !important',
   fontWeight: '600',
   lineHeight: '29.05px ',
   color: '#3A3541',
@@ -1142,7 +1142,7 @@ export const HeadingLeft = styled('h2')(({ div }: any) => ({
 
 export const ParaLeft = styled(Typography)(({ div }: any) => ({
 
-  fontSize: '16px',
+  fontSize: '16px !important',
   fontWeight: '400',
   lineHeight: '24px',
   color: '#000',
