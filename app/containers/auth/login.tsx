@@ -26,6 +26,7 @@ import {
 import { Box, Button, IconButton } from '@mui/material';
 import OTP from '@/app/components/otpInpuBox';
 import { toast } from 'react-toastify';
+import { auditLog } from '@/app/redux/actions/appointment';
 
 const Login = () => {
   const searchParam = useSearchParams();
@@ -100,7 +101,7 @@ const Login = () => {
     dispatch(verifyOTP(payload))
       .then(response => {
         if (response?.meta?.requestStatus === "fulfilled") {
-
+          dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_SUCCESS", output: "FRONTEND_LOGIN_SUCCESS", misc_info: "FRONTEND Login Using OTP Success" }]))
           const refresh = localStorage.setItem("refresh_token", response?.payload?.refresh);
           const access = localStorage.setItem("access_token", response?.payload?.access);
           const emails = localStorage.setItem("email", email);
@@ -117,6 +118,7 @@ const Login = () => {
         }
       })
       .catch(error => {
+        dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using OTP Failed" }]))
         console.error("OTP Verification Failed", error);
         toast.error("Failed to sign in with OTP");
       });

@@ -15,8 +15,7 @@ import List from '@mui/material/List';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TuneIconimage from "../../images/filterIcon.png"
-
-
+import { auditLog } from '@/app/redux/actions/appointment';
 import {
   BoxFilter,
   FilterButtons,
@@ -136,7 +135,7 @@ function FilterButton(props: any) {
     setIsFilterApplied(true);
     dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filtersData);
+    loadMoreAppointment(filtersData, "FRONTEND_FILTER_CLICK_FILTER_APPLIED_SUCCESS");
     setAnchorEl(null);
   }
 
@@ -163,6 +162,11 @@ function FilterButton(props: any) {
           setIsModalOpen(false);
           dispatch(getSelectedFilterList());
           resetFilters(true);
+          handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter updated Successfully", "Frontend Filter updated Successfully")
+        }
+
+        else {
+          handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter updated Successfully", "Frontend Filter updated Successfully")
         }
       });
     } else {
@@ -170,8 +174,13 @@ function FilterButton(props: any) {
         if (e?.payload) {
           toast.success(e?.payload?.message);
           setIsModalOpen(false);
-          dispatch(getSelectedFilterList());
+          handleAddEventData("FRONTEND_FILTER_CLICK_CREATED", "Frontend Filter created Successfully", "Frontend Filter created Successfully"),
+            dispatch(getSelectedFilterList());
           resetFilters(true);
+        }
+
+        else {
+          handleAddEventData("FRONTEND_FILTER_CLICK_CREATED", "Frontend Filter creation failed", "Frontend Filter creation failed")
         }
       });
     }
@@ -220,6 +229,7 @@ function FilterButton(props: any) {
       dispatch(getSelectedFilterList());
       resetFilters(true);
       setDeleteModalOpen(false);
+      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filter Deleted Successfully", "Frontend Filter Deleted Successfully")
     })
   }
 
@@ -409,3 +419,7 @@ function FilterButton(props: any) {
 }
 
 export default FilterButton;
+
+function handleAddEventData(arg0: string, arg1: string, arg2: string) {
+  throw new Error('Function not implemented.');
+}

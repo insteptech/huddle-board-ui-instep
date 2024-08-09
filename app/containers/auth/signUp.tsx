@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import {
   MainLogin
 } from '@/app/styles/customStyle';
+import { auditLog } from '@/app/redux/actions/appointment';
 
 const SignUp = () => {
 
@@ -49,20 +50,27 @@ const SignUp = () => {
           .then(() => {
             dispatch(getHuddleBoardConfig()).then((res: any) => {
               localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
+              handleAddEventData("FRONTEND_LOGIN_SUCCESS", "FRONTEND_LOGIN_SUCCESS", "FRONTEND Login Using Slug Success")
+
               router.push('/appointment');
             });
           })
           .catch(() => {
             deleteLocalStorage();
             window.location.href = '/unauthorized';
+            handleAddEventData("FRONTEND_LOGIN_FAILURE", "FRONTEND_LOGIN_FAILURE", "FRONTEND Login Using Slug Failed")
           });
       } else {
         deleteLocalStorage();
         window.location.href = '/unauthorized';
+        handleAddEventData("FRONTEND_LOGIN_FAILURE", "FRONTEND_LOGIN_FAILURE", "FRONTEND Login Using Slug Failed")
+
       }
     } catch (error) {
       deleteLocalStorage();
       window.location.href = '/pageNotFound';
+      handleAddEventData("FRONTEND_LOGIN_FAILURE", "FRONTEND_LOGIN_FAILURE", "FRONTEND Login Using Slug Failed")
+
     }
   }, [searchParam]);
 
@@ -76,3 +84,7 @@ const SignUp = () => {
 };
 
 export default SignUp;
+function handleAddEventData(arg0: string, arg1: string, arg2: string) {
+  throw new Error('Function not implemented.');
+}
+
