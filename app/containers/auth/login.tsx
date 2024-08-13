@@ -7,6 +7,7 @@ import Logino from "../../images/Logino.svg"
 import Leftbg from "../../images/loginleftbg.svg"
 import rightbg from "../../images/rightbg.svg"
 import TextField from '@mui/material/TextField';
+import LoginImage from '../../images/Login.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -54,12 +55,16 @@ const Login = () => {
     localStorage.clear();
 
     if (!email) {
-      toast.error("Enter Email Address");
+      toast.error("Enter Email Address", {
+        toastId: 'error1',
+      });
       return
     }
 
     if (!emailRegex.test(email)) {
-      toast.error("Enter a valid Email Address");
+      toast.error("Enter a valid Email Address", {
+        toastId: 'error2',
+      });
       return;
     }
 
@@ -112,7 +117,9 @@ const Login = () => {
               router.push('/appointment');
             });
           }
-          toast.success("OTP verification successful")
+          toast.success("OTP verification successful", {
+            toastId: 'success1',
+          })
           localStorage.setItem('huddleBoardConfig', JSON.stringify(response.payload));
 
         }
@@ -120,22 +127,26 @@ const Login = () => {
       .catch(error => {
         dispatch(auditLog([{ event_type: "FRONTEND_LOGIN_FAILURE", output: "FRONTEND_LOGIN_FAILURE", misc_info: "FRONTEND Login Using OTP Failed" }]))
         console.error("OTP Verification Failed", error);
-        toast.error("Failed to sign in with OTP");
+        toast.error("Failed to sign in with OTP", {
+          toastId: 'error3',
+        });
       });
   }
 
   return (
     <div className='main_sec'>
-      
-      <MainLogin>
-        <MainLoginleft sx={{ backgroundImage: `url(${Leftbg.src})`, backgroundPosition: "", backgroundSize: "70%" }}>
+
+      <MainLogin sx={{ backgroundImage: `url(${LoginImage.src})`, backgroundPosition: 'bottom center', backgroundSize: '100%', backgroundRepeat: 'no-repeat' }}>
+        <MainLoginleft
+        //  sx={{ backgroundImage: `url(${Leftbg.src})`, backgroundPosition: "", backgroundSize: "70%" }}
+        >
           {
             otpSent ?
               <IconButton
                 onClick={() => handleReverse()}
                 sx={{
                   position: "absolute",
-                  top: "10%",
+                  top: "5%",
                   borderRadius: "50%",
                   border: "1.5px solid #757575",
                   padding: "2px",
@@ -154,7 +165,11 @@ const Login = () => {
 
         {
           otpSent ?
-            <MainLoginright sx={{ backgroundImage: `url(${rightbg.src})`, textAlign: 'center' }}>
+            <MainLoginright
+              sx={{
+                // backgroundImage: `url(${rightbg.src})`,
+                textAlign: 'center'
+              }}>
               <LoginForm>
                 <LoginTitle>Verify Code</LoginTitle>
                 <LoginContent >
@@ -190,7 +205,9 @@ const Login = () => {
               </LoginForm>
             </MainLoginright>
             :
-            <MainLoginright sx={{ backgroundImage: `url(${rightbg.src})`, }}>
+            <MainLoginright
+            // sx={{ backgroundImage: `url(${rightbg.src})` }}
+            >
               <LoginForm>
                 <LoginTitle>Welcome to DT Huddleboard</LoginTitle>
                 <LoginContent >
@@ -216,7 +233,7 @@ const Login = () => {
                 </LoginContent>
                 <LoginActions>
 
-                  <Button variant="contained" onClick={handleEmail} disabled={isInvalidEmail}>Next</Button>
+                  <Button variant="contained" onClick={handleEmail} >Next</Button>
                 </LoginActions>
 
                 <LoginPolicy>I agree that I have read and accepted the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy.</a></LoginPolicy>

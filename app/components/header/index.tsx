@@ -6,6 +6,7 @@ import { LogoIcon } from '../../images';
 import { useTheme } from '@mui/material';
 import { Typography_Grid, StaticTypo, LinkText } from '../../styles/customStyle';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 
 
@@ -16,8 +17,14 @@ const Header = () => {
   const router = useRouter()
 
   const logout = () => {
-    localStorage.clear();
-    window.location.href = "/auth/login";
+
+    toast.success("Logout Success", {
+      toastId: 'error111',
+    })
+    setTimeout(() => {
+      localStorage.clear();
+      window.location.href = "/auth/login";
+    }, 1000)
   }
 
   return (

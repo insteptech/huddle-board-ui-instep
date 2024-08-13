@@ -39,17 +39,25 @@ export const signInWithOtp = createAsyncThunk('signInWithOtp', (payload: ILoginF
   })
     .then(response => {
       if (response.status !== 200) {
-        toast.error(response.data.message);
+        toast.error(response.data.message, {
+          toastId: 'error4',
+        });
         throw new Error('Invalid Email');
       }
-      toast.success(response.data.message);
+      toast.success(response.data.message, {
+
+        toastId: 'success2',
+
+      });
 
       return response.data;
     })
     .catch(error => {
       if (error.response) {
         console.error(error.response.data);
-        toast.error(error.response.data.error);
+        toast.error(error.response.data.error, {
+          toastId: 'error5'
+        });
         return rejectWithValue(error.response.data);
       } else if (error.request) {
 
@@ -72,17 +80,29 @@ export const verifyOTP = createAsyncThunk('verifyOTP', async (payload: IVerifyOt
     .then(response => {
       if (response.status !== 200) {
 
-        toast.error(response.data.message);
+        toast.error(response.data.message, {
+
+          toastId: 'error6',
+
+        });
         throw new Error(response.data.message);
       }
-      toast.success(response.data.message);
+      toast.success(response.data.message, {
+
+        toastId: 'success3',
+
+      });
 
       return response.data;
     })
     .catch(error => {
       if (error.response) {
         console.error(error.response.data);
-        toast.error(error.response.data.error);
+        toast.error(error.response.data.error, {
+
+          toastId: 'error7',
+
+        });
         return rejectWithValue(error.response.data);
       } else if (error.request) {
 
@@ -103,10 +123,18 @@ export const contactSupport = createAsyncThunk('contactSupport', async (payload:
     }
   }).then(response => {
     if (response.status !== 200) {
-      toast.error(response.data.message);
+      toast.error(response.data.message, {
+
+        toastId: 'error8',
+
+      });
       throw new Error(response.data.message);
     }
-    toast.success(response.data.message);
+    toast.success(response.data.message, {
+
+      toastId: 'success5',
+
+    });
     return response.data;
   }).catch(error => {
     console.error('Error', error.message);

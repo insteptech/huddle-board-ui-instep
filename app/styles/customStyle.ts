@@ -1102,12 +1102,15 @@ export const MainLoginleft = styled('div')(({ div }: any) => ({
   minHeight: '100vh',
   backgroundPosition: 'bottom center',
   backgroundRepeat: 'no-repeat',
-  padding: '5rem',
+  padding: '10rem 5rem',
   backgroundSize: '100%',
   display: 'flex',
   alignItems: 'baseline',
   flexDirection: 'column',
-  justifyContent: 'center',
+
+  '@media (max-width: 1440px)': {
+    padding: '5rem 2rem',
+  },
 
 }));
 
@@ -1117,16 +1120,14 @@ export const MainLoginright = styled('div')(({ div }: any) => ({
   minHeight: '100vh',
   backgroundPosition: 'bottom center',
   backgroundRepeat: 'no-repeat',
-  padding: '5rem',
-  backgroundColor: '#EEF9FD',
+  // backgroundColor: '#EEF9FD',
   backgroundSize: '100%',
-  display: 'flex',
-  alignItems: 'center',
+  padding: "10rem 5rem",
+
+  '@media (max-width: 1440px)': {
+    padding: '5rem 2rem',
+  },
 }));
-
-
-
-
 
 
 export const HeadingLeft = styled('h2')(({ div }: any) => ({
@@ -1288,10 +1289,6 @@ export const LoginContent = styled('div')(({ div }: any) => ({
     width: "100%",
   }
 }));
-
-
-
-
 
 
 
