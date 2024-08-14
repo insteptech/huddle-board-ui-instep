@@ -22,7 +22,8 @@ import {
   VerificationMaximum,
   Logincode,
   ResendCode,
-  LoginWarning
+  LoginWarning,
+  LoginForm2
 } from "@/app/styles/customStyle";
 import { Box, Button, IconButton } from '@mui/material';
 import OTP from '@/app/components/otpInpuBox';
@@ -146,7 +147,7 @@ const Login = () => {
                 onClick={() => handleReverse()}
                 sx={{
                   position: "absolute",
-                  top: "5%",
+                  top: "1%",
                   borderRadius: "50%",
                   border: "1.5px solid #757575",
                   padding: "2px",
@@ -170,7 +171,7 @@ const Login = () => {
                 // backgroundImage: `url(${rightbg.src})`,
                 textAlign: 'center'
               }}>
-              <LoginForm>
+              <LoginForm2>
                 <LoginTitle>Verify Code</LoginTitle>
                 <LoginContent >
                   <Logincode>The code has been sent to the email address you provided.</Logincode>
@@ -202,7 +203,7 @@ const Login = () => {
                     <ResendCode onClick={handleEmail}>Resent verification code</ResendCode>
                 }
 
-              </LoginForm>
+              </LoginForm2>
             </MainLoginright>
             :
             <MainLoginright

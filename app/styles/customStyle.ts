@@ -797,7 +797,7 @@ export const BoxSection = styled('div')(({ div }: any) => ({
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100%',
 
-  '@media (max-width: 1280px)': {
+  '@media (max-width: 1380px)': {
     top: '0px'
   }
 
@@ -897,8 +897,14 @@ export const ContentOnTop = styled('h4')(({ div }: any) => ({
   color: '#0D426A',
   marginBottom: '30px',
 
-  '@media (max-width: 1280px)': {
-    marginBottom: '20px',
+  '@media (max-width: 1536px)': {
+    marginBottom: '16px',
+    fontSize: '1.3rem',
+  },
+
+  '@media (max-width: 1380px)': {
+    marginBottom: '12px',
+    fontSize: '1.2rem',
   }
 }));
 
@@ -908,6 +914,17 @@ export const ContentBottom = styled(Typography)(({ div }: any) => ({
   lineHeight: '1.238rem',
   color: '#000',
   marginBottom: '20px',
+
+  '@media (max-width: 1536px)': {
+    marginBottom: '18px',
+    lineHeight: '1rem',
+  },
+
+  '@media (max-width: 1380px)': {
+    marginBottom: '15px',
+    lineHeight: '1rem',
+  }
+
 }));
 
 export const ContentBottomBold = styled('h4')(({ div }: any) => ({
@@ -929,7 +946,8 @@ export const ListLoginItem = styled(ListItem)(({ div }: any) => ({
   padding: '0px',
   paddingLeft: '5px',
   '@media (max-width: 1280px)': {
-    marginBottom: '15px',
+    marginBottom: '12px',
+    fontSize: '1rem',
   }
 }));
 
@@ -953,9 +971,9 @@ export const MidContentLeft = styled('div')(({ div }: any) => ({
   'img': {
     width: '100%',
   },
-  '@media (max-width: 1280px)': {
+  '@media (max-width: 1380px)': {
     'img': {
-      maxWidth: '300px',
+      maxWidth: '250px',
     }
   }
 }));
@@ -971,7 +989,7 @@ export const Listlogin = styled('div')(({ div }: any) => ({
 export const BoxContentLogin = styled('div')(({ div }: any) => ({
   width: '50%',
   textAlign: 'center',
-  '@media (max-width: 1280px)': {
+  '@media (max-width: 1380px)': {
     width: '80%'
   }
 }));
@@ -986,15 +1004,32 @@ export const ButtonLogin = styled('button')(({ div }: any) => ({
   background: '#0D426A',
   color: '#fff',
   border: 'none',
-}));
 
-
-export const BoxImgLog = styled('div')(({ div }: any) => ({
-  marginBottom: '3rem',
-  '@media (max-width: 1280px)': {
-    marginBottom: '1rem',
+  '@media (max-width: 1380px)': {
+    fontSize: '13px',
+    lineHeight: '16px',
+    padding: '8px 16px',
   }
 }));
+
+
+export const BoxImgLog = styled('div')({
+  marginBottom: '3rem',
+
+  '@media (max-width: 1536px)': {
+    marginBottom: '1.5rem',
+  },
+
+  '@media (max-width: 1380px)': {
+    marginBottom: '10px',
+  },
+
+  'img': {
+    '@media (max-width: 1380px)': {
+      width: "150px",
+    },
+  },
+});
 
 export const CharacterCountText = styled(Typography)(({ div }: any) => ({
   fontSize: '10px',
@@ -1095,6 +1130,11 @@ export const MainLogin = styled('div')(({ div }: any) => ({
   alignItems: 'center',
   background: '#fff',
 
+  '@media (max-width: 1380px)': {
+    backgroundSize: '100%',
+    backgroundPosition: 'bottom center',
+  },
+
 }));
 
 export const MainLoginleft = styled('div')(({ div }: any) => ({
@@ -1109,8 +1149,25 @@ export const MainLoginleft = styled('div')(({ div }: any) => ({
   flexDirection: 'column',
 
   '@media (max-width: 1440px)': {
-    padding: '5rem 2rem',
+    padding: '2.5rem 2rem',
+
+    '@-moz-document url-prefix()': {
+      padding: '4.75rem 2rem', // Specific styles for Firefox
+    },
+
   },
+
+  // Media query for screen widths between 1441px and 1560px
+  '@media (min-width: 1441px) and (max-width: 1560px)': {
+    padding: '4rem 2rem',
+
+    // Apply Firefox-specific styles separately
+    '@supports (-moz-appearance: none)': {
+      padding: '5rem 2rem', // Specific styles for Firefox
+    },
+  },
+
+
 
 }));
 
@@ -1125,8 +1182,26 @@ export const MainLoginright = styled('div')(({ div }: any) => ({
   padding: "10rem 5rem",
 
   '@media (max-width: 1440px)': {
-    padding: '5rem 2rem',
+    padding: '2.5rem 2rem',
+
+    '@-moz-document url-prefix()': {
+      padding: '4.75rem 2rem', // Specific styles for Firefox
+    },
   },
+
+    // Media query for screen widths between 1441px and 1560px
+    '@media (min-width: 1441px) and (max-width: 1560px)': {
+      padding: '4rem 2rem',
+  
+      // Apply Firefox-specific styles separately
+      '@supports (-moz-appearance: none)': {
+        padding: '5rem 2rem', // Specific styles for Firefox
+      },
+    },
+
+
+
+
 }));
 
 
@@ -1159,6 +1234,36 @@ export const LoginForm = styled('div')(({ div }: any) => ({
   borderRadius: '4.5px',
   width: '400px',
   margin: 'auto',
+
+}));
+
+
+export const LoginForm2 = styled('div')(({ div }: any) => ({
+  boxShadow: '0px 12px 30px 0px #3A35410D',
+  padding: '30px',
+  backgroundColor: '#fff',
+  borderRadius: '4.5px',
+  width: '400px',
+  margin: 'auto',
+
+  '@media (max-width: 1440px)': {
+    padding: '18px',
+
+    '@-moz-document url-prefix()': {
+      padding: '18px',// Specific styles for Firefox
+    },
+
+
+  },
+
+  '@media (min-width: 1440px) and (max-width: 1560px)': {
+    padding: '22px',
+
+    '@-moz-document url-prefix()': {
+      padding: '22px',// Specific styles for Firefox
+    },
+  }
+
 }));
 
 export const LoginTitle = styled('h3')(({ div }: any) => ({
