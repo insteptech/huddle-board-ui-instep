@@ -29,20 +29,6 @@ const SignUp = () => {
       return;
     }
 
-    // if (searchParam.has("ref")) {
-
-    //   const refParam: string | null = searchParam.get("ref" || "REF" || "Ref");
-    //   decodedString = atob(refParam || "");
-    //   console.log(decodedString, "decodedString")
-    //   const isValidBase64 = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(decodedString);
-
-    //   console.log(isValidBase64)
-
-    //   if (isValidBase64) {
-    //     localStorage.setItem('refEmail', decodedString)
-    //     window.location.href = "/unauthorized";
-    //   }
-    // }
 
     const slug = searchParam.get("slug");
 
