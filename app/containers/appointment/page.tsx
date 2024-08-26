@@ -548,7 +548,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     };
     dispatch(updateFilter(filter));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters, "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED");
+    loadMoreAppointment(filter, "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED");
   }
 
   const handleAppointmentTimeSort = () => {
