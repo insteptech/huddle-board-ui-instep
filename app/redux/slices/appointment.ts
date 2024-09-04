@@ -4,7 +4,7 @@ import { sortArraysInObject, sortObjectsByName } from '@/app/utils/appointment';
 import { formatDates } from '@/app/utils/helper';
 
 
-const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const timezone: string = "PST";
 
 export type AppointmentsState = {
   appointmentsData: {

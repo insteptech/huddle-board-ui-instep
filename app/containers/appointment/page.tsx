@@ -125,6 +125,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const [windowHeight, setWindowHeight] = useState(0);
   const [idleTime, setIdleTime] = useState(0);
 
+  const removeObjectById = (arr: any, id: any) => {
+    const index = arr.findIndex((item: any) => item.id === id);
+    if (index !== -1) {
+      arr.splice(index, 1);
+    }
+  };
+
   useEffect(() => {
     const processEventData = async () => {
       for (const item of eventData) {
@@ -135,6 +142,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             await addOtherData(item);
             const updatedEventData = await getAllOtherData();
             setNewEventData(updatedEventData);
+            const { id, ...itemWithoutId } = item;
+            removeObjectById(eventData, id)
           } catch (error) {
             console.error('Error processing event data:', error);
           }
@@ -383,12 +392,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const handlePdf = () => {
 
-    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezone: string = "PST";
 
     const appliedFilters = {
       ...filters,
       file_type: 'pdf',
-      timezone: timezone
+      timezone: timezone,
+
     };
     const url = `${API_URL}download-appointments/?${urlParams(appliedFilters)}`;
     fetch(url, { method: 'get', headers: { "Authorization": `JWT ${accessToken()}` } })
@@ -432,7 +442,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setSelectedProviders([]);
     dispatch(updateFilter(filtersData));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filters, "FRONTEND_FILTER_CLICK_FILTER_RESET");
+    loadMoreAppointment(filtersData, "FRONTEND_FILTER_CLICK_FILTER_RESET");
     setPatientNameSearch('');
     setSelectedSavedFilterUuid('');
     if (!isFilterPopOpen) {
