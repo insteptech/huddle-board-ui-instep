@@ -91,15 +91,15 @@ export const getCurrentDateFormatted = (date?: any) => {
 export const formatDates = (startDate: any, endDate: any) => {
   const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-// Define the start of the day in IST
-const startDateTimeIST = moment.tz(startDate, timezone).startOf('day');
+  // Define the start of the day in IST
+  const startDateTimeIST = moment.tz(startDate, timezone).startOf('day');
 
-// Define the end of the day in IST
-const endDateTimeIST = moment.tz(startDate, timezone).endOf('day');
+  // Define the end of the day in IST
+  const endDateTimeIST = moment.tz(startDate, timezone).endOf('day');
 
-// Convert IST dateTimes to UTC
-const startDateTimeUTC = startDateTimeIST.clone().tz("UTC");
-const endDateTimeUTC = endDateTimeIST.clone().tz("UTC");
+  // Convert IST dateTimes to UTC
+  const startDateTimeUTC = startDateTimeIST.clone().tz("UTC");
+  const endDateTimeUTC = endDateTimeIST.clone().tz("UTC");
 
   return {
     start: startDateTimeUTC.format(),
@@ -121,3 +121,4 @@ export const parseDate = (dd: any) => {
   const year = new Date().getFullYear();
   return new Date(`${month}/${day}/${year}`);
 }
+

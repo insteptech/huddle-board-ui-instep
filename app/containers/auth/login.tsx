@@ -29,6 +29,7 @@ import { Box, Button, IconButton } from '@mui/material';
 import OTP from '@/app/components/otpInpuBox';
 import { toast } from 'react-toastify';
 import { auditLog } from '@/app/redux/actions/appointment';
+import { clearDB } from '@/app/utils/indexeddb';
 
 const Login = () => {
   const searchParam = useSearchParams();
@@ -42,6 +43,15 @@ const Login = () => {
   const [counter, setCounter] = useState(0);
   const [isInvalidEmail, setIsInvlidEmail] = useState(false)
 
+  useEffect(() => {
+    // Clear IndexedDB when the component mounts
+    clearDB()
+      .then(() => {
+      })
+      .catch((error) => {
+        console.error('Error clearing the database:', error);
+      });
+  }, []);
 
   useEffect(() => {
     localStorage.clear();

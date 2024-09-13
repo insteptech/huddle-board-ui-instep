@@ -2,8 +2,8 @@
 import { openDB } from 'idb';
 import { v4 as uuidv4 } from 'uuid';
 
-const dbName = 'y-db';
-const dbVersion = 2; // Increment version number to trigger an upgrade
+const dbName = 'huddleBoard';
+const dbVersion = 1; // Increment version number to trigger an upgrade
 
 let db: any;
 
@@ -21,7 +21,7 @@ export async function initDB() {
     db = await openDB(dbName, dbVersion, {
         upgrade(db, oldVersion, newVersion, transaction) {
             console.log('Upgrading database from version', oldVersion, 'to', newVersion);
-            
+
             // Create object store for event data
             if (!db.objectStoreNames.contains('event-data')) {
                 const eventDataStore = db.createObjectStore('event-data', {
@@ -36,7 +36,7 @@ export async function initDB() {
                 });
                 otherDataStore.createIndex('someIndex', 'someField');
             }
-            
+
             // Add more object stores as needed
         },
     });
@@ -89,7 +89,7 @@ export async function addOtherData(otherData: any) {
     }
     const tx = db.transaction('other-data', 'readwrite');
     const store = tx.objectStore('other-data');
-    await store.add({...otherData });
+    await store.add({ ...otherData });
     await tx.done;
     console.log('Other data added successfully!');
 }
@@ -107,5 +107,28 @@ export async function getAllOtherData(): Promise<any[]> {
     } catch (error) {
         console.error('Error getting all other data:', error);
         return []; // Return an empty array on error
+    }
+}
+
+
+// Function to clear all data from all object stores
+// Function to clear all data from all object stores
+export async function clearDB(): Promise<void> {
+    console.log('Clearing the database...');
+    if (!db) {
+        await initDB();
+    }
+    try {
+        const storeNames: string[] = Array.from(db.objectStoreNames) as string[];
+        const tx = db.transaction(storeNames, 'readwrite');
+
+        storeNames.forEach((storeName) => {
+            const store = tx.objectStore(storeName);
+            store.clear();
+        });
+
+        await tx.done;
+    } catch (error) {
+        console.error('Error clearing the database:', error);
     }
 }

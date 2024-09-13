@@ -38,7 +38,7 @@ import { toast } from 'react-toastify';
 import DeleteFilterModal from '../deleteFilterModal';
 
 function FilterButton(props: any) {
-  const { getAppointmentFiltersData, isFilterApplied, appointmentFiltersData, setMainLoader, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl, selectedVisitType, selectedScreening, selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid, setIsFilterApplied } = props;
+  const { getAppointmentFiltersData, handleAddEventData, isFilterApplied, appointmentFiltersData, setMainLoader, isFilterDataLoading, loadMoreAppointment, filters, selectedFilterList, setSelectedVisitType, setSelectedScreening, setSelectedProviders, setAnchorEl, anchorEl, selectedVisitType, selectedScreening, selectedProviders, resetFilters, getFilterDetail, selectedSavedFilterUuid, setIsFilterApplied } = props;
   const { patient_screening, provider, visit_type } = appointmentFiltersData || {};
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -204,7 +204,6 @@ function FilterButton(props: any) {
       }
     });
   }
-
 
   const onRadioButtonClick = (filter: any) => {
     setSelectedFilter(filter)
@@ -420,6 +419,3 @@ function FilterButton(props: any) {
 
 export default FilterButton;
 
-function handleAddEventData(arg0: string, arg1: string, arg2: string) {
-  throw new Error('Function not implemented.');
-}

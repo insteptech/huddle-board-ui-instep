@@ -11,8 +11,12 @@ import {
   MainLogin
 } from '@/app/styles/customStyle';
 import { auditLog } from '@/app/redux/actions/appointment';
-
+import { clearDB } from '@/app/utils/indexeddb';
 const SignUp = () => {
+
+  useEffect(() => {
+    clearDB()
+  }, []);
 
   const searchParam = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
@@ -29,7 +33,6 @@ const SignUp = () => {
       return;
     }
 
-
     const slug = searchParam.get("slug");
 
     try {
@@ -38,7 +41,6 @@ const SignUp = () => {
         getAndSetAccessToken(slug)
           .then(() => {
             dispatch(getHuddleBoardConfig()).then((res: any) => {
-              console.log("bdjgbdjbgjdfbgjjgdf")
               localStorage.setItem('huddleBoardConfig', JSON.stringify(res.payload));
               router.push("/appointment");
               window.location.href = "/appointment"

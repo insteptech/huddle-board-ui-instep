@@ -47,6 +47,7 @@ import { accessToken, loginAuthentication, notAuthenticated, isTokenExpired } fr
 import IdleModal from '@/app/components/idleModal';
 import { addEventData, addOtherData, EventData, getAllEventData, getAllOtherData } from '../../utils/indexeddb';
 import { useCallback } from 'react';
+import { clearDB } from '@/app/utils/indexeddb';
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -114,6 +115,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     fetchEventData();
   }, []);
 
+  useEffect(() => {
+    clearDB()
+  }, []);
+
   const handleAddEventData: any = async (event_type: string, output: string, misc_info: string) => {
     await addEventData({ event_type, output, misc_info });
     const EventData: any = await getAllEventData();
@@ -157,7 +162,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     return () => {
 
     };
-  }, [eventData, dispatch, newEventData]);
+  }, [eventData, newEventData]);
 
   useEffect(() => {
     function handleResize() {
@@ -222,7 +227,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
         )
         : auditState === "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED" ?
           (
-            handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Filters Applied", "Frontend Filters Applied")
+            handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED", "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED")
           )
           : auditState === "FRONTEND_TILE_CLICK_PATIENT_NAME_SORTING" ?
             (
@@ -558,7 +563,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     };
     dispatch(updateFilter(filter));
     dispatch(emptyAppointmentList());
-    loadMoreAppointment(filter, "FRONTEND_FILTER_CLICK_DATE_FILTER_SELECTED");
+    loadMoreAppointment(filter);
   }
 
   const handleAppointmentTimeSort = () => {
@@ -689,6 +694,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
           <TableTopMain>
             <FilterMenu>
               <FilterButton
+                handleAddEventData={handleAddEventData}
                 getAppointmentFiltersData={getAppointmentFiltersData}
                 appointmentFiltersData={appointmentFiltersData}
                 isFilterDataLoading={isFilterDataLoading}

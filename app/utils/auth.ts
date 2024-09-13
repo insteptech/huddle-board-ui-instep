@@ -144,7 +144,6 @@ export const refreshTokens = async () => {
 
   const response = await axios.post(`${API_URL}token/refresh/`, (payload));
   if (response && response.data) {
-    console.log(response)
     const { access: newAccessToken, refresh: newRefreshToken } = response.data;
     localStorage.setItem("refresh_token", newAccessToken);
     localStorage.setItem("access_token", newRefreshToken);
