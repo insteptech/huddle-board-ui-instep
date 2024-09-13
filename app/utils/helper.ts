@@ -89,7 +89,8 @@ export const getCurrentDateFormatted = (date?: any) => {
 // }
 
 export const formatDates = (startDate: any, endDate: any) => {
-  const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  // const timezone: string = I ntl.DateTimeFormat().resolvedOptions().timeZone;
+  const timezone: string = "US/Pacific";
 
   // Define the start of the day in IST
   const startDateTimeIST = moment.tz(startDate, timezone).startOf('day');
@@ -121,4 +122,3 @@ export const parseDate = (dd: any) => {
   const year = new Date().getFullYear();
   return new Date(`${month}/${day}/${year}`);
 }
-

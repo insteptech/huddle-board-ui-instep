@@ -397,12 +397,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const handlePdf = () => {
 
-    const timezone: string = "PST";
+    const timezone: string = "US/Pacific";
 
     const appliedFilters = {
       ...filters,
       file_type: 'pdf',
       timezone: timezone,
+      page: 1
 
     };
     const url = `${API_URL}download-appointments/?${urlParams(appliedFilters)}`;
@@ -427,7 +428,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
   const resetFilters = (isFilterPopOpen: boolean = false) => {
     const formattedDates = formatDates(date, date);
-    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezone: string = "US/Pacific";
 
     const filtersData = {
       ...filters,
@@ -465,7 +466,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   useEffect(() => {
     if (selectedVisitType.length === 0 && selectedProviders.length === 0 && selectedScreening.length === 0) {
       const formattedDates = formatDates(date, date);
-      const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const timezone: string = "US/Pacific";
 
       const filtersData = {
         ...filters,
