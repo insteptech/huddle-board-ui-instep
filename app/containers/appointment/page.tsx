@@ -19,7 +19,8 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import arrowLeft from "../../images/leftarrow.svg"
 import arrowRight from "../../images/rightarrow.svg"
 import { LoaderBox } from '../../styles/customStyle';
-import pdfIcon from "../../images/pdficon.svg"
+import pdfIcon from "../../images/pdficon.svg";
+import moment from 'moment-timezone';
 import {
   HeadingTag,
   TableMainContainer,
@@ -81,7 +82,15 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const selectedFilterList = useSelector((state: AppState) => state.appointment.selectedFilterList);
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const { page } = filters;
-  const [date, setDate] = React.useState(new Date());
+  // Calculate the difference between UTC and US Pacific Time
+  const pacificTimeOffset = (12 * 60) + 30; // 12 hours and 30 minutes in minutes
+
+  // Get the current time in Pacific Time
+  const pacificTime = moment().utcOffset(-pacificTimeOffset).format('YYYY-MM-DD HH:mm:ss');
+  const pacificDate = moment(pacificTime, 'YYYY-MM-DD HH:mm:ss').toDate();
+
+  const [date, setDate] = React.useState(pacificDate);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
   const [selectedScreening, setSelectedScreening] = useState<any>(filters.screening || []);
@@ -101,6 +110,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     data: "",
     detail: {}
   })
+
+
 
   const [eventData, setEventData] = useState<EventData[]>([]);
 
@@ -600,7 +611,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     if (!appointmentsListString) return;
     const { past_calendar_days_count, future_calender_days_count } = JSON.parse(appointmentsListString);
 
-    const currentDate = new Date();
+    const currentDate = pacificDate;
     const currentDay = currentDate.getDate();
 
     const selectedDate = new Date(date);

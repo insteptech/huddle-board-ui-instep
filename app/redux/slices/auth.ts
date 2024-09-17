@@ -3,12 +3,12 @@ import { signInCall, getHuddleBoardConfig, contactSupport } from '../actions/aut
 
 export type AuthState = {
   loggedInUser: { token: ''; user: null; permissions: null };
-  huddleBoardConfig: { user_full_name: string; past_calendar_days_count: number | null; future_calender_days_count: number | null };
+  huddleBoardConfig: { user_full_name: string; past_calendar_days_count: number | null; future_calender_days_count: number | null; hide_logout_option: number | null };
 };
 
 const initialState: AuthState = {
   loggedInUser: { token: '', user: null, permissions: null },
-  huddleBoardConfig: { user_full_name: '', past_calendar_days_count: null, future_calender_days_count: null},
+  huddleBoardConfig: { user_full_name: '', past_calendar_days_count: null, future_calender_days_count: null, hide_logout_option: null },
 };
 
 export const auth = createSlice({
@@ -43,7 +43,7 @@ export const auth = createSlice({
     builder.addCase(contactSupport.rejected, (state, action) => {
       console.error('Contact support rejected:', action.error);
     });
-    
+
   },
 });
 

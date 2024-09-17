@@ -16,6 +16,7 @@ const Header = () => {
   const config = huddleBoardConfig && huddleBoardConfig !== undefined || 'undefined' ? JSON.parse(huddleBoardConfig) : "dummy";
   const router = useRouter()
 
+
   const logout = () => {
 
     toast.success("Logout Success", {
@@ -35,8 +36,8 @@ const Header = () => {
         <Typography_Grid>
           <StaticTypo variant="caption" display="block" gutterBottom>
             {config?.user_full_name}
-          </StaticTypo>
-          <LinkText onClick={() => logout()} sx={{ cursor: "pointer", textDecoration: 'none', borderLeft: '2px solid #C8CED2', paddingLeft: '10px', }} > Logout</LinkText>
+          </StaticTypo>{config?.hide_logout_option ?
+            <LinkText onClick={() => logout()} sx={{ cursor: "pointer", textDecoration: 'none', borderLeft: '2px solid #C8CED2', paddingLeft: '10px', }} > Logout</LinkText> : null}
         </Typography_Grid>
       </AppBar>
     </Box>

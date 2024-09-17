@@ -88,25 +88,40 @@ export const getCurrentDateFormatted = (date?: any) => {
 //   };
 // }
 
+// export const formatDates = (startDate: any, endDate: any) => {
+//   // const timezone: string = I ntl.DateTimeFormat().resolvedOptions().timeZone;
+//   const timezone: string = "US/Pacific";
+
+//   // Define the start of the day in IST
+//   const startDateTimeIST = moment.tz(startDate, timezone).startOf('day');
+
+//   // Define the end of the day in IST
+//   const endDateTimeIST = moment.tz(startDate, timezone).endOf('day');
+
+//   // Convert IST dateTimes to UTC
+//   const startDateTimeUTC = startDateTimeIST.clone().tz("UTC");
+//   const endDateTimeUTC = endDateTimeIST.clone().tz("UTC");
+
+//   return {
+//     start: startDateTimeUTC.format(),
+//     end: endDateTimeUTC.format()
+//   };
+// }
+
 export const formatDates = (startDate: any, endDate: any) => {
-  // const timezone: string = I ntl.DateTimeFormat().resolvedOptions().timeZone;
+  // Define the timezone as US/Pacific
   const timezone: string = "US/Pacific";
 
-  // Define the start of the day in IST
-  const startDateTimeIST = moment.tz(startDate, timezone).startOf('day');
-
-  // Define the end of the day in IST
-  const endDateTimeIST = moment.tz(startDate, timezone).endOf('day');
-
-  // Convert IST dateTimes to UTC
-  const startDateTimeUTC = startDateTimeIST.clone().tz("UTC");
-  const endDateTimeUTC = endDateTimeIST.clone().tz("UTC");
+  // Convert startDate and endDate to US/Pacific timezone
+  const startDateTimePacific = moment.tz(startDate, timezone).startOf('day');
+  const endDateTimePacific = moment.tz(endDate, timezone).endOf('day');
 
   return {
-    start: startDateTimeUTC.format(),
-    end: endDateTimeUTC.format()
+    start: startDateTimePacific.format(),
+    end: endDateTimePacific.format()
   };
 }
+
 
 export const deleteLocalStorage = () => {
   const { accessToken, slugKey, refreshToken, huddleBoardConfig } = sessionKeys;

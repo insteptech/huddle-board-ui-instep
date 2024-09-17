@@ -17,10 +17,8 @@ export interface EventData {
 }
 
 export async function initDB() {
-    console.log('Initializing database...');
     db = await openDB(dbName, dbVersion, {
         upgrade(db, oldVersion, newVersion, transaction) {
-            console.log('Upgrading database from version', oldVersion, 'to', newVersion);
 
             // Create object store for event data
             if (!db.objectStoreNames.contains('event-data')) {
@@ -40,11 +38,9 @@ export async function initDB() {
             // Add more object stores as needed
         },
     });
-    console.log('Database initialized successfully!');
 }
 
 export async function addEventData(eventData: EventData) {
-    console.log('Adding event data...');
     if (!db) {
         await initDB();
     }
@@ -52,11 +48,9 @@ export async function addEventData(eventData: EventData) {
     const store = tx.objectStore('event-data');
     await store.add({ id: uuidv4(), ...eventData });
     await tx.done;
-    console.log('Event data added successfully!');
 }
 
 export async function getAllEventData(): Promise<EventData[]> {
-    console.log('Retrieving all event data...');
     if (!db) {
         await initDB();
     }
@@ -83,7 +77,6 @@ export async function getAllEventData(): Promise<EventData[]> {
 }
 
 export async function addOtherData(otherData: any) {
-    console.log('Adding other data...');
     if (!db) {
         await initDB();
     }
@@ -91,11 +84,9 @@ export async function addOtherData(otherData: any) {
     const store = tx.objectStore('other-data');
     await store.add({ ...otherData });
     await tx.done;
-    console.log('Other data added successfully!');
 }
 
 export async function getAllOtherData(): Promise<any[]> {
-    console.log('Retrieving all other data...');
     if (!db) {
         await initDB();
     }
@@ -114,7 +105,6 @@ export async function getAllOtherData(): Promise<any[]> {
 // Function to clear all data from all object stores
 // Function to clear all data from all object stores
 export async function clearDB(): Promise<void> {
-    console.log('Clearing the database...');
     if (!db) {
         await initDB();
     }
