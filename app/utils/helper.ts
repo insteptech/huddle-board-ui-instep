@@ -108,6 +108,7 @@ export const getCurrentDateFormatted = (date?: any) => {
 //   };
 // }
 
+
 export const formatDates = (startDate: any, endDate: any) => {
   // Define the timezone as US/Pacific
   const timezone: string = "US/Pacific";
@@ -116,11 +117,18 @@ export const formatDates = (startDate: any, endDate: any) => {
   const startDateTimePacific = moment.tz(startDate, timezone).startOf('day');
   const endDateTimePacific = moment.tz(endDate, timezone).endOf('day');
 
+  // Convert to UTC and format in ISO 8601 format with "Z"
+  const startInUTC = startDateTimePacific.utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+  const endInUTC = endDateTimePacific.utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+
+  console.log(startInUTC, endInUTC, "bjbjbjbbbbbbbbbb");
+
   return {
-    start: startDateTimePacific.format(),
-    end: endDateTimePacific.format()
+    start: startInUTC,
+    end: endInUTC
   };
 }
+
 
 
 export const deleteLocalStorage = () => {
