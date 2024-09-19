@@ -143,9 +143,6 @@ export const formatDates = (startDate: any, endDate: any) => {
     // Parse the incoming date in US/Pacific timezone
     const incomingDate = moment.tz(new Date(date), "US/Pacific");
 
-    // Debugging output
-    console.log(`Original Incoming Date: ${incomingDate.format()}`);
-
     // Adjust the date for formatting
     let adjustedDate;
     if (isEndOfDay) {
@@ -153,9 +150,6 @@ export const formatDates = (startDate: any, endDate: any) => {
     } else {
       adjustedDate = incomingDate.startOf('day').add(1, 'seconds'); // Set to 00:00:01
     }
-
-    // Debugging output for adjusted date
-    console.log(`Adjusted Date: ${adjustedDate.format()}`);
 
     const year = adjustedDate.year();
     const month = String(adjustedDate.month() + 1).padStart(2, '0'); // Months are 0-indexed
