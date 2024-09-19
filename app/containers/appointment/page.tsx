@@ -782,8 +782,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                       />
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
+                    <StyledTableCell>Clinician</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>
-                    <StyledTableCell>Provider</StyledTableCell>
+
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </Table_Head>
@@ -820,8 +821,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                       {isPatientNameSortAscending ? <ArrowDownwardIcon style={{ verticalAlign: "middle", fontSize: "18px" }} /> : <ArrowUpwardOutlinedIcon style={{ verticalAlign: "middle", fontSize: "18px" }} />}
                     </StyledTableCell>
                     <StyledTableCell>Type of Visit</StyledTableCell>
+                    <StyledTableCell>Clinician</StyledTableCell>
                     <StyledTableCell>Screening</StyledTableCell>
-                    <StyledTableCell>Provider</StyledTableCell>
+
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </Table_Head>

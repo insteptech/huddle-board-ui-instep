@@ -101,8 +101,9 @@ const Row = (props: any) => {
                     </StyledName>
                 </TdTableCell>
                 <TdTableCell>{renderCellContent(appointment.visit_type, appointment.selected_gap_count === 0)}</TdTableCell>
-                <TdTableCell><GetScreening screening={appointment.screening} /></TdTableCell>
                 <TdTableCell>{renderCellContent(appointment.provider, appointment.selected_gap_count === 0)}</TdTableCell>
+                <TdTableCell><GetScreening screening={appointment.screening} /></TdTableCell>
+
                 <TdTableCell>
                     {
                         appointment.selected_gap_count === 0 ?
