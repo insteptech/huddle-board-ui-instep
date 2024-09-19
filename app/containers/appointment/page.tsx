@@ -83,13 +83,14 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const { page } = filters;
   // Calculate the difference between UTC and US Pacific Time
-  const pacificTimeOffset = (12 * 60) + 30; // 12 hours and 30 minutes in minutes
+  var myDate = new Date()
+  var pstDate = myDate.toLocaleString("en-US", {
+    timeZone: "America/Los_Angeles"
+  })
 
-  // Get the current time in Pacific Time
-  const pacificTime = moment().utcOffset(-pacificTimeOffset).format('YYYY-MM-DD HH:mm:ss');
-  const pacificDate = moment(pacificTime, 'YYYY-MM-DD HH:mm:ss').toDate();
+  var pstDateNew = new Date(pstDate);
 
-  const [date, setDate] = React.useState(pacificDate);
+  const [date, setDate] = React.useState(myDate);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
@@ -611,7 +612,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     if (!appointmentsListString) return;
     const { past_calendar_days_count, future_calender_days_count } = JSON.parse(appointmentsListString);
 
-    const currentDate = pacificDate;
+    const currentDate = pstDateNew;
     const currentDay = currentDate.getDate();
 
     const selectedDate = new Date(date);
@@ -669,6 +670,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                 setArrowDisabledRight={setArrowDisabledRight}
                 setArrowDisabledLeft={setArrowDisabledLeft}
                 dateRangeHandleChange={dateRangeHandleChange}
+                filters={filters}
+                loadMoreAppointment={loadMoreAppointment}
               />
             </Box>
             {

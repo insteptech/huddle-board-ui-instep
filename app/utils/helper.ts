@@ -36,12 +36,18 @@ export const deleteCookie = (name: string) => {
 
 export const getTime = (timestamp: string) => {
   const date = new Date(timestamp);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-  const formattedTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
+
+  // Convert to Pacific Time using toLocaleString with the appropriate time zone
+  const options: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: 'America/Los_Angeles',
+  };
+
+  // Get the formatted time
+  const formattedTime = date.toLocaleString('en-US', options);
+
   return formattedTime;
 }
 
@@ -110,17 +116,38 @@ export const getCurrentDateFormatted = (date?: any) => {
 
 export const formatDates = (startDate: any, endDate: any) => {
   // Define the timezone as US/Pacific
-  const timezone: string = "US/Pacific";
+  const pacificTimezone = "America/Los_Angeles";
 
-  // Convert startDate and endDate to US/Pacific timezone
-  const startDateTimePacific = moment.tz(startDate, timezone).startOf('day');
-  const endDateTimePacific = moment.tz(endDate, timezone).endOf('day');
+  // Convert startDate from IST to Pacific Time Zone and set time to 00:00:01
+  const startDatePST = new Date(startDate).toLocaleString("en-US", {
+    timeZone: pacificTimezone,
+  });
+  const startDatePacific = new Date(startDatePST);
+  startDatePacific.setHours(0, 0, 1, 0); // Set time to 00:00:01 PST
+
+  // Convert endDate from IST to Pacific Time Zone and set time to 23:59:59
+  const endDatePST = new Date(endDate).toLocaleString("en-US", {
+    timeZone: pacificTimezone,
+  });
+  const endDatePacific = new Date(endDatePST);
+  endDatePacific.setHours(23, 59, 59, 0); // Set time to 23:59:59 PST
+
+  // Function to format date to ISO string with .00 milliseconds
+  const formatDateToUTC = (date: Date) => {
+    // Convert date to UTC
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    // Get the ISO string and remove the milliseconds part
+    const isoString = utcDate.toISOString();
+    // Return ISO string with exactly .00 milliseconds
+    return isoString.replace(/\.\d{3}Z$/, '.00Z');
+  };
 
   return {
-    start: startDateTimePacific.format(),
-    end: endDateTimePacific.format()
+    start: formatDateToUTC(startDatePacific),
+    end: formatDateToUTC(endDatePacific),
   };
-}
+};
+
 
 
 export const deleteLocalStorage = () => {

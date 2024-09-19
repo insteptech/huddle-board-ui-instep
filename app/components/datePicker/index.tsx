@@ -20,35 +20,38 @@ const DatePicker = (props: any) => {
     const maxDateFromConfig = config?.future_calender_days_count;
 
     const handleDateChange = (newDate: Date) => {
+        const currentDate = new Date();
 
-        const currentDate = new Date()
+        const newDateDatePart = new Date(newDate.toDateString());
+        const combinedDate = new Date(`${newDateDatePart.toDateString()} ${currentDate.toTimeString().split(' ')[0]}`);
 
-        dateRangeHandleChange(newDate);
-        setDate(newDate);
+        dateRangeHandleChange(combinedDate);
+        setDate(combinedDate);
 
+        // Calculate the next day in Pacific Time
         const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
         const newDate1Only = newDate1.toISOString().split('T')[0];
 
+        // Calculate min and max dates in Pacific Time
         const minDate = new Date(currentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
-        const minDateOnly = minDate.toISOString().split('T')[0];
-
         const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
+
+        const minDateOnly = minDate.toISOString().split('T')[0];
         const maxDateOnly = maxDate.toISOString().split('T')[0];
 
-        if (newDate1Only == minDateOnly) {
-            setArrowDisabledLeft(true)
-            setArrowDisabledRight(false)
+        // Update arrow states based on comparisons
+        if (newDate1Only === minDateOnly) {
+            setArrowDisabledLeft(true);
+            setArrowDisabledRight(false);
+        } else if (newDate1Only === maxDateOnly) {
+            setArrowDisabledRight(true);
+            setArrowDisabledLeft(false);
+        } else {
+            setArrowDisabledLeft(false);
+            setArrowDisabledRight(false);
         }
+    };
 
-        else if (newDate1Only == maxDateOnly) {
-            setArrowDisabledRight(true)
-            setArrowDisabledLeft(false)
-        }
-        else {
-            setArrowDisabledLeft(false)
-            setArrowDisabledRight(false)
-        }
-    }
 
     useEffect(() => {
         const currentDate = new Date();
