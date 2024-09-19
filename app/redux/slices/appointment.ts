@@ -79,7 +79,6 @@ export type AppointmentDetail = {
   description: String,
   screening_uuid: String
 }
-
 const formattedDates = formatDates(new Date(), new Date());
 
 const initialState: AppointmentsState = {
