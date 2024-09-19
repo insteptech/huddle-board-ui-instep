@@ -109,27 +109,72 @@ export const getCurrentDateFormatted = (date?: any) => {
 // }
 
 
+// export const formatDates = (startDate: any, endDate: any) => {
+//   // Helper function to format date
+//   const formatDate = (date: any, isEndOfDay: boolean) => {
+//     // Parse the incoming date in US/Pacific timezone
+//     const incomingDate = moment.tz(new Date(date), "US/Pacific");
+
+//     // Adjust the date for formatting
+//     const adjustedDate = isEndOfDay ? incomingDate.endOf('day') : incomingDate.startOf('day').add(1, 'seconds');
+
+//     const year = adjustedDate.year();
+//     const month = String(adjustedDate.month() + 1).padStart(2, '0'); // Months are 0-indexed
+//     const day = String(adjustedDate.date()).padStart(2, '0');
+//     const hours = isEndOfDay ? '23' : '00';
+//     const minutes = isEndOfDay ? '59' : '00';
+//     const seconds = isEndOfDay ? '59' : '00';
+
+//     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+//   };
+
+//   const startFormatted = formatDate(startDate, false);
+//   const endFormatted = formatDate(endDate, true);
+
+//   return {
+//     start: startFormatted,
+//     end: endFormatted
+//   };
+// };
+
 export const formatDates = (startDate: any, endDate: any) => {
-  // Define the timezone as US/Pacific
-  const timezone: string = "US/Pacific";
+  // Helper function to format date
+  const formatDate = (date: any, isEndOfDay: boolean) => {
+    // Parse the incoming date in US/Pacific timezone
+    const incomingDate = moment.tz(new Date(date), "US/Pacific");
 
-  // Convert startDate and endDate to US/Pacific timezone
-  const startDateTimePacific = moment.tz(startDate, timezone).startOf('day');
-  const endDateTimePacific = moment.tz(endDate, timezone).endOf('day');
+    // Debugging output
+    console.log(`Original Incoming Date: ${incomingDate.format()}`);
 
-  // Convert to UTC and format in ISO 8601 format with "Z"
-  const startInUTC = startDateTimePacific.utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
-  const endInUTC = endDateTimePacific.utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+    // Adjust the date for formatting
+    let adjustedDate;
+    if (isEndOfDay) {
+      adjustedDate = incomingDate.endOf('day'); // Set to 23:59:59
+    } else {
+      adjustedDate = incomingDate.startOf('day').add(1, 'seconds'); // Set to 00:00:01
+    }
 
-  console.log(startInUTC, endInUTC, "bjbjbjbbbbbbbbbb");
+    // Debugging output for adjusted date
+    console.log(`Adjusted Date: ${adjustedDate.format()}`);
+
+    const year = adjustedDate.year();
+    const month = String(adjustedDate.month() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(adjustedDate.date()).padStart(2, '0');
+    const hours = isEndOfDay ? '23' : '00';
+    const minutes = isEndOfDay ? '59' : '00';
+    const seconds = isEndOfDay ? '59' : '00';
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
+  const startFormatted = formatDate(startDate, false);
+  const endFormatted = formatDate(endDate, true);
 
   return {
-    start: startInUTC,
-    end: endInUTC
+    start: startFormatted,
+    end: endFormatted
   };
-}
-
-
+};
 
 export const deleteLocalStorage = () => {
   const { accessToken, slugKey, refreshToken, huddleBoardConfig } = sessionKeys;
