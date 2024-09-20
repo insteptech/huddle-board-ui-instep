@@ -18,7 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import arrowLeft from "../../images/leftarrow.svg"
 import arrowRight from "../../images/rightarrow.svg"
-import { LoaderBox } from '../../styles/customStyle';
+import { ExpendSection, HideShow, LoaderBox } from '../../styles/customStyle';
 import pdfIcon from "../../images/pdficon.svg";
 import moment from 'moment-timezone';
 import {
@@ -39,7 +39,7 @@ import {
   TableMidData
 } from '../../styles/customStyle';
 import { AppointmentState, FiltersDataState, emptyAppointmentList, emptySelectedFilter, updateFilter } from '@/app/redux/slices/appointment';
-import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
+import { Box, Container, Input, InputAdornment, CircularProgress, Typography, FormControlLabel, Checkbox, FormGroup, Button } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
 import { formatDates, parseDate, urlParams } from '@/app/utils/helper';
@@ -49,6 +49,7 @@ import IdleModal from '@/app/components/idleModal';
 import { addEventData, addOtherData, EventData, getAllEventData, getAllOtherData } from '../../utils/indexeddb';
 import { useCallback } from 'react';
 import { clearDB } from '@/app/utils/indexeddb';
+import { UncheckedIcon, CheckedIcon } from "../../images/check"
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -707,60 +708,81 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
         <TableDiv>
           <TableTopMain>
-            <FilterMenu>
-              <FilterButton
-                handleAddEventData={handleAddEventData}
-                getAppointmentFiltersData={getAppointmentFiltersData}
-                appointmentFiltersData={appointmentFiltersData}
-                isFilterDataLoading={isFilterDataLoading}
-                loadMoreAppointment={loadMoreAppointment}
-                filters={filters}
-                selectedFilterList={selectedFilterList}
-                setSelectedVisitType={setSelectedVisitType}
-                setSelectedScreening={setSelectedScreening}
-                setSelectedProviders={setSelectedProviders}
-                setAnchorEl={setAnchorEl}
-                anchorEl={anchorEl}
-                selectedVisitType={selectedVisitType}
-                selectedScreening={selectedScreening}
-                selectedProviders={selectedProviders}
-                resetFilters={resetFilters}
-                getFilterDetail={getFilterDetail}
-                selectedSavedFilterUuid={selectedSavedFilterUuid}
-                setIsFilterApplied={setIsFilterApplied}
-                setMainLoader={setMainLoader}
-                isFilterApplied={isFilterApplied}
-              />
-            </FilterMenu>
-            <TableTop>
-              <Input
-                sx={{
-                  "&::before, &::after": { display: "none" },
-                  border: "none",
-                  padding: "10px",
-                  width: "100%",
-                  fontSize: "14px",
-                  fontWeight: "400",
-                  lineHeight: "14px",
-                  color: "#5C6469",
-                }}
-                id="input-with-icon-adornment"
-                placeholder="Search by patient name or MRN"
-                value={patientNameSearch}
-                onChange={(e) => searchAppointmentPatientName(e)}
-                startAdornment={
-                  <>
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{ color: "#0D426A" }} />
-                    </InputAdornment>
+            <Box sx={{ display: 'flex' }}>
+              <FilterMenu>
+                <FilterButton
+                  handleAddEventData={handleAddEventData}
+                  getAppointmentFiltersData={getAppointmentFiltersData}
+                  appointmentFiltersData={appointmentFiltersData}
+                  isFilterDataLoading={isFilterDataLoading}
+                  loadMoreAppointment={loadMoreAppointment}
+                  filters={filters}
+                  selectedFilterList={selectedFilterList}
+                  setSelectedVisitType={setSelectedVisitType}
+                  setSelectedScreening={setSelectedScreening}
+                  setSelectedProviders={setSelectedProviders}
+                  setAnchorEl={setAnchorEl}
+                  anchorEl={anchorEl}
+                  selectedVisitType={selectedVisitType}
+                  selectedScreening={selectedScreening}
+                  selectedProviders={selectedProviders}
+                  resetFilters={resetFilters}
+                  getFilterDetail={getFilterDetail}
+                  selectedSavedFilterUuid={selectedSavedFilterUuid}
+                  setIsFilterApplied={setIsFilterApplied}
+                  setMainLoader={setMainLoader}
+                  isFilterApplied={isFilterApplied}
+                />
+              </FilterMenu>
+              <TableTop>
+                <Input
+                  sx={{
+                    "&::before, &::after": { display: "none" },
+                    border: "none",
+                    padding: "10px",
+                    width: "100%",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "14px",
+                    color: "#5C6469",
+                  }}
+                  id="input-with-icon-adornment"
+                  placeholder="Search by patient name or MRN"
+                  value={patientNameSearch}
+                  onChange={(e) => searchAppointmentPatientName(e)}
+                  startAdornment={
+                    <>
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ color: "#0D426A" }} />
+                      </InputAdornment>
 
-                    {patientNameSearch.length > 0 && <InputAdornment position="end">
-                      <SearchClearIcon onClick={() => resetFilters()}><CloseIcon sx={{ color: "#0D426A" }} /></SearchClearIcon>
-                    </InputAdornment>}
-                  </>
-                }
-              />
-            </TableTop>
+                      {patientNameSearch.length > 0 && <InputAdornment position="end">
+                        <SearchClearIcon onClick={() => resetFilters()}><CloseIcon sx={{ color: "#0D426A" }} /></SearchClearIcon>
+                      </InputAdornment>}
+                    </>
+                  }
+                />
+              </TableTop>
+            </Box>
+            <HideShow >
+              <Typography component='p'>Hide:</Typography>
+              <Box sx={{ display: 'flex', paddingInline: '8px' }}>
+                <FormControlLabel control={<Checkbox
+                  icon={<UncheckedIcon />}
+                  checkedIcon={<CheckedIcon />}
+                />} label="Completed Actions" />
+                <FormControlLabel control={<Checkbox
+                  icon={<UncheckedIcon />}
+                  checkedIcon={<CheckedIcon />}
+                />} label="Zero Screenings" />
+              </Box>
+            </HideShow>
+            <ExpendSection>
+              <Typography component={'p'}>Expand:</Typography>
+              <Button>All</Button>
+              <Typography component={'span'} sx={{ color: '#172B4D' }}>|</Typography>
+              <Button>None</Button>
+            </ExpendSection>
           </TableTopMain>
 
 
