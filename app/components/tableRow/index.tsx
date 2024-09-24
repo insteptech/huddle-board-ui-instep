@@ -58,10 +58,18 @@ function GetScreening({ screening }: { screening: string[] }) {
     );
 }
 
+
+
 const Row = (props: any) => {
-    const { appointment, selectedAppointmentUuid, selectedAppointmentGap, setSelectedAppointmentGap, loaderAppoint, setSelectedAppointmentUuid, reverseModal, updateButtonState, setReverseModal, setLoaderAppoint, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading, confirmationModal, setConfirmationModal, actionValue } = props;
+    const { appointment, selectedAppointmentUuid, firstElementRef, id, expand, selectedAppointmentGap, setExpand, setSelectedAppointmentGap, loaderAppoint, setSelectedAppointmentUuid, reverseModal, updateButtonState, setReverseModal, setLoaderAppoint, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading, confirmationModal, setConfirmationModal, actionValue } = props;
     const [open, setOpen] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
+
+    useEffect(() => {
+        if (expand === true) {
+            setOpen(false)
+        }
+    }, [])
 
     const setRow = (id: any, gap?: number) => {
         setLoaderAppoint(true);
@@ -69,6 +77,8 @@ const Row = (props: any) => {
         appointmentDetails(id);
         setSelectedAppointmentGap(gap);
         setOpen(!open);
+        setExpand(false)
+
     };
 
     const copyMrn = (mrn: any) => {
@@ -82,7 +92,7 @@ const Row = (props: any) => {
 
     return (
         <>
-            <StyledTableRow onClick={() => setRow(appointment?.uuid, appointment?.selected_gap_count)} sx={{ '& > *': { borderBottom: 'unset', backgroundColor: (open && selectedAppointmentUuid === appointment.uuid) ? '#D2E6FF' : '#fff' } }}>
+            <StyledTableRow ref={appointment.uuid === id ? firstElementRef : null} onClick={() => setRow(appointment?.uuid, appointment?.selected_gap_count)} sx={{ '& > *': { borderBottom: 'unset', backgroundColor: ((open && selectedAppointmentUuid === appointment.uuid) || expand) ? '#D2E6FF' : '#fff' } }}>
                 <TdTableCell>
                     {renderCellContent(getTime(appointment.appointment_timestamp), appointment.selected_gap_count === 0)}
                 </TdTableCell>
@@ -113,7 +123,7 @@ const Row = (props: any) => {
                                 </Stack>
                                 <ProviderCell>{`${appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
                                 <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid)}>
-                                    {open && selectedAppointmentUuid === appointment.uuid ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
+                                    {(open && selectedAppointmentUuid === appointment.uuid || expand) ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
                                 </IconButton>
                             </IconProgress>
                             :
@@ -123,7 +133,7 @@ const Row = (props: any) => {
                                 </Stack>
                                 <ProviderCell>{`${selectedAppointmentGap || appointment.selected_gap_count}/${appointment.gap_count}`}</ProviderCell>
                                 <IconButton aria-label="expand appointment" size="small" onClick={() => setRow(appointment.uuid, appointment.selected_gap_count)}>
-                                    {open && selectedAppointmentUuid === appointment.uuid ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
+                                    {(open && selectedAppointmentUuid === appointment.uuid || expand) ? <><Tooltip title="Collapse" placement="top"><KeyboardArrowUpIcon /></Tooltip></> : <><Tooltip title="Expand" placement="top"><KeyboardArrowDownIcon /></Tooltip></>}
                                 </IconButton>
                             </IconProgress>
                     }
@@ -132,7 +142,7 @@ const Row = (props: any) => {
 
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0, padding: '0' }} colSpan={6}>
-                    <Collapse in={open && selectedAppointmentUuid === appointment.uuid} timeout="auto" unmountOnExit>
+                    <Collapse in={(open && selectedAppointmentUuid === appointment.uuid || expand)} timeout="auto" unmountOnExit>
                         <Box>
                             {
                                 appointment.gap_count === 0 ? <Table>

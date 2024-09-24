@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -114,7 +114,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   })
 
 
-
+  const [expand, setExpand] = useState(false);
   const [eventData, setEventData] = useState<EventData[]>([]);
 
   const [newEventData, setNewEventData] = useState<EventData[]>([]);
@@ -252,6 +252,20 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               )
               : null;
   };
+
+
+  const appointmentTop = (filter: FiltersDataState, auditState?: any) => {
+    dispatch(getAppointmentsList(filter)).then((response: any) => {
+      setMainLoader(false);
+      dispatch(updateFilter({ page: filter && filter.page ? filter.page : page }));
+      if (response?.payload?.results.length === 0) {
+        setIsClearFilter(true);
+      } else {
+        setIsClearFilter(false);
+      }
+    })
+  };
+
 
   // useEffect(() => {
   //   const refreshToken = localStorage.getItem('refresh_token');
@@ -630,7 +644,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const selectedDay = selectedDate.getDate();
 
     const minDateOnly = new Date(currentDate);
-    minDateOnly.setDate(currentDay - past_calendar_days_count);
+    minDateOnly.setDate(currentDay - 71);
 
     const maxDateOnly = new Date(currentDate);
     maxDateOnly.setDate(currentDay + future_calender_days_count);
@@ -646,6 +660,28 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
     dateRangeHandleChange(selectedDate);
   }
+
+
+  const handleRouteChange = () => {
+    window.scrollTo(0, 0);
+  };
+
+  // Create a ref for the first element
+  const firstElementRef = useRef<any>(null);
+
+  const expandedValues = (value: boolean) => {
+    setExpand(value);
+    if (firstElementRef.current) {
+      firstElementRef.current.scrollIntoView({
+        behavior: 'smooth', 
+        block: 'start',  
+      });
+    }
+  }
+
+  useEffect(() => {
+    console.log('firstElementRef:', firstElementRef.current);
+  }, [appointmentsList]);
 
   return (
     <>
@@ -779,9 +815,9 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
             </HideShow>
             <ExpendSection>
               <Typography component={'p'}>Expand:</Typography>
-              <Button>All</Button>
+              <Button onClick={() => expandedValues(true)}>All</Button>
               <Typography component={'span'} sx={{ color: '#172B4D' }}>|</Typography>
-              <Button>None</Button>
+              <Button onClick={() => expandedValues(false)}>None</Button>
             </ExpendSection>
           </TableTopMain>
 
@@ -863,6 +899,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     {appointmentsList.map(
                       (appointment: AppointmentState, index: number) => (
                         <Row
+                          firstElementRef={firstElementRef}
+                          id={appointmentsList[0]?.uuid}
+                          expand={index < 10 ? expand : false}
+                          setExpand={setExpand}
                           key={index}
                           appointment={appointment}
                           selectedAppointmentUuid={selectedAppointmentUuid}

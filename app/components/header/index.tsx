@@ -36,8 +36,17 @@ const Header = () => {
         <Typography_Grid>
           <StaticTypo variant="caption" display="block" gutterBottom>
             {config?.user_full_name}
-          </StaticTypo>{config?.hide_logout_option ?
-            <LinkText onClick={() => logout()} sx={{ cursor: "pointer", textDecoration: 'none', borderLeft: '2px solid #C8CED2', paddingLeft: '10px', }} > Logout</LinkText> : null}
+          </StaticTypo>
+
+          {config?.hide_logout_option !== true &&
+            <LinkText
+              onClick={() => logout()}
+              sx={{ cursor: "pointer", textDecoration: 'none', borderLeft: '2px solid #C8CED2', paddingLeft: '10px' }}
+            >
+              Logout
+            </LinkText>
+          }
+
         </Typography_Grid>
       </AppBar>
     </Box>
