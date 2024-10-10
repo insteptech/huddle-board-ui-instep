@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments, auditLog } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentDetailMulti, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments, auditLog } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -352,7 +352,10 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
   };
 
+  const [newbuttonState, setNewButtonState] = useState(true)
+
   const updateButtonState = (value: any, data: any, detail: any) => {
+    setNewButtonState(!newbuttonState)
     if (data == "disable") {
       toast.error("cannot select")
       return;
@@ -379,6 +382,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setReverseModal(false);
     setConfirmationModal(false)
 
+    console.log(detail)
+
 
     const { appointment_id, uuid } = detail;
     const payload = {
@@ -386,12 +391,13 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       screening_id: uuid,
       action: data == "enable" ? getAction(value) : getAction2(value)
     }
-
-    dispatch(updateAppointmentDetail(payload)).then(() => {
+ 
+    dispatch(updateAppointmentDetail(payload)).then((res) => {
+      console.log(res, "jjhghghghghgh")
       toast.success("Successfully Updated");
       appointmentDetails(appointment_id);
       handleAddEventData("FRONTEND_TILE_CLICK_ACTION", `FRONTEND_TILE_CLICK_ACTION${value}`, `FRONTEND_TILE_CLICK_ACTION${value}`)
-
+      dispatch(getAppointmentDetailMulti({ appointment_id: res?.meta?.arg?.appointment_id }))
       const formattedDates = formatDates(filters.appointment_start_date, filters.appointment_end_date);
       const payload = {
         page: 1,
@@ -899,6 +905,8 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     {appointmentsList.map(
                       (appointment: AppointmentState, index: number) => (
                         <Row
+                        newbuttonState={newbuttonState}
+                        appointmentsList={appointmentsList}
                           firstElementRef={firstElementRef}
                           id={appointmentsList[0]?.uuid}
                           expand={index < 10 ? expand : false}

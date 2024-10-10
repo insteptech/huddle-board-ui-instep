@@ -1,5 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { getAppointmentsList, getAppointmentDetail, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail, getAllAppointments } from '../actions/appointment';
+import { getAppointmentsList, getAppointmentDetail, getAppointmentDetailMulti, updateAppointmentDetail, getFiltersData, getSelectedFilterList, getSelectedFilterDetail, getAllAppointments } from '../actions/appointment';
 import { sortArraysInObject, sortObjectsByName } from '@/app/utils/appointment';
 import { formatDates } from '@/app/utils/helper';
 
@@ -14,6 +14,7 @@ export type AppointmentsState = {
     previous?: string | null
   };
   appointmentDetail: AppointmentDetail[];
+  appointmentDetailMulti: AppointmentDetail[];
   selectedPatientDetail: string | null;
   isDetailLoading: boolean;
   appointmentFiltersData: AppointmentFiltersDataState | null;
@@ -84,6 +85,7 @@ const formattedDates = formatDates(new Date(), new Date());
 const initialState: AppointmentsState = {
   appointmentsData: {},
   appointmentDetail: [],
+  appointmentDetailMulti: [],
   selectedPatientDetail: null,
   isDetailLoading: false,
   appointmentFiltersData: null,
@@ -143,6 +145,37 @@ export const appointment = createSlice({
       state.isDetailLoading = false;
     });
 
+
+    builder.addCase(getAppointmentDetailMulti.pending, (state, action) => {
+      state.isDetailLoading = true;
+    });
+    builder.addCase(getAppointmentDetailMulti.rejected, (state, action) => {
+      console.log(state, action, 'rejected');
+      state.isDetailLoading = false;
+    });
+
+    builder.addCase(getAppointmentDetailMulti.fulfilled, (state, { payload, meta }) => {
+      if (!Array.isArray(state.appointmentDetailMulti)) {
+        state.appointmentDetailMulti = [];
+      }
+      payload.forEach((item:any) => {
+        const { uuid } = item;
+        if (!uuid) {
+          return;
+        }
+        const exists = state.appointmentDetailMulti.some(appointment => appointment.uuid === uuid);
+    
+        if (!exists) {
+          state.appointmentDetailMulti.push({
+            ...item,
+            sentUuid: meta.arg
+          });
+        } else {
+        }
+      });
+      state.isDetailLoading = false;
+    });
+    
     builder.addCase(updateAppointmentDetail.pending, (state, action) => {
     });
     builder.addCase(updateAppointmentDetail.rejected, (state, action) => {

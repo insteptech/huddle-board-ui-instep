@@ -12,10 +12,7 @@ import {
     TableBody,
     Tooltip, CircularProgress,
 } from '@mui/material';
-
-
 import { LoaderBox } from '../../styles/customStyle';
-
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -46,6 +43,9 @@ import { getOutComeBtnState } from '@/app/utils/appointment';
 import { getTime } from '@/app/utils/helper';
 import ActionConfirmation from '../actionConfirmationModal';
 import ActionReverse from '../actionReverseModal';
+import { AppDispatch, AppState } from '@/app/redux/store';
+import { getAppointmentDetailMulti } from '@/app/redux/actions/appointment';
+import { useDispatch, useSelector } from 'react-redux';
 
 function GetScreening({ screening }: { screening: string[] }) {
     return (
@@ -61,15 +61,28 @@ function GetScreening({ screening }: { screening: string[] }) {
 
 
 const Row = (props: any) => {
-    const { appointment, selectedAppointmentUuid, firstElementRef, id, expand, selectedAppointmentGap, setExpand, setSelectedAppointmentGap, loaderAppoint, setSelectedAppointmentUuid, reverseModal, updateButtonState, setReverseModal, setLoaderAppoint, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading, confirmationModal, setConfirmationModal, actionValue } = props;
+    const { appointment, appointmentsList, newbuttonState, selectedAppointmentUuid, firstElementRef, id, expand, selectedAppointmentGap, setExpand, setSelectedAppointmentGap, loaderAppoint, setSelectedAppointmentUuid, reverseModal, updateButtonState, setReverseModal, setLoaderAppoint, appointmentDetails, appointmentDetail, updateOutCome, isDetailLoading, confirmationModal, setConfirmationModal, actionValue } = props;
     const [open, setOpen] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
+    const appointmentDetailMulti = useSelector((state: AppState) => state.appointment?.appointmentDetailMulti) || [];
 
-    useEffect(() => {
-        if (expand === true) {
-            setOpen(false)
+
+    console.log(appointmentDetailMulti ,"appointmentDetailMulti");
+
+    // useEffect(() => {
+    //     if (expand === true) {
+    //         setOpen(false)
+    //     }
+    // }, [])
+
+    useEffect(()=>{
+       if(expand === true){
+        for(let i=1; i<10; i++){
+            dispatch(getAppointmentDetailMulti({ appointment_id: appointmentsList[i].uuid }))
         }
-    }, [])
+       }
+    }, [expand, appointmentDetailMulti])
 
     const setRow = (id: any, gap?: number) => {
         setLoaderAppoint(true);
@@ -176,33 +189,59 @@ const Row = (props: any) => {
                                                     </TableRow>
                                                 </TableBody>
                                                 :
-                                                (
-                                                    <TableBody>
-                                                        {!isDetailLoading && appointmentDetail.map((detail: any) => (
-                                                            <TableRowInside key={detail.uuid}>
-                                                                <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
-                                                                <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
-                                                                <TableMidData sx={{ width: '380px', }}><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
-                                                                <TableMidData sx={{ width: '430px' }}>
-                                                                    <TableMidIn>
-                                                                        <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
-                                                                            Clinician Agrees
-                                                                        </StyledMuiButton>
-                                                                        <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_disagrees')} onClick={() => updateButtonState('clinician_disagrees', getOutComeBtnState(detail, 'clinician_disagrees'), detail)}>
-                                                                            Clinician Disagrees
-                                                                        </StyledMuiButton>
-                                                                        {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateButtonState('test_ordered', getOutComeBtnState(detail, 'test_ordered'), detail)}>
-                                                                            Test Ordered
-                                                                        </StyledMuiButton> :
-                                                                            <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '3px', width: '20px' }} /></Tooltip>Test Not Needed</TestButton>
-                                                                        }
+                                               expand?  (
+                                                <TableBody>
+                                                    {!isDetailLoading && appointmentDetailMulti.filter((item:any)=>item?.sentUuid?.appointment_id === appointment.uuid).map((detail: any) => (
+                                                        <TableRowInside key={detail.uuid}>
+                                                            <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
+                                                            <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
+                                                            <TableMidData sx={{ width: '380px', }}><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
+                                                            <TableMidData sx={{ width: '430px' }}>
+                                                                <TableMidIn>
+                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
+                                                                        Clinician Agrees
+                                                                    </StyledMuiButton>
+                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_disagrees')} onClick={() => updateButtonState('clinician_disagrees', getOutComeBtnState(detail, 'clinician_disagrees'), detail)}>
+                                                                        Clinician Disagrees
+                                                                    </StyledMuiButton>
+                                                                    {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateButtonState('test_ordered', getOutComeBtnState(detail, 'test_ordered'), detail)}>
+                                                                        Test Ordered
+                                                                    </StyledMuiButton> :
+                                                                        <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '3px', width: '20px' }} /></Tooltip>Test Not Needed</TestButton>
+                                                                    }
 
-                                                                    </TableMidIn>
-                                                                </TableMidData>
-                                                            </TableRowInside>
-                                                        ))}
-                                                    </TableBody>
-                                                )
+                                                                </TableMidIn>
+                                                            </TableMidData>
+                                                        </TableRowInside>
+                                                    ))}
+                                                </TableBody>
+                                            ) :  (
+                                                <TableBody>
+                                                    {!isDetailLoading && appointmentDetail.map((detail: any) => (
+                                                        <TableRowInside key={detail.uuid}>
+                                                            <TableMidData><SpanText>{detail.screening}</SpanText></TableMidData>
+                                                            <TableMidData><ActionBtn>{detail.action}</ActionBtn></TableMidData>
+                                                            <TableMidData sx={{ width: '380px', }}><Text><Tooltip title={detail.description} placement="top">{detail.description}</Tooltip></Text></TableMidData>
+                                                            <TableMidData sx={{ width: '430px' }}>
+                                                                <TableMidIn>
+                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_agrees')} onClick={() => updateButtonState('clinician_agrees', getOutComeBtnState(detail, 'clinician_agrees'), detail)}>
+                                                                        Clinician Agrees
+                                                                    </StyledMuiButton>
+                                                                    <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'clinician_disagrees')} onClick={() => updateButtonState('clinician_disagrees', getOutComeBtnState(detail, 'clinician_disagrees'), detail)}>
+                                                                        Clinician Disagrees
+                                                                    </StyledMuiButton>
+                                                                    {detail.show_test_ordered ? <StyledMuiButton buttonstate={getOutComeBtnState(detail, 'test_ordered')} onClick={() => updateButtonState('test_ordered', getOutComeBtnState(detail, 'test_ordered'), detail)}>
+                                                                        Test Ordered
+                                                                    </StyledMuiButton> :
+                                                                        <TestButton><Tooltip title="This screening does not have test required" placement="top"><InfoOutlinedIcon sx={{ marginRight: '3px', width: '20px' }} /></Tooltip>Test Not Needed</TestButton>
+                                                                    }
+
+                                                                </TableMidIn>
+                                                            </TableMidData>
+                                                        </TableRowInside>
+                                                    ))}
+                                                </TableBody>
+                                            )
                                         }
                                         <ActionConfirmation actionValue={actionValue} confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} updateOutCome={updateOutCome} />
                                         <ActionReverse actionValue={actionValue} reverseModal={reverseModal} setReverseModal={setReverseModal} updateOutCome={updateOutCome} />
