@@ -9,7 +9,7 @@ export interface IGetAppointmentsListPayload {
 }
 
 export interface IGetAppointmentDetailPayload {
-  appointment_id: String;
+  appointment_id: string;
 }
 
 export interface IUpdateAppointmentDetailPayload {
@@ -48,11 +48,6 @@ export const getAppointmentDetail = createAsyncThunk('getAppointmentDetail', asy
   return await axiosWrapper({ method: "get", url: `appointment-details/${payload.appointment_id}`, payload })
 });
 
-
-export const getAppointmentDetailMulti = createAsyncThunk('getAppointmentDetailMulti', async (payload: IGetAppointmentDetailPayload) => {
-  return await axiosWrapper({ method: "get", url: `appointment-details/${payload.appointment_id}`, payload })
-});
-
 export const updateAppointmentDetail = createAsyncThunk('updateAppointmentDetail', async (payload: IUpdateAppointmentDetailPayload) => {
   return await axiosWrapper({ method: "put", url: `appointment-details/${payload.appointment_id}/${payload.screening_id}`, payload: payload.action })
 });
@@ -60,9 +55,6 @@ export const updateAppointmentDetail = createAsyncThunk('updateAppointmentDetail
 export const getFiltersData = createAsyncThunk('getFiltersData', async () => {
   return await axiosWrapper({ method: "get", url: `filter-data` })
 });
-
-
-
 
 export const createAppointmentFilter = createAsyncThunk('createFilter', async (payload: ICreateFilterPayload) => {
   return await axiosWrapper({ method: "post", url: 'filters/', payload })

@@ -1,12 +1,12 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useInView } from 'react-intersection-observer';
-import { getAppointmentDetail, getAppointmentDetailMulti, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments, auditLog } from '@/app/redux/actions/appointment';
+import { getAppointmentDetail, getAppointmentsList, getFiltersData, getSelectedFilterDetail, getSelectedFilterList, updateAppointmentDetail, getAllAppointments, auditLog } from '@/app/redux/actions/appointment';
 import { AppDispatch, AppState } from '@/app/redux/store';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
@@ -18,7 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import arrowLeft from "../../images/leftarrow.svg"
 import arrowRight from "../../images/rightarrow.svg"
-import { ExpendSection, HideShow, LoaderBox } from '../../styles/customStyle';
+import { LoaderBox } from '../../styles/customStyle';
 import pdfIcon from "../../images/pdficon.svg";
 import moment from 'moment-timezone';
 import {
@@ -39,7 +39,7 @@ import {
   TableMidData
 } from '../../styles/customStyle';
 import { AppointmentState, FiltersDataState, emptyAppointmentList, emptySelectedFilter, updateFilter } from '@/app/redux/slices/appointment';
-import { Box, Container, Input, InputAdornment, CircularProgress, Typography, FormControlLabel, Checkbox, FormGroup, Button } from '@mui/material';
+import { Box, Container, Input, InputAdornment, CircularProgress } from '@mui/material';
 import PatientNotFound from '@/app/components/patientNotFound';
 import { API_URL } from '@/app/redux/config/axiosInstance';
 import { formatDates, parseDate, urlParams } from '@/app/utils/helper';
@@ -49,7 +49,6 @@ import IdleModal from '@/app/components/idleModal';
 import { addEventData, addOtherData, EventData, getAllEventData, getAllOtherData } from '../../utils/indexeddb';
 import { useCallback } from 'react';
 import { clearDB } from '@/app/utils/indexeddb';
-import { UncheckedIcon, CheckedIcon } from "../../images/check"
 
 const Row = dynamic(() => import('@/app/components/tableRow/index').then((mod) => mod), {
   ssr: false,
@@ -84,14 +83,20 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   const filters = useSelector((state: AppState) => state.appointment.filtersData);
   const { page } = filters;
   // Calculate the difference between UTC and US Pacific Time
-  var myDate = new Date()
-  var pstDate = myDate.toLocaleString("en-US", {
-    timeZone: "America/Los_Angeles"
-  })
+  const getCurrentPSTDate = () => {
+    // Get the current date in UTC
+    const myDate = new Date();
+    
+    // Convert to Pacific Time Zone
+    const pstDate = new Date(myDate.toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles"
+    }));
 
-  var pstDateNew = new Date(pstDate);
+    return pstDate;
+  };
 
-  const [date, setDate] = React.useState(myDate);
+  // State to hold the current date in PST
+  const [date, setDate] = useState(getCurrentPSTDate());
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedVisitType, setSelectedVisitType] = useState<any>(filters.visit_types || []);
@@ -113,8 +118,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     detail: {}
   })
 
-
-  const [expand, setExpand] = useState(false);
   const [eventData, setEventData] = useState<EventData[]>([]);
 
   const [newEventData, setNewEventData] = useState<EventData[]>([]);
@@ -253,20 +256,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
               : null;
   };
 
-
-  const appointmentTop = (filter: FiltersDataState, auditState?: any) => {
-    dispatch(getAppointmentsList(filter)).then((response: any) => {
-      setMainLoader(false);
-      dispatch(updateFilter({ page: filter && filter.page ? filter.page : page }));
-      if (response?.payload?.results.length === 0) {
-        setIsClearFilter(true);
-      } else {
-        setIsClearFilter(false);
-      }
-    })
-  };
-
-
   // useEffect(() => {
   //   const refreshToken = localStorage.getItem('refresh_token');
   //   const accessToken = localStorage.getItem('access_token');
@@ -352,10 +341,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     }
   };
 
-  const [newbuttonState, setNewButtonState] = useState(true)
-
   const updateButtonState = (value: any, data: any, detail: any) => {
-    setNewButtonState(!newbuttonState)
     if (data == "disable") {
       toast.error("cannot select")
       return;
@@ -382,8 +368,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     setReverseModal(false);
     setConfirmationModal(false)
 
-    console.log(detail)
-
 
     const { appointment_id, uuid } = detail;
     const payload = {
@@ -391,13 +375,12 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
       screening_id: uuid,
       action: data == "enable" ? getAction(value) : getAction2(value)
     }
- 
-    dispatch(updateAppointmentDetail(payload)).then((res) => {
-      console.log(res, "jjhghghghghgh")
+
+    dispatch(updateAppointmentDetail(payload)).then(() => {
       toast.success("Successfully Updated");
       appointmentDetails(appointment_id);
       handleAddEventData("FRONTEND_TILE_CLICK_ACTION", `FRONTEND_TILE_CLICK_ACTION${value}`, `FRONTEND_TILE_CLICK_ACTION${value}`)
-      dispatch(getAppointmentDetailMulti({ appointment_id: res?.meta?.arg?.appointment_id }))
+
       const formattedDates = formatDates(filters.appointment_start_date, filters.appointment_end_date);
       const payload = {
         page: 1,
@@ -587,6 +570,7 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
   }
 
   const dateRangeHandleChange = (dates: any) => {
+    
     const formattedDates = formatDates(dates, dates);
     const filter = {
       ...filters,
@@ -632,63 +616,51 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
     const appointmentsListString = localStorage.getItem('huddleBoardConfig');
     if (!appointmentsListString) return;
     const { past_calendar_days_count, future_calender_days_count } = JSON.parse(appointmentsListString);
+  
+    // Get the current date in Pacific Time
+    const currentDate = new Date();
+    const pacificCurrentDate = new Date(currentDate.toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles"
+    }));
 
-    const currentDate = pstDateNew;
-    const currentDay = currentDate.getDate();
-
-    const selectedDate = new Date(date);
-
+   
+  
+    const selectedDate = new Date(date); // Assuming 'date' is in PST
+  
+    // Move selected date based on direction
     if (direction.toLowerCase() === "left") {
-      selectedDate.setDate(date.getDate() - 1);
-      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Date filter selected using left arrow", "Frontend Date filter selected using left arrow")
-
+      selectedDate.setDate(selectedDate.getDate() - 1);
+      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Date filter selected using left arrow", "Frontend Date filter selected using left arrow");
     } else {
-      selectedDate.setDate(date.getDate() + 1);
-      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Date filter selected using right arrow", "Frontend Date filter selected using right arrow")
+      selectedDate.setDate(selectedDate.getDate() + 1);
+      handleAddEventData("FRONTEND_FILTER_CLICK_GENERAL", "Frontend Date filter selected using right arrow", "Frontend Date filter selected using right arrow");
     }
+  
+    // Set the updated date
     setDate(selectedDate);
+  
     const selectedDay = selectedDate.getDate();
-
-    const minDateOnly = new Date(currentDate);
-    minDateOnly.setDate(currentDay - 71);
-
-    const maxDateOnly = new Date(currentDate);
-    maxDateOnly.setDate(currentDay + future_calender_days_count);
+  
+    // Calculate min and max dates in Pacific Time
+    const minDateOnly = new Date(pacificCurrentDate);
+    minDateOnly.setDate(pacificCurrentDate.getDate() - past_calendar_days_count); // Use past_calendar_days_count
+  
+    const maxDateOnly = new Date(pacificCurrentDate);
+    maxDateOnly.setDate(pacificCurrentDate.getDate() + future_calender_days_count); // Use future_calender_days_count
+  
     setArrowDisabledRight(false);
     setArrowDisabledLeft(false);
-
-
-    if (minDateOnly.getDate() === selectedDay) {
+  
+    // Update arrow states based on selected day
+    if (minDateOnly.getDate() === selectedDay && minDateOnly.toDateString() === selectedDate.toDateString()) {
       setArrowDisabledLeft(true);
-    } else if (maxDateOnly.getDate() === selectedDay) {
+    } else if (maxDateOnly.getDate() === selectedDay && maxDateOnly.toDateString() === selectedDate.toDateString()) {
       setArrowDisabledRight(true);
     }
-
+  
     dateRangeHandleChange(selectedDate);
-  }
-
-
-  const handleRouteChange = () => {
-    window.scrollTo(0, 0);
   };
-
-  // Create a ref for the first element
-  const firstElementRef = useRef<any>(null);
-
-  const expandedValues = (value: boolean) => {
-    setExpand(value);
-    if (firstElementRef.current) {
-      firstElementRef.current.scrollIntoView({
-        behavior: 'smooth', 
-        block: 'start',  
-      });
-    }
-  }
-
-  useEffect(() => {
-    console.log('firstElementRef:', firstElementRef.current);
-  }, [appointmentsList]);
-
+  
   return (
     <>
       <Container maxWidth={false}>
@@ -750,81 +722,60 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
 
         <TableDiv>
           <TableTopMain>
-            <Box sx={{ display: 'flex' }}>
-              <FilterMenu>
-                <FilterButton
-                  handleAddEventData={handleAddEventData}
-                  getAppointmentFiltersData={getAppointmentFiltersData}
-                  appointmentFiltersData={appointmentFiltersData}
-                  isFilterDataLoading={isFilterDataLoading}
-                  loadMoreAppointment={loadMoreAppointment}
-                  filters={filters}
-                  selectedFilterList={selectedFilterList}
-                  setSelectedVisitType={setSelectedVisitType}
-                  setSelectedScreening={setSelectedScreening}
-                  setSelectedProviders={setSelectedProviders}
-                  setAnchorEl={setAnchorEl}
-                  anchorEl={anchorEl}
-                  selectedVisitType={selectedVisitType}
-                  selectedScreening={selectedScreening}
-                  selectedProviders={selectedProviders}
-                  resetFilters={resetFilters}
-                  getFilterDetail={getFilterDetail}
-                  selectedSavedFilterUuid={selectedSavedFilterUuid}
-                  setIsFilterApplied={setIsFilterApplied}
-                  setMainLoader={setMainLoader}
-                  isFilterApplied={isFilterApplied}
-                />
-              </FilterMenu>
-              <TableTop>
-                <Input
-                  sx={{
-                    "&::before, &::after": { display: "none" },
-                    border: "none",
-                    padding: "10px",
-                    width: "100%",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    lineHeight: "14px",
-                    color: "#5C6469",
-                  }}
-                  id="input-with-icon-adornment"
-                  placeholder="Search by patient name or MRN"
-                  value={patientNameSearch}
-                  onChange={(e) => searchAppointmentPatientName(e)}
-                  startAdornment={
-                    <>
-                      <InputAdornment position="start">
-                        <SearchIcon sx={{ color: "#0D426A" }} />
-                      </InputAdornment>
+            <FilterMenu>
+              <FilterButton
+                handleAddEventData={handleAddEventData}
+                getAppointmentFiltersData={getAppointmentFiltersData}
+                appointmentFiltersData={appointmentFiltersData}
+                isFilterDataLoading={isFilterDataLoading}
+                loadMoreAppointment={loadMoreAppointment}
+                filters={filters}
+                selectedFilterList={selectedFilterList}
+                setSelectedVisitType={setSelectedVisitType}
+                setSelectedScreening={setSelectedScreening}
+                setSelectedProviders={setSelectedProviders}
+                setAnchorEl={setAnchorEl}
+                anchorEl={anchorEl}
+                selectedVisitType={selectedVisitType}
+                selectedScreening={selectedScreening}
+                selectedProviders={selectedProviders}
+                resetFilters={resetFilters}
+                getFilterDetail={getFilterDetail}
+                selectedSavedFilterUuid={selectedSavedFilterUuid}
+                setIsFilterApplied={setIsFilterApplied}
+                setMainLoader={setMainLoader}
+                isFilterApplied={isFilterApplied}
+              />
+            </FilterMenu>
+            <TableTop>
+              <Input
+                sx={{
+                  "&::before, &::after": { display: "none" },
+                  border: "none",
+                  padding: "10px",
+                  width: "100%",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "14px",
+                  color: "#5C6469",
+                }}
+                id="input-with-icon-adornment"
+                placeholder="Search by patient name or MRN"
+                value={patientNameSearch}
+                onChange={(e) => searchAppointmentPatientName(e)}
+                startAdornment={
+                  <>
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "#0D426A" }} />
+                    </InputAdornment>
 
-                      {patientNameSearch.length > 0 && <InputAdornment position="end">
-                        <SearchClearIcon onClick={() => resetFilters()}><CloseIcon sx={{ color: "#0D426A" }} /></SearchClearIcon>
-                      </InputAdornment>}
-                    </>
-                  }
-                />
-              </TableTop>
-            </Box>
-            <HideShow >
-              <Typography component='p'>Hide:</Typography>
-              <Box sx={{ display: 'flex', paddingInline: '8px' }}>
-                <FormControlLabel control={<Checkbox
-                  icon={<UncheckedIcon />}
-                  checkedIcon={<CheckedIcon />}
-                />} label="Completed Actions" />
-                <FormControlLabel control={<Checkbox
-                  icon={<UncheckedIcon />}
-                  checkedIcon={<CheckedIcon />}
-                />} label="Zero Screenings" />
-              </Box>
-            </HideShow>
-            <ExpendSection>
-              <Typography component={'p'}>Expand:</Typography>
-              <Button onClick={() => expandedValues(true)}>All</Button>
-              <Typography component={'span'} sx={{ color: '#172B4D' }}>|</Typography>
-              <Button onClick={() => expandedValues(false)}>None</Button>
-            </ExpendSection>
+                    {patientNameSearch.length > 0 && <InputAdornment position="end">
+                      <SearchClearIcon onClick={() => resetFilters()}><CloseIcon sx={{ color: "#0D426A" }} /></SearchClearIcon>
+                    </InputAdornment>}
+                  </>
+                }
+              />
+            </TableTop>
           </TableTopMain>
 
 
@@ -905,12 +856,6 @@ const CollapsibleTable: React.FC<AppointmentListProps> = ({ initialAppointments 
                     {appointmentsList.map(
                       (appointment: AppointmentState, index: number) => (
                         <Row
-                        newbuttonState={newbuttonState}
-                        appointmentsList={appointmentsList}
-                          firstElementRef={firstElementRef}
-                          id={appointmentsList[0]?.uuid}
-                          expand={index < 10 ? expand : false}
-                          setExpand={setExpand}
                           key={index}
                           appointment={appointment}
                           selectedAppointmentUuid={selectedAppointmentUuid}

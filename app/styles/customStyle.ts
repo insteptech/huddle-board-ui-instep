@@ -1,4 +1,4 @@
-import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox, List, ListItem, colors } from "@mui/material";
+import { TableCell, styled, Typography, linearProgressClasses, LinearProgress, TableContainer, Link, TableHead, Button, Checkbox, List, ListItem } from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import '@iroomit/react-date-range/dist/styles.css'; // main css file
 import zIndex from "@mui/material/styles/zIndex";
@@ -254,7 +254,6 @@ export const TableTopMain = styled('div')(({ div }: any) => ({
   display: 'flex',
   alignItems: 'center',
   margin: '0 10px',
-  justifyContent: 'space-between',
 }));
 
 export const TableTop = styled('div')(({ div }: any) => ({
@@ -1190,15 +1189,15 @@ export const MainLoginright = styled('div')(({ div }: any) => ({
     },
   },
 
-  // Media query for screen widths between 1441px and 1560px
-  '@media (min-width: 1441px) and (max-width: 1560px)': {
-    padding: '4rem 2rem',
-
-    // Apply Firefox-specific styles separately
-    '@supports (-moz-appearance: none)': {
-      padding: '5rem 2rem', // Specific styles for Firefox
+    // Media query for screen widths between 1441px and 1560px
+    '@media (min-width: 1441px) and (max-width: 1560px)': {
+      padding: '4rem 2rem',
+  
+      // Apply Firefox-specific styles separately
+      '@supports (-moz-appearance: none)': {
+        padding: '5rem 2rem', // Specific styles for Firefox
+      },
     },
-  },
 
 
 
@@ -1408,53 +1407,6 @@ export const LoginActions = styled('div')(({ div }: any) => ({
     color: "#FFFFFF",
     width: "100%",
     textTransform: "capitalize",
-  }
-}));
-
-export const HideShow = styled('div')(({ div }: any) => ({
-  display: 'flex',
-  alignItems: 'center',
-  'p': {
-    fontSize: '14px',
-    fontWeight: '400',
-    lineHeight: '20px',
-    textAlign: 'left',
-    color: '#5C6469',
-  },
-  label: {
-    display: 'flex',
-    gap: '8px',
-    'span': {
-      fontSize: '14px',
-      fontWeight: '500',
-      lineHeight: '20px',
-      textAlign: 'left',
-      color: '#0D426A',
-    }
-  },
-}));
-
-
-export const ExpendSection = styled('div')(({ div }: any) => ({
-  display: 'flex',
-  gap: '2px',
-  alignItems: 'center',
-
-  'p': {
-    fontSize: '14px',
-    fontWeight: '400',
-    lineHeight: '20px',
-    textAlign: 'left',
-    color: '#5C6469',
-  },
-
-  'button': {
-    fontSize: '14px',
-    fontWeight: '600',
-    lineHeight: '18px',
-    textAlign: 'center',
-    color: '#0D426A',
-    minWidth: '33px',
   }
 }));
 

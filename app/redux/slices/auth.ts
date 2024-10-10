@@ -3,12 +3,12 @@ import { signInCall, getHuddleBoardConfig, contactSupport } from '../actions/aut
 
 export type AuthState = {
   loggedInUser: { token: ''; user: null; permissions: null };
-  huddleBoardConfig: { user_full_name: string; past_calendar_days_count: number | null; future_calender_days_count: number | null; hide_logout_option: number | null };
+  huddleBoardConfig: { user_full_name: string; past_calendar_days_count: number | null; future_calender_days_count: number | null; hide_logout_button: number | null };
 };
 
 const initialState: AuthState = {
   loggedInUser: { token: '', user: null, permissions: null },
-  huddleBoardConfig: { user_full_name: '', past_calendar_days_count: null, future_calender_days_count: null, hide_logout_option: null },
+  huddleBoardConfig: { user_full_name: '', past_calendar_days_count: null, future_calender_days_count: null, hide_logout_button: null },
 };
 
 export const auth = createSlice({

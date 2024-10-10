@@ -13,32 +13,45 @@ const DatePicker = (props: any) => {
     const [maxDate, setMaxDate] = useState(new Date());
     const anchorRef = useRef<any>(null);
 
-    const huddleBoardConfig:any = localStorage.getItem('huddleBoardConfig');
-    const config: any = huddleBoardConfig !== undefined ? JSON.parse(huddleBoardConfig) : "";
+    const huddleBoardConfig = localStorage.getItem('huddleBoardConfig');
+    const config = huddleBoardConfig ? JSON.parse(huddleBoardConfig) : null;
 
     const minDateFromConfig = config?.past_calendar_days_count;
     const maxDateFromConfig = config?.future_calender_days_count;
 
     const handleDateChange = (newDate: Date) => {
         const currentDate = new Date();
-
+        const pacificCurrentDate = new Date(currentDate.toLocaleString("en-US", {
+            timeZone: "America/Los_Angeles"
+        }));
+    
         const newDateDatePart = new Date(newDate.toDateString());
-        const combinedDate = new Date(`${newDateDatePart.toDateString()} ${currentDate.toTimeString().split(' ')[0]}`);
+        // Combine the date part with the current time in PST
+        const combinedDate = new Date(`${newDateDatePart.toDateString()} ${pacificCurrentDate.toTimeString().split(' ')[0]}`);
+    
+        // Update the date range and state
 
         dateRangeHandleChange(combinedDate);
         setDate(combinedDate);
-
+    
         // Calculate the next day in Pacific Time
         const newDate1 = new Date(newDate.getTime() + 1 * 24 * 60 * 60 * 1000);
-        const newDate1Only = newDate1.toISOString().split('T')[0];
-
+        const newDate1Only = new Date(newDate1.toLocaleString("en-US", {
+            timeZone: "America/Los_Angeles"
+        })).toISOString().split('T')[0];
+    
         // Calculate min and max dates in Pacific Time
-        const minDate = new Date(currentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
-        const maxDate = new Date(currentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
-
-        const minDateOnly = minDate.toISOString().split('T')[0];
-        const maxDateOnly = maxDate.toISOString().split('T')[0];
-
+        const minDate = new Date(pacificCurrentDate.getTime() - minDateFromConfig * 24 * 60 * 60 * 1000);
+        const maxDate = new Date(pacificCurrentDate.getTime() + maxDateFromConfig * 24 * 60 * 60 * 1000);
+    
+        const minDateOnly = new Date(minDate.toLocaleString("en-US", {
+            timeZone: "America/Los_Angeles"
+        })).toISOString().split('T')[0];
+        
+        const maxDateOnly = new Date(maxDate.toLocaleString("en-US", {
+            timeZone: "America/Los_Angeles"
+        })).toISOString().split('T')[0];
+    
         // Update arrow states based on comparisons
         if (newDate1Only === minDateOnly) {
             setArrowDisabledLeft(true);
@@ -51,8 +64,7 @@ const DatePicker = (props: any) => {
             setArrowDisabledRight(false);
         }
     };
-
-
+    
     useEffect(() => {
         const currentDate = new Date();
         const minDate = new Date(currentDate.getTime() - 71 * 24 * 60 * 60 * 1000);
